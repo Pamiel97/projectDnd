@@ -1,7 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
 import jakarta.persistence.*;
-
+//COMMENTONO
 @Entity
 @Table(name = "abilities")
 public class Ability {
