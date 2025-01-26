@@ -1,6 +1,10 @@
 package progettino.dnd.projectDnd.dtos;
 
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class CharacterPgDto {
 
@@ -9,12 +13,24 @@ public class CharacterPgDto {
     @NotBlank(message = "Name cannot be blank")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
+
+    @Size(max = 50, message = "Surname must be max 50 characters")
     private String surname;
+
+    @NotBlank(message = "Class cannot be blank")
     private String classe;
+
+    @NotBlank(message = "Race cannot be blank")
     private String race;
+
+    @Min(value = 1, message = "Level must be at least 1")
+    @Max(value = 20, message = "Level cannot exceed 20")
     private int level;
+
     private String background;
     private String allignment;
+
+    @Min(value = 0, message = "Experience cannot be negative")
     private int exp;
     private String physicalTrait;
     private int ispiration;
@@ -23,7 +39,10 @@ public class CharacterPgDto {
     private int ca;
     private int iniziative;
     private int speed;
+
+    @Min(value = 1, message = "Total HP must be at least 1")
     private int totalHp;
+
     private int actualHp;
     private int temporanyHp;
     private int dice;

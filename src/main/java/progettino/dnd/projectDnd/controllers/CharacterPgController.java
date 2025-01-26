@@ -1,8 +1,10 @@
 package progettino.dnd.projectDnd.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/characters")
+@Validated
 public class CharacterPgController {
 
     private final CharacterPgService characterPgService;
@@ -22,8 +25,7 @@ public class CharacterPgController {
 
     @PostMapping
     public ResponseEntity<CharacterPgDto> createCharacterPg(
-            @Valid @RequestBody CharacterPgDto characterPgDto
-    ) {
+            @Valid @RequestBody CharacterPgDto characterPgDto) {
         CharacterPgDto createdCharacterPg = characterPgService.createCharacterPg(characterPgDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCharacterPg);
     }
@@ -43,8 +45,7 @@ public class CharacterPgController {
     @PutMapping("/{id}")
     public ResponseEntity<CharacterPgDto> updateCharacterPg(
             @PathVariable Long id,
-            @Valid @RequestBody CharacterPgDto characterPgDto
-    ) {
+            @Valid @RequestBody CharacterPgDto characterPgDto) {
         CharacterPgDto updatedCharacterPg = characterPgService.updateCharacterPg(id, characterPgDto);
         return ResponseEntity.ok(updatedCharacterPg);
     }

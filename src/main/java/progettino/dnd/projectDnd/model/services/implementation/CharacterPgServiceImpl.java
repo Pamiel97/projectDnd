@@ -1,14 +1,18 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
 import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.User;
+import progettino.dnd.projectDnd.model.exception.ConflictException;
 import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
 import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
 import progettino.dnd.projectDnd.model.repositories.UserRepository;
@@ -18,62 +22,59 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CharacterPgServiceImpl implements CharacterPgService {
+
+    private static final int DEFAULT_STARTING_LEVEL = 1;
+    private static final int DEFAULT_STARTING_EXP = 0;
 
     private final CharacterPgRepository characterPgRepository;
     private final UserRepository userRepository;
-    private  final CampaignRepository campaignRepository;
+    private final CampaignRepository campaignRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CharacterPgServiceImpl(
-            CharacterPgRepository characterPgRepository,
-            UserRepository userRepository,
-            CampaignRepository campaignRepository){
+    public CharacterPgServiceImpl(CharacterPgRepository characterPgRepository, UserRepository userRepository, CampaignRepository campaignRepository, ModelMapper modelMapper) {
         this.characterPgRepository = characterPgRepository;
         this.userRepository = userRepository;
         this.campaignRepository = campaignRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
-    public CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto){
+    public CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(auth.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("Current user not found"));
 
-        User user = userRepository.findById(characterPgDto.getUserId())
-            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Campaign activeCampaign = campaignRepository.findActiveByUser(currentUser)
+                .orElseThrow(() -> new ResourceNotFoundException("No active campaign found"));
 
-        Campaign campaign = campaignRepository.findById(characterPgDto.getCampaignId())
-                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found"));
+        characterPgRepository.findByNameAndUser(characterPgDto.getName(), currentUser)
+                .ifPresent(c -> {
+                    throw new ConflictException("Character with this name already exists");
+                });
 
-        CharacterPg characterPg = new CharacterPg();
-        BeanUtils.copyProperties(characterPgDto, characterPg);
-
-        characterPg.setUser(user);
-        characterPg.setCampaign(campaign);
-
-        characterPg.setLevel(1);
-        characterPg.setExp(0);
+        CharacterPg characterPg = modelMapper.map(characterPgDto, CharacterPg.class);
+        characterPg.setUser(currentUser);
+        characterPg.setCampaign(activeCampaign);
+        characterPg.setLevel(DEFAULT_STARTING_LEVEL);
+        characterPg.setExp(DEFAULT_STARTING_EXP);
         characterPg.setActualHp(characterPg.getTotalHp());
 
-        CharacterPg savedCharacterPg = characterPgRepository.save(characterPg);
-
-        CharacterPgDto savedDto = new CharacterPgDto();
-        BeanUtils.copyProperties(savedCharacterPg, savedDto);
-        savedDto.setUserId(user.getId());
-        savedDto.setCampaignId(campaign.getId());
-
-        return savedDto;
-
+        return modelMapper.map(characterPgRepository.save(characterPg), CharacterPgDto.class);
     }
 
     public List<CharacterPgDto> getAllCharacterPgs() {
         return characterPgRepository.findAll().stream()
-                .map(this::convertToDto)
+                .map(pg -> modelMapper.map(pg, CharacterPgDto.class))
                 .collect(Collectors.toList());
     }
 
     public CharacterPgDto getCharacterPgById(Long id) {
-        CharacterPg characterPg = characterPgRepository.findById(id)
+        return characterPgRepository.findById(id)
+                .map(pg -> modelMapper.map(pg, CharacterPgDto.class))
                 .orElseThrow(() -> new ResourceNotFoundException("Character not found"));
-        return convertToDto(characterPg);
     }
 
     @Transactional
@@ -81,10 +82,8 @@ public class CharacterPgServiceImpl implements CharacterPgService {
         CharacterPg existingCharacterPg = characterPgRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Character not found"));
 
-        BeanUtils.copyProperties(characterPgDto, existingCharacterPg, "id", "user", "campaign");
-
-        CharacterPg updatedCharacterPg = characterPgRepository.save(existingCharacterPg);
-        return convertToDto(updatedCharacterPg);
+        modelMapper.map(characterPgDto, existingCharacterPg);
+        return modelMapper.map(characterPgRepository.save(existingCharacterPg), CharacterPgDto.class);
     }
 
     @Transactional
@@ -94,11 +93,4 @@ public class CharacterPgServiceImpl implements CharacterPgService {
         characterPgRepository.delete(characterPg);
     }
 
-    private CharacterPgDto convertToDto(CharacterPg characterPg) {
-        CharacterPgDto dto = new CharacterPgDto();
-        BeanUtils.copyProperties(characterPg, dto);
-        dto.setUserId(characterPg.getUser().getId());
-        dto.setCampaignId(characterPg.getCampaign().getId());
-        return dto;
-    }
 }
