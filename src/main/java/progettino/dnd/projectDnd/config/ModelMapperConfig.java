@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper mapper = new ModelMapper();
+        // Custom mapping configurations can be added here
+        mapper.getConfiguration()
+                .setFieldMatchingEnabled(true);
+//                .setFieldAccessLevel(Configuration. AccessLevel.PRIVATE);
+        return mapper;
     }
 }

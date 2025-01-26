@@ -9,35 +9,34 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
-import progettino.dnd.projectDnd.model.entities.Campaign;
-import progettino.dnd.projectDnd.model.entities.CharacterPg;
-import progettino.dnd.projectDnd.model.entities.User;
+import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.ConflictException;
-import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
-import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
-import progettino.dnd.projectDnd.model.repositories.UserRepository;
+import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class CharacterPgServiceImpl implements CharacterPgService {
-
     private static final int DEFAULT_STARTING_LEVEL = 1;
     private static final int DEFAULT_STARTING_EXP = 0;
 
     private final CharacterPgRepository characterPgRepository;
     private final UserRepository userRepository;
     private final CampaignRepository campaignRepository;
+    private final BagRepository bagRepository;
+    private final DiaryRepository diaryRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public CharacterPgServiceImpl(CharacterPgRepository characterPgRepository, UserRepository userRepository, CampaignRepository campaignRepository, ModelMapper modelMapper) {
+    public CharacterPgServiceImpl(CharacterPgRepository characterPgRepository, UserRepository userRepository, CampaignRepository campaignRepository, BagRepository bagRepository, DiaryRepository diaryRepository, ModelMapper modelMapper) {
         this.characterPgRepository = characterPgRepository;
         this.userRepository = userRepository;
         this.campaignRepository = campaignRepository;
+        this.bagRepository = bagRepository;
+        this.diaryRepository = diaryRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -62,7 +61,33 @@ public class CharacterPgServiceImpl implements CharacterPgService {
         characterPg.setExp(DEFAULT_STARTING_EXP);
         characterPg.setActualHp(characterPg.getTotalHp());
 
-        return modelMapper.map(characterPgRepository.save(characterPg), CharacterPgDto.class);
+        // Initialize collections
+        characterPg.setSlots(new ArrayList<>());
+        characterPg.setAbilityPgs(new ArrayList<>());
+        characterPg.setStaticList(new ArrayList<>());
+        characterPg.setTiriSalvezza(new ArrayList<>());
+        characterPg.setTalents(new ArrayList<>());
+        characterPg.setTraits(new ArrayList<>());
+
+        // Create and link Bag
+        Bag bag = new Bag();
+        bag.setPg(characterPg);
+        bag.setPotions(new ArrayList<>());
+        bag.setEquips(new ArrayList<>());
+        bag.setWeapons(new ArrayList<>());
+        bag.setObjects(new ArrayList<>());
+        characterPg.setBag(bag);
+
+        // Create and link Diary
+        Diary diary = new Diary();
+        diary.setPg(characterPg);
+        diary.setName(characterPg.getName() + "'s Diary");
+        diary.setDescription("Personal diary of " + characterPg.getName());
+        diary.setMissions(new ArrayList<>());
+        characterPg.setDiary(diary);
+
+        CharacterPg savedCharacterPg = characterPgRepository.save(characterPg);
+        return modelMapper.map(savedCharacterPg, CharacterPgDto.class);
     }
 
     public List<CharacterPgDto> getAllCharacterPgs() {
@@ -92,5 +117,4 @@ public class CharacterPgServiceImpl implements CharacterPgService {
                 .orElseThrow(() -> new ResourceNotFoundException("Character not found"));
         characterPgRepository.delete(characterPg);
     }
-
 }

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface CharacterPgService {
 
-    public CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto);
-    public List<CharacterPgDto> getAllCharacterPgs();
-    public CharacterPgDto getCharacterPgById(Long id);
-    public CharacterPgDto updateCharacterPg(Long id, CharacterPgDto characterPgDto);
-    public void deleteCharacterPg(Long id);
+    CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto);
+    List<CharacterPgDto> getAllCharacterPgs();
+    CharacterPgDto getCharacterPgById(Long id);
+    CharacterPgDto updateCharacterPg(Long id, CharacterPgDto characterPgDto);
+    void deleteCharacterPg(Long id);
 
 
 
