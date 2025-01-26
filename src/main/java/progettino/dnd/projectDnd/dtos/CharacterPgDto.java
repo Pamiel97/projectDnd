@@ -1,97 +1,65 @@
-package progettino.dnd.projectDnd.model.entities;
+package progettino.dnd.projectDnd.dtos;
 
-import jakarta.persistence.*;
 
-import java.util.List;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "characters_pg")
-public class CharacterPg {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class CharacterPgDto {
+
+    private Long id;
+
+    @NotBlank(message = "Name cannot be blank")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     private String name;
+
+    @Size(max = 50, message = "Surname must be max 50 characters")
     private String surname;
+
+    @NotBlank(message = "Class cannot be blank")
     private String classe;
+
+    @NotBlank(message = "Race cannot be blank")
     private String race;
+
+    @Min(value = 1, message = "Level must be at least 1")
+    @Max(value = 20, message = "Level cannot exceed 20")
     private int level;
+
     private String background;
     private String allignment;
+
+    @Min(value = 0, message = "Experience cannot be negative")
     private int exp;
-    @Column(name = "physical_trait")
     private String physicalTrait;
     private int ispiration;
-    @Column(name = "bonus_competence")
     private int bonusCompetence;
     private int perception;
     private int ca;
     private int iniziative;
     private int speed;
-    @Column(name = "total_hp")
+
+    @Min(value = 1, message = "Total HP must be at least 1")
     private int totalHp;
-    @Column(name = "actual_hp")
+
     private int actualHp;
-    @Column(name = "temporany_hp")
     private int temporanyHp;
     private int dice;
-    @Column(name = "dice_health")
     private int diceHealth;
     private String caratterial;
     private String ideals;
     private String note;
     private int money;
     private String img;
+    private Long userId;
+    private Long campaignId;
 
-
-
-    @ManyToOne
-    @JoinColumn(name = "user_id") // Questo specifica che nome avrà nella colonna nella tabella
-    private User user;
-
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Slot> slots;  // Lista di slot associati al PG
-
-    @OneToOne(mappedBy = "pg")
-    private Bag bag;
-
-    @OneToOne(mappedBy = "pg")
-    private Diary diary;
-
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AbilityPg> abilityPgs;
-
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Static> staticList;
-
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TiriSalvezza> tiriSalvezza;
-
-    @ManyToOne
-    @JoinColumn(name = "campaign_id") // Questo specifica che nome avrà nella colonna nella tabella
-    private Campaign campaign;
-
-    @ManyToMany
-    @JoinTable(
-            name = "talents_pgs",
-            joinColumns = @JoinColumn(name = "pg_id"),
-            inverseJoinColumns = @JoinColumn(name = "talent_id")
-    )
-    private List<Talent> talents;
-
-
-    @ManyToMany
-    @JoinTable(
-            name = "traits_pgs",
-            joinColumns = @JoinColumn(name = "pg_id"),
-            inverseJoinColumns = @JoinColumn(name = "trait_id")
-    )
-    private List<Trait> traits;
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -295,83 +263,19 @@ public class CharacterPg {
         this.img = img;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public List<Slot> getSlots() {
-        return slots;
+    public Long getCampaignId() {
+        return campaignId;
     }
 
-    public void setSlots(List<Slot> slots) {
-        this.slots = slots;
-    }
-
-    public Bag getBag() {
-        return bag;
-    }
-
-    public void setBag(Bag bag) {
-        this.bag = bag;
-    }
-
-    public Diary getDiary() {
-        return diary;
-    }
-
-    public void setDiary(Diary diary) {
-        this.diary = diary;
-    }
-
-    public List<AbilityPg> getAbilityPgs() {
-        return abilityPgs;
-    }
-
-    public void setAbilityPgs(List<AbilityPg> abilityPgs) {
-        this.abilityPgs = abilityPgs;
-    }
-
-    public List<Static> getStaticList() {
-        return staticList;
-    }
-
-    public void setStaticList(List<Static> staticList) {
-        this.staticList = staticList;
-    }
-
-    public List<TiriSalvezza> getTiriSalvezza() {
-        return tiriSalvezza;
-    }
-
-    public void setTiriSalvezza(List<TiriSalvezza> tiriSalvezza) {
-        this.tiriSalvezza = tiriSalvezza;
-    }
-
-    public Campaign getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
-    }
-
-    public List<Talent> getTalents() {
-        return talents;
-    }
-
-    public void setTalents(List<Talent> talents) {
-        this.talents = talents;
-    }
-
-    public List<Trait> getTraits() {
-        return traits;
-    }
-
-    public void setTraits(List<Trait> traits) {
-        this.traits = traits;
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
     }
 }
