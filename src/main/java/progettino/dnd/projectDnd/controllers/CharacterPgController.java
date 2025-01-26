@@ -12,10 +12,9 @@ import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/characters")
+@RequestMapping("/api/characters")
 @Validated
 public class CharacterPgController {
-
     private final CharacterPgService characterPgService;
 
     @Autowired
