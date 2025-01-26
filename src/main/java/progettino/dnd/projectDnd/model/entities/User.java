@@ -38,6 +38,16 @@ public class User {
 
     //COSTRUTTORI E GETTER/SETTER
 
+
+
+    public User(String firstname, String lastname, String email, String encode, Role roles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = encode;
+        this.roles = (Set<Role>) roles;
+    }
+
     public User(){
 
     }
