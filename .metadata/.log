@@ -1,0 +1,146 @@
+!SESSION 2025-01-26 13:54:27.064 -----------------------------------------------
+eclipse.buildId=4.33.0.20240905-0613
+java.version=21.0.5
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it_IT
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product -data E:\eclipse\GitHub-condiviso\projectDnd
+
+!ENTRY ch.qos.logback.classic 1 0 2025-01-26 13:54:29.096
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2025-01-26 13:54:41.787
+!MESSAGE Logback config file: E:\eclipse\GitHub-condiviso\projectDnd\.metadata\.plugins\org.eclipse.m2e.logback\logback.2.6.1.20240411-1122.xml
+
+!ENTRY org.eclipse.ui 2 0 2025-01-26 13:54:42.041
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2025-01-26 13:54:42.041
+!MESSAGE Commands should really have a category: plug-in='org.springframework.tooling.boot.ls', id='spring.initializr.addStarters', categoryId='org.eclipse.lsp4e.commandCategory'
+
+!ENTRY org.eclipse.ui 2 0 2025-01-26 13:54:42.296
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2025-01-26 13:54:42.296
+!MESSAGE Commands should really have a category: plug-in='org.springframework.tooling.boot.ls', id='spring.initializr.addStarters', categoryId='org.eclipse.lsp4e.commandCategory'
+
+!ENTRY org.eclipse.ui 2 0 2025-01-26 13:54:42.365
+!MESSAGE Warnings while parsing the images from the 'org.eclipse.ui.commandImages' extension point.
+!SUBENTRY 1 org.eclipse.ui 2 0 2025-01-26 13:54:42.365
+!MESSAGE Cannot bind to an undefined command: plug-in='com.genuitec.eclipse.theming.ui', id='com.genuitec.myeclipse.help.darktheme.commandid'
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2025-01-26 13:54:42.837
+!MESSAGE A DevStyle Theme is being activated on this workspace; preparing colors and configuration
+
+!ENTRY com.genuitec.eclipse.theming.ui 1 0 2025-01-26 13:54:42.879
+!MESSAGE DevStyle has archived current color configurations to alternate preferences - will be restored when switching out of the DevStyle Theme
+
+!ENTRY org.eclipse.egit.ui 2 0 2025-01-26 13:54:46.285
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\39392'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.google.eclipse.mechanic 4 0 2025-01-26 13:54:46.523
+!MESSAGE Directory 'C:\Users\39392\.eclipse\mechanic' does not exist.
+!STACK 0
+java.io.FileNotFoundException: Directory 'C:\Users\39392\.eclipse\mechanic' does not exist.
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.validateInitialization(FileTaskProvider.java:110)
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.newInstance(FileTaskProvider.java:97)
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.newInstance(FileTaskProvider.java:89)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.toProvider(OldMechanicPreferences.java:109)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.getTaskProviders(OldMechanicPreferences.java:83)
+	at com.google.eclipse.mechanic.internal.PreferenceResourceTaskProvider.get(PreferenceResourceTaskProvider.java:29)
+	at com.google.eclipse.mechanic.internal.PreferenceResourceTaskProvider.collectTaskReferences(PreferenceResourceTaskProvider.java:43)
+	at com.google.eclipse.mechanic.internal.ClassFileTaskScanner.scan(ClassFileTaskScanner.java:75)
+	at com.google.eclipse.mechanic.ResourceTaskScanner.scan(ResourceTaskScanner.java:40)
+	at com.google.eclipse.mechanic.internal.RootTaskScanner.scan(RootTaskScanner.java:50)
+	at com.google.eclipse.mechanic.MechanicService.updateTasks(MechanicService.java:273)
+	at com.google.eclipse.mechanic.MechanicService.update(MechanicService.java:237)
+	at com.google.eclipse.mechanic.MechanicService.run(MechanicService.java:172)
+	at com.google.eclipse.mechanic.MechanicService.access$2(MechanicService.java:167)
+	at com.google.eclipse.mechanic.MechanicService$ServiceJob.run(MechanicService.java:374)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.google.eclipse.mechanic 4 0 2025-01-26 13:54:46.527
+!MESSAGE Directory 'C:\Users\39392\Desktop\JAVA\eclipse\configuration\com.google.eclipse.mechanic\mechanic' does not exist.
+!STACK 0
+java.io.FileNotFoundException: Directory 'C:\Users\39392\Desktop\JAVA\eclipse\configuration\com.google.eclipse.mechanic\mechanic' does not exist.
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.validateInitialization(FileTaskProvider.java:110)
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.newInstance(FileTaskProvider.java:97)
+	at com.google.eclipse.mechanic.internal.FileTaskProvider.newInstance(FileTaskProvider.java:89)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.toProvider(OldMechanicPreferences.java:109)
+	at com.google.eclipse.mechanic.plugin.core.OldMechanicPreferences.getTaskProviders(OldMechanicPreferences.java:83)
+	at com.google.eclipse.mechanic.internal.PreferenceResourceTaskProvider.get(PreferenceResourceTaskProvider.java:29)
+	at com.google.eclipse.mechanic.internal.PreferenceResourceTaskProvider.collectTaskReferences(PreferenceResourceTaskProvider.java:43)
+	at com.google.eclipse.mechanic.internal.ClassFileTaskScanner.scan(ClassFileTaskScanner.java:75)
+	at com.google.eclipse.mechanic.ResourceTaskScanner.scan(ResourceTaskScanner.java:40)
+	at com.google.eclipse.mechanic.internal.RootTaskScanner.scan(RootTaskScanner.java:50)
+	at com.google.eclipse.mechanic.MechanicService.updateTasks(MechanicService.java:273)
+	at com.google.eclipse.mechanic.MechanicService.update(MechanicService.java:237)
+	at com.google.eclipse.mechanic.MechanicService.run(MechanicService.java:172)
+	at com.google.eclipse.mechanic.MechanicService.access$2(MechanicService.java:167)
+	at com.google.eclipse.mechanic.MechanicService$ServiceJob.run(MechanicService.java:374)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.codetogether.hq.eclipse 1 0 2025-01-26 13:54:47.402
+!MESSAGE Authorization Server started successfuly
+
+!ENTRY org.eclipse.egit.ui 4 0 2025-01-26 14:02:20.636
+!MESSAGE https://github.com/Pamiel97/projectDnd.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:192)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:131)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:116)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$9.run(SourceBranchPage.java:377)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:694)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:465)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:170)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2025-01-26 14:04:39.097
+!MESSAGE https://github.com/Pamiel97/projectDnd.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:192)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:131)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:116)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$9.run(SourceBranchPage.java:377)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:694)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:465)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:170)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2025-01-26 14:07:58.760
+!MESSAGE https://github.com/Pamiel97/projectDnd.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:192)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:131)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:116)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$9.run(SourceBranchPage.java:377)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:694)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:465)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:170)
+	... 4 more
+
+!ENTRY org.eclipse.egit.ui 4 0 2025-01-26 14:09:31.211
+!MESSAGE https://github.com/Pamiel97/projectDnd.git: not authorized
+!STACK 0
+org.eclipse.jgit.api.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:192)
+	at org.eclipse.jgit.api.LsRemoteCommand.call(LsRemoteCommand.java:131)
+	at org.eclipse.egit.core.op.ListRemoteOperation.run(ListRemoteOperation.java:116)
+	at org.eclipse.egit.ui.internal.clone.SourceBranchPage$9.run(SourceBranchPage.java:377)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:124)
+Caused by: org.eclipse.jgit.errors.TransportException: https://github.com/Pamiel97/projectDnd.git: not authorized
+	at org.eclipse.jgit.transport.TransportHttp.connect(TransportHttp.java:694)
+	at org.eclipse.jgit.transport.TransportHttp.openFetch(TransportHttp.java:465)
+	at org.eclipse.jgit.api.LsRemoteCommand.execute(LsRemoteCommand.java:170)
+	... 4 more
