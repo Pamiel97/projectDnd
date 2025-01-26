@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
+import progettino.dnd.projectDnd.model.entities.User;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
 import java.util.List;
@@ -24,8 +26,9 @@ public class CharacterPgController {
 
     @PostMapping
     public ResponseEntity<CharacterPgDto> createCharacterPg(
-            @Valid @RequestBody CharacterPgDto characterPgDto) {
-        CharacterPgDto createdCharacterPg = characterPgService.createCharacterPg(characterPgDto);
+            @Valid @RequestBody CharacterPgDto characterPgDto, @AuthenticationPrincipal User user) {
+        long userId = user.getId();
+        CharacterPgDto createdCharacterPg = characterPgService.createCharacterPg(characterPgDto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCharacterPg);
     }
 

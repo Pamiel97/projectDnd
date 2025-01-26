@@ -11,8 +11,8 @@ public class ModelMapperConfig {
         ModelMapper mapper = new ModelMapper();
         // Custom mapping configurations can be added here
         mapper.getConfiguration()
-                .setFieldMatchingEnabled(true);
-//                .setFieldAccessLevel(Configuration. AccessLevel.PRIVATE);
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
         return mapper;
     }
 }

@@ -25,13 +25,13 @@ public class CharacterPgServiceImpl implements CharacterPgService {
     private static final int DEFAULT_STARTING_EXP = 0;
 
     private final CharacterPgRepository characterPgRepository;
-    private final UserRepository userRepository;
+    private final UserDetailRepository userRepository;
     private final CampaignRepository campaignRepository;
     private final BagRepository bagRepository;
     private final DiaryRepository diaryRepository;
     private final ModelMapper modelMapper;
 
-    public CharacterPgServiceImpl(CharacterPgRepository characterPgRepository, UserRepository userRepository, CampaignRepository campaignRepository, BagRepository bagRepository, DiaryRepository diaryRepository, ModelMapper modelMapper) {
+    public CharacterPgServiceImpl(CharacterPgRepository characterPgRepository, UserDetailRepository userRepository, CampaignRepository campaignRepository, BagRepository bagRepository, DiaryRepository diaryRepository, ModelMapper modelMapper) {
         this.characterPgRepository = characterPgRepository;
         this.userRepository = userRepository;
         this.campaignRepository = campaignRepository;
@@ -41,9 +41,9 @@ public class CharacterPgServiceImpl implements CharacterPgService {
     }
 
     @Transactional
-    public CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(auth.getName())
+    public CharacterPgDto createCharacterPg(CharacterPgDto characterPgDto, long userId) {
+
+        User currentUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Current user not found"));
 
         Campaign activeCampaign = campaignRepository.findActiveByUser(currentUser)
