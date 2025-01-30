@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CharacterPgService {
 
-   CharacterPgDto createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException;
+   CharacterPg createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException;
 //    List<CharacterPgDto> getAllCharacterPgs();
 //    CharacterPgDto getCharacterPgById(Long id);
 //    CharacterPgDto updateCharacterPg(Long id, CharacterPgDto characterPgDto);

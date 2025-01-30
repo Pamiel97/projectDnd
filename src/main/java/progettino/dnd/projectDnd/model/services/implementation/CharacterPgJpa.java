@@ -1,14 +1,13 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
-import progettino.dnd.projectDnd.model.entities.CharacterPg;
-import progettino.dnd.projectDnd.model.entities.Slot;
-import progettino.dnd.projectDnd.model.entities.User;
+import progettino.dnd.projectDnd.dtos.StaticDto;
+import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
-import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
-import progettino.dnd.projectDnd.model.repositories.UserDetailRepository;
+import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.repositories.security.UserRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
@@ -21,9 +20,35 @@ import java.util.Optional;
 public class CharacterPgJpa implements CharacterPgService {
     private CharacterPgRepository characterPgRepository;
     private UserDetailRepository userDetailRepository;
+    private SlotRepository slotRepository;
+    private BagRepository bagRepository;
+    private DiaryRepository diaryRepository;
+    private AbilityPgRepository abilityPgRepository;
+    private StaticRepository staticRepository;
+    private TiriSalvezzaRepository tiriSalvezzaRepository;
+    private CampaignRepository campaignRepository;
+    private TalentRepository talentRepository;
+    private TraitRepository traitRepository;
+    private AbilityRepository abilityRepository;
+
+    @Autowired
+    public CharacterPgJpa(CharacterPgRepository characterPgRepository, UserDetailRepository userDetailRepository, SlotRepository slotRepository, BagRepository bagRepository, DiaryRepository diaryRepository, AbilityPgRepository abilityPgRepository, StaticRepository staticRepository, TiriSalvezzaRepository tiriSalvezzaRepository, CampaignRepository campaignRepository, TalentRepository talentRepository, TraitRepository traitRepository, AbilityRepository abilityRepository) {
+        this.characterPgRepository = characterPgRepository;
+        this.userDetailRepository = userDetailRepository;
+        this.slotRepository = slotRepository;
+        this.bagRepository = bagRepository;
+        this.diaryRepository = diaryRepository;
+        this.abilityPgRepository = abilityPgRepository;
+        this.staticRepository = staticRepository;
+        this.tiriSalvezzaRepository = tiriSalvezzaRepository;
+        this.campaignRepository = campaignRepository;
+        this.talentRepository = talentRepository;
+        this.traitRepository = traitRepository;
+        this.abilityRepository = abilityRepository;
+    }
 
     @Override
-    public CharacterPgDto createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException {
+    public CharacterPg createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException {
         // 1. Recupero l'utente associato tramite userId
         Optional<User> optionalUser = userDetailRepository.findById(userId);
         if (optionalUser.isEmpty()) {
@@ -36,19 +61,19 @@ public class CharacterPgJpa implements CharacterPgService {
 
         // 3. Gestisco le relazioni con altre entità
         // 3.1. Slots: inizializzati vuoti
-        if (characterPg.getSlots() == null) {
-            characterPg.setSlots(new ArrayList<>());
-        } else {
-            List<Slot> slots = new ArrayList<>();
-            for (Slot slot : characterPg.getSlots()) {
-                Optional<Slot> optionalSlot = slotRepository.findById(slot.getId());
-                if (optionalSlot.isEmpty()) {
-                    throw new EntityNotFoundException("Slot con id: " + slot.getId() + " non trovato");
-                }
-                slots.add(optionalSlot.get());
-            }
-            characterPg.setSlots(slots);
-        }
+//        if (characterPg.getSlots() == null) {
+//            characterPg.setSlots(new ArrayList<>());
+//        } else {
+//            List<Slot> slots = new ArrayList<>();
+//            for (Slot slot : characterPg.getSlots()) {
+//                Optional<Slot> optionalSlot = slotRepository.findById(slot.getId());
+//                if (optionalSlot.isEmpty()) {
+//                    throw new EntityNotFoundException("Slot con id: " + slot.getId() + " non trovato");
+//                }
+//                slots.add(optionalSlot.get());
+//            }
+//            characterPg.setSlots(slots);
+//        }
 
         // 3.2. Bag: Se non c'è, creo un nuovo zaino vuoto
         if (characterPg.getBag() == null) {
@@ -78,11 +103,18 @@ public class CharacterPgJpa implements CharacterPgService {
         if (characterPg.getAbilityPgs() != null) {
             List<AbilityPg> abilityPgs = new ArrayList<>();
             for (AbilityPg abilityPg : characterPg.getAbilityPgs()) {
-                Optional<AbilityPg> optionalAbilityPg = abilityPgRepository.findById(abilityPg.getId());
-                if (optionalAbilityPg.isEmpty()) {
-                    throw new EntityNotFoundException("AbilityPg con id: " + abilityPg.getId() + " non trovato");
+                Optional<Ability> optionalAbility = abilityRepository.findById(abilityPg.getAbility().getId());  // Troviamo l'abilità tramite ID
+                if (optionalAbility.isEmpty()) {
+                    throw new EntityNotFoundException("Ability con id: " + abilityPg.getAbility().getId() + " non trovata");
                 }
-                abilityPgs.add(optionalAbilityPg.get());
+                Ability ability = optionalAbility.get();
+                AbilityPg newAbilityPg = new AbilityPg();
+                newAbilityPg.setAbility(ability);
+                newAbilityPg.setCompetence(abilityPg.isCompetence());
+                newAbilityPg.setPoint(abilityPg.getPoint());
+                newAbilityPg.setPg(characterPg);  // Associa l'AbilityPg al personaggio
+
+                abilityPgs.add(newAbilityPg);
             }
             characterPg.setAbilityPgs(abilityPgs);
         }
@@ -90,13 +122,25 @@ public class CharacterPgJpa implements CharacterPgService {
         // 3.5. StaticList
         if (characterPg.getStaticList() != null) {
             List<Static> staticList = new ArrayList<>();
-            for (Static staticEntity : characterPg.getStaticList()) {
-                Optional<Static> optionalStatic = staticRepository.findById(staticEntity.getId());
-                if (optionalStatic.isEmpty()) {
-                    throw new EntityNotFoundException("Static con id: " + staticEntity.getId() + " non trovato");
-                }
-                staticList.add(optionalStatic.get());
+            for (Static aStatic : characterPg.getStaticList()) {
+                // Troviamo l'oggetto CharacterPg tramite l'ID del personaggio (pgId)
+               // Optional<CharacterPg> optionalPg = characterPgRepository.findById(aStatic.getPgId());
+//                if (optionalPg.isEmpty()) {
+//                    throw new EntityNotFoundException("Personaggio con id: " + aStatic.getPgId() + " non trovato");
+//                }
+                //CharacterPg pg = optionalPg.get();
+
+                // Creiamo una nuova entità Static a partire dal DTO
+                Static staticEntity = new Static();
+                staticEntity.setId(aStatic.getId());  // Impostiamo l'ID (se esiste già nel DB, altrimenti generiamo un nuovo ID)
+                staticEntity.setType(aStatic.getType());  // Impostiamo il tipo
+                staticEntity.setPoint(aStatic.getPoint());  // Impostiamo il punto
+                staticEntity.setModificatore(aStatic.getModificatore());  // Impostiamo il modificatore
+                staticEntity.setPg(characterPg);  // Associare il personaggio
+
+                staticList.add(staticEntity);
             }
+            // Impostiamo la lista aggiornata di Static
             characterPg.setStaticList(staticList);
         }
 
@@ -114,15 +158,16 @@ public class CharacterPgJpa implements CharacterPgService {
         }
 
         // 3.7. Campagna: prendo il campagnaId passato come argomento
-        if (campaignId != null) {
-            Optional<Campaign> optionalCampaign = campaignRepository.findById(campaignId);
-            if (optionalCampaign.isEmpty()) {
-                throw new EntityNotFoundException("Campaign con id: " + campaignId + " non trovato");
-            }
-            characterPg.setCampaign(optionalCampaign.get());
-        } else {
+        if (campaignId == 0) {  // Usa 0 come valore di default per long
             throw new EntityNotFoundException("ID campagna non fornito");
         }
+
+        Optional<Campaign> optionalCampaign = campaignRepository.findById(campaignId);
+        if (optionalCampaign.isEmpty()) {
+            throw new EntityNotFoundException("Campaign con id: " + campaignId + " non trovato");
+        }
+        characterPg.setCampaign(optionalCampaign.get());
+
 
         // 3.8. Talents: inizializzati vuoti
         if (characterPg.getTalents() == null) {
@@ -157,4 +202,6 @@ public class CharacterPgJpa implements CharacterPgService {
         // 4. Salvo il CharacterPg nel database
         return characterPgRepository.save(characterPg);
     }
+
+
 }
