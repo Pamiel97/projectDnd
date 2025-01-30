@@ -37,6 +37,14 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_campaigns",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "campaign_id")
+    )
+    private List<Campaign> campaigns;
+
 
 
     //COSTRUTTORI E GETTER/SETTER
@@ -64,6 +72,17 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
+    public User(long id, String firstname, String lastname, String email, String password, List<CharacterPg> pgs, Set<Role> roles, List<Campaign> campaigns) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.pgs = pgs;
+        this.roles = roles;
+        this.campaigns = campaigns;
+    }
 
     public long getId() {
         return id;
@@ -111,7 +130,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override
@@ -152,5 +171,13 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Campaign> getCampaigns() {
+        return campaigns;
+    }
+
+    public void setCampaigns(List<Campaign> campaigns) {
+        this.campaigns = campaigns;
     }
 }

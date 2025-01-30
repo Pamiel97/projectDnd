@@ -33,6 +33,17 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+
+    @PostMapping("/register2")
+    public ResponseEntity<AuthenticationResponse> register2(@RequestBody RegisterRequest request) {
+        AuthenticationResponse response = service.register(request);
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         // Trova il ruolo corrispondente nel database usando il nome del ruolo fornito

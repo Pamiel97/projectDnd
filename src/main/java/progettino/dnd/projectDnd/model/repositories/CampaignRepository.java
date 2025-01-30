@@ -12,14 +12,4 @@ import java.util.Optional;
 
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
-
-    Optional<Campaign> findById(long id);
-
-    @Query("SELECT c FROM Campaign c WHERE c.user = :user AND c.isActive = true")
-    Optional<Campaign> findActiveByUser(@Param("user") User user);
-
-    List<Campaign> findByUser_Id(Long userId);
-
-    @Query("SELECT c FROM Campaign c WHERE c.status = 'ACTIVE' AND c.startDate <= CURRENT_DATE")
-    List<Campaign> findCurrentCampaigns();
 }

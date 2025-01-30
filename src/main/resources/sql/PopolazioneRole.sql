@@ -2,18 +2,5 @@ INSERT INTO roles (name) VALUES ('ROLE_USER');
 INSERT INTO roles (name) VALUES ('ROLE_ADMIN');
 INSERT INTO roles (name) VALUES ('ROLE_MODERATOR');
 
-
-
-INSERT INTO users (firstname, lastname, email, password)
-VALUES ('John', 'Doe', 'johndoe@example.com', 'encrypted_password');
-
--- Aggiungi un ruolo per l'utente nella tabella di join (user_roles)
-INSERT INTO user_roles (user_id, role_id)
-VALUES (1, 1);  -- Assumendo che l'utente con id 1 ha il ruolo con id 1 (ROLE_USER)
-
-
-INSERT INTO users (firstname, lastname, email, password)
-VALUES ('John', 'Doe', 'johndoe@example.com', 'password123');
-
-INSERT INTO user_roles (user_id, role_id)
-VALUES (2, 2);  -- Assumendo che l'utente con id 1 ha il ruolo con id 1 (ROLE_USER)
+//TOKEN DI PROVA
+eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm92YUBnbWFpbC5jb20iLCJpYXQiOjE3MzgxNjMyNTAsImV4cCI6MTc2OTY5OTI1MH0.sp5d7SpZsRqfG3Q7Fj2ZqurvpohpG3fFaguy0WEHBIY

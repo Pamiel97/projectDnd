@@ -17,44 +17,44 @@ import java.util.List;
 @RequestMapping("/api/characters")
 @Validated
 public class CharacterPgController {
-    private final CharacterPgService characterPgService;
+//    private final CharacterPgService characterPgService;
+//
+//    @Autowired
+//    public CharacterPgController(CharacterPgService characterPgService) {
+//        this.characterPgService = characterPgService;
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity<CharacterPgDto> createCharacterPg(
+//            @Valid @RequestBody CharacterPgDto characterPgDto, @AuthenticationPrincipal User user) {
+//        long userId = user.getId();
+//        CharacterPgDto createdCharacterPg = characterPgService.createCharacterPg(characterPgDto, userId);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(createdCharacterPg);
+//    }
 
-    @Autowired
-    public CharacterPgController(CharacterPgService characterPgService) {
-        this.characterPgService = characterPgService;
-    }
+//    @GetMapping
+//    public ResponseEntity<List<CharacterPgDto>> getAllCharacterPgs() {
+//        List<CharacterPgDto> characters = characterPgService.getAllCharacterPgs();
+//        return ResponseEntity.ok(characters);
+//    }
 
-    @PostMapping
-    public ResponseEntity<CharacterPgDto> createCharacterPg(
-            @Valid @RequestBody CharacterPgDto characterPgDto, @AuthenticationPrincipal User user) {
-        long userId = user.getId();
-        CharacterPgDto createdCharacterPg = characterPgService.createCharacterPg(characterPgDto, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCharacterPg);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CharacterPgDto>> getAllCharacterPgs() {
-        List<CharacterPgDto> characters = characterPgService.getAllCharacterPgs();
-        return ResponseEntity.ok(characters);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<CharacterPgDto> getCharacterPgById(@PathVariable Long id) {
-        CharacterPgDto characterPg = characterPgService.getCharacterPgById(id);
-        return ResponseEntity.ok(characterPg);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CharacterPgDto> updateCharacterPg(
-            @PathVariable Long id,
-            @Valid @RequestBody CharacterPgDto characterPgDto) {
-        CharacterPgDto updatedCharacterPg = characterPgService.updateCharacterPg(id, characterPgDto);
-        return ResponseEntity.ok(updatedCharacterPg);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCharacterPg(@PathVariable Long id) {
-        characterPgService.deleteCharacterPg(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<CharacterPgDto> getCharacterPgById(@PathVariable Long id) {
+//        CharacterPgDto characterPg = characterPgService.getCharacterPgById(id);
+//        return ResponseEntity.ok(characterPg);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CharacterPgDto> updateCharacterPg(
+//            @PathVariable Long id,
+//            @Valid @RequestBody CharacterPgDto characterPgDto) {
+//        CharacterPgDto updatedCharacterPg = characterPgService.updateCharacterPg(id, characterPgDto);
+//        return ResponseEntity.ok(updatedCharacterPg);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteCharacterPg(@PathVariable Long id) {
+//        characterPgService.deleteCharacterPg(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }

@@ -1,12 +1,11 @@
-package progettino.dnd.projectDnd.model.entities;
+package progettino.dnd.projectDnd.dtos;
 
 import jakarta.persistence.*;
+import progettino.dnd.projectDnd.model.entities.Campaign;
+import progettino.dnd.projectDnd.model.entities.NPC;
 
-@Entity
-@Table(name = "npc")
-public class NPC {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class NPCDto {
+
     private long id;
     private String name;
     private String surname;
@@ -14,17 +13,45 @@ public class NPC {
     private boolean death;
     private String race;
     private String classe;
+    private long campaignId;
 
 
-    @ManyToOne
-    @JoinColumn(name = "campaign_id") // Questo specifica che nome avrà nella colonna nella tabella
-    private Campaign campaign;
 
 
-    public NPC(){
+    public static NPCDto fromCharacter(NPC character) {
+        return new NPCDto(
+                character.getId(),
+                character.getName(),
+                character.getSurname(),
+                character.getDescription(),
+                character.isDeath(),
+                character.getRace(),
+                character.getClasse(),
+                character.getCampaign().getId()
+        );
+    }
+
+
+
+    public NPC toCharacter() {
+        NPC character = new NPC();
+        character.setId(this.id);
+        character.setName(this.name);
+        character.setSurname(this.surname);
+        character.setDescription(this.description);
+        character.setDeath(this.death);
+        character.setRace(this.race);
+        character.setClasse(this.classe);
+        //nel controller inserire id campagna nella post
+        return character;
+    }
+
+
+
+    public NPCDto(){
 
     }
-    public NPC(long id, String name, String surname, String description, boolean death, String race, String classe, Campaign campaign) {
+    public NPCDto(long id, String name, String surname, String description, boolean death, String race, String classe, long campaignId) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -32,7 +59,7 @@ public class NPC {
         this.death = death;
         this.race = race;
         this.classe = classe;
-        this.campaign = campaign;
+        this.campaignId = campaignId;
     }
 
     public long getId() {
@@ -91,11 +118,11 @@ public class NPC {
         this.classe = classe;
     }
 
-    public Campaign getCampaign() {
-        return campaign;
+    public long getCampaignId() {
+        return campaignId;
     }
 
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
+    public void setCampaignId(long campaignId) {
+        this.campaignId = campaignId;
     }
 }

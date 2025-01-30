@@ -49,6 +49,35 @@ public class AuthService {
 //    }
 
 
+    public AuthenticationResponse register2(RegisterRequest request) {
+        // Trova il ruolo corrispondente nel database usando il nome del ruolo fornito
+        Role role = roleRepository.findByName(request.getRole())
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Crea un nuovo utente con i dettagli forniti e il ruolo trovato
+        User user = new User(
+                request.getFirstname(),
+                request.getLastname(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword()), // Codifica la password
+                Set.of(role)  // Converte il ruolo in un Set per essere compatibile con il costruttore
+        );
+
+        // Salva l'utente nel repository
+        userRepository.save(user);
+
+        // Genera un token JWT per l'utente
+        var jwtToken = jwtService.generateToken(user);
+
+        // Crea una risposta con il token
+        return new AuthenticationResponse(jwtToken);
+    }
+
+
+
+
+
+
     public AuthenticationResponse register(RegisterRequest request) {
         logger.info("Register method called with request: {}", request);
 
