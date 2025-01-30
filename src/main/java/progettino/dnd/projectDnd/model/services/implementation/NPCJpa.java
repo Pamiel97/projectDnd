@@ -10,6 +10,7 @@ import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
 import progettino.dnd.projectDnd.model.repositories.NPCRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.NPCService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,13 +26,6 @@ public class NPCJpa implements NPCService {
         this.campaignRepository=campaignRepository;
     }
 
-//    public NPC createNPC(NPCDto npcDto, long campaignId) throws EntityNotFoundException {
-//        NPC npc = npcMapper.toEntity(npcDto);
-//        // Aggiunta logica aziendale
-//        npc.setCampaign(campaignRepository.findById(campaignId)
-//                .orElseThrow(() -> new EntityNotFoundException("Campagna non trovata")));
-//        return npcRepository.save(npc);
-//    }
 
 
 
@@ -45,4 +39,22 @@ public class NPCJpa implements NPCService {
         return npcRepository.save(npc);
     }
 
+    @Override
+    public List<NPC> getNPCsByCampaignId(long campaignId)throws EntityNotFoundException {
+        Optional<Campaign> campaign = campaignRepository.findById(campaignId);
+        if (campaign.isEmpty()) {
+            throw new EntityNotFoundException("Campagna con id: " + campaignId + " non trovata");
+        }
+        return campaign.get().getNpcs();
+    }
+
+
+
+//    public NPC createNPC(NPCDto npcDto, long campaignId) throws EntityNotFoundException {
+//        NPC npc = npcMapper.toEntity(npcDto);
+//        // Aggiunta logica aziendale
+//        npc.setCampaign(campaignRepository.findById(campaignId)
+//                .orElseThrow(() -> new EntityNotFoundException("Campagna non trovata")));
+//        return npcRepository.save(npc);
+//    }
 }

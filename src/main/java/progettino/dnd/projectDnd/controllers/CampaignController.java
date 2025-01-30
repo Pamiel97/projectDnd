@@ -11,6 +11,9 @@ import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.mapper.CampaignMapper;
 import progettino.dnd.projectDnd.model.services.abstraction.CampaignService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequestMapping("/api/campaign")
 @RestController
 public class CampaignController {
@@ -37,6 +40,22 @@ public class CampaignController {
             CampaignDto createdCampaignDto = campaignMapper.toDto(createdCampaign);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCampaignDto);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/my-campaigns")
+    public ResponseEntity<List<CampaignDto>> getUserCampaigns(@AuthenticationPrincipal User user) {
+        try {
+
+            List<Campaign> campaigns = campaignService.getCampaignsByUserId(user.getId());
+
+            List<CampaignDto> campaignDtos = campaigns.stream()
+                    .map(campaignMapper::toDto)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(campaignDtos);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

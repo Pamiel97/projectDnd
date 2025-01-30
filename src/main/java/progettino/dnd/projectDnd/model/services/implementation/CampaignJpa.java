@@ -9,6 +9,8 @@ import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
 import progettino.dnd.projectDnd.model.repositories.security.UserRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.CampaignService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +42,13 @@ public class CampaignJpa implements CampaignService {
 
         // 4. Salva la campagna (e l'utente sarà aggiornato automaticamente grazie alla relazione Many-to-Many)
         return campaignRepository.save(campaign);
+    }
+
+    @Override
+    public List<Campaign> getCampaignsByUserId(long userId) throws EntityNotFoundException{
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Utente con ID " + userId + " non trovato"));
+
+        return new ArrayList<>(user.getCampaigns());
     }
 }
