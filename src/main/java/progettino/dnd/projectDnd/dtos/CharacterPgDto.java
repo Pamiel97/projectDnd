@@ -47,7 +47,7 @@ public class CharacterPgDto {
     private List<StaticDto> staticList;  // Lista di StaticDto
     private List<TiriSalvezzaDto> tiriSalvezza;  // Lista di TiriSalvezzaDto
 
-    private long campaignId;  // DTO per la campagna
+    private long campaignId;
 
     private List<TalentDto> talents;  // Lista di TalentDto
     private List<TraitDto> traits;  // Lista di TraitDto
@@ -60,7 +60,7 @@ public class CharacterPgDto {
 
     }
 
-    public CharacterPgDto(long id, String name, String surname, String classe, String race, int level, String background, String allignment, int exp, String physicalTrait, int ispiration, int bonusCompetence, int perception, int ca, int iniziative, int speed, int totalHp, int actualHp, int temporanyHp, int dice, int diceHealth, String caratterial, String ideals, String note, int money, String img, long userId, List<SlotDto> slots, BagDto bag, DiaryDto diary, List<AbilityPgDto> abilityPgs, List<StaticDto> staticList, List<TiriSalvezzaDto> tiriSalvezza, CampaignDto campaign, List<TalentDto> talents, List<TraitDto> traits) {
+    public CharacterPgDto(long id, String name, String surname, String classe, String race, int level, String background, String allignment, int exp, String physicalTrait, int ispiration, int bonusCompetence, int perception, int ca, int iniziative, int speed, int totalHp, int actualHp, int temporanyHp, int dice, int diceHealth, String caratterial, String ideals, String note, int money, String img, long userId, List<SlotDto> slots, BagDto bag, DiaryDto diary, List<AbilityPgDto> abilityPgs, List<StaticDto> staticList, List<TiriSalvezzaDto> tiriSalvezza, long campaignId, List<TalentDto> talents, List<TraitDto> traits) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -94,7 +94,7 @@ public class CharacterPgDto {
         this.abilityPgs = abilityPgs;
         this.staticList = staticList;
         this.tiriSalvezza = tiriSalvezza;
-        this.campaign = campaign;
+        this.campaignId = campaignId;
         this.talents = talents;
         this.traits = traits;
     }
@@ -363,12 +363,12 @@ public class CharacterPgDto {
         this.tiriSalvezza = tiriSalvezza;
     }
 
-    public CampaignDto getCampaign() {
-        return campaign;
+    public long getCampaignId() {
+        return campaignId;
     }
 
-    public void setCampaign(CampaignDto campaign) {
-        this.campaign = campaign;
+    public void setCampaignId(long campaignId) {
+        this.campaignId = campaignId;
     }
 
     public List<TalentDto> getTalents() {

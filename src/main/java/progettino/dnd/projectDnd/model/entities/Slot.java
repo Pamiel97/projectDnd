@@ -31,4 +31,54 @@ public class Slot {
     //tabella con id slot 1 ha incantesimo 2/3/4 ecc
 
 
+    public Slot() {
+    }
+
+    public Slot(long id, int levelSlot, int remainingUse, CharacterPg pg, List<Charm> charms) {
+        this.id = id;
+        this.levelSlot = levelSlot;
+        this.remainingUse = remainingUse;
+        this.pg = pg;
+        this.charms = charms;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getLevelSlot() {
+        return levelSlot;
+    }
+
+    public void setLevelSlot(int levelSlot) {
+        this.levelSlot = levelSlot;
+    }
+
+    public int getRemainingUse() {
+        return remainingUse;
+    }
+
+    public void setRemainingUse(int remainingUse) {
+        this.remainingUse = remainingUse;
+    }
+
+    public CharacterPg getPg() {
+        return pg;
+    }
+
+    public void setPg(CharacterPg pg) {
+        this.pg = pg;
+    }
+
+    public List<Charm> getCharms() {
+        return charms;
+    }
+
+    public void setCharms(List<Charm> charms) {
+        this.charms = charms;
+    }
 }

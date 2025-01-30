@@ -10,4 +10,65 @@ public class BagDto {
     private List<EquipDto> equips;    // Lista di equipaggiamento nella borsa
     private List<WeaponDto> weapons;  // Lista di armi nella borsa
     private List<ObjectDto> objects;  // Lista di oggetti nella borsa
+
+
+    public BagDto() {
+    }
+
+    public BagDto(long id, CharacterPgDto pg, List<PotionDto> potions, List<EquipDto> equips, List<WeaponDto> weapons, List<ObjectDto> objects) {
+        this.id = id;
+        this.pg = pg;
+        this.potions = potions;
+        this.equips = equips;
+        this.weapons = weapons;
+        this.objects = objects;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public CharacterPgDto getPg() {
+        return pg;
+    }
+
+    public void setPg(CharacterPgDto pg) {
+        this.pg = pg;
+    }
+
+    public List<PotionDto> getPotions() {
+        return potions;
+    }
+
+    public void setPotions(List<PotionDto> potions) {
+        this.potions = potions;
+    }
+
+    public List<EquipDto> getEquips() {
+        return equips;
+    }
+
+    public void setEquips(List<EquipDto> equips) {
+        this.equips = equips;
+    }
+
+    public List<WeaponDto> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(List<WeaponDto> weapons) {
+        this.weapons = weapons;
+    }
+
+    public List<ObjectDto> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<ObjectDto> objects) {
+        this.objects = objects;
+    }
 }

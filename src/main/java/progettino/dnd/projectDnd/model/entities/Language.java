@@ -19,4 +19,38 @@ public class Language {
             inverseJoinColumns = @JoinColumn(name = "pg_id")
     )
     private List<CharacterPg> pgs;  // Lista di incantesimi nello slot
+
+
+    public Language() {
+    }
+
+    public Language(long id, String name, List<CharacterPg> pgs) {
+        this.id = id;
+        this.name = name;
+        this.pgs = pgs;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<CharacterPg> getPgs() {
+        return pgs;
+    }
+
+    public void setPgs(List<CharacterPg> pgs) {
+        this.pgs = pgs;
+    }
 }
