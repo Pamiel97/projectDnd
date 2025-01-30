@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import java.util.List;
+
 public class SlotDto {
     private long id;
     private int levelSlot;
