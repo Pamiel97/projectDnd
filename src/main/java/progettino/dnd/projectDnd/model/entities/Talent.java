@@ -11,5 +11,4 @@ public class Talent {
     private String name;
     private String description;
 
-    //ciao pamela sono pasquale e rubero tutto
 }
