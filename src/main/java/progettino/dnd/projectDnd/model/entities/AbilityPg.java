@@ -1,6 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,7 +17,8 @@ public class AbilityPg {
 
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "ability_id")  // Relazione molti-a-uno con Ability
+    @JoinColumn(name = "ability_id")
+    @JsonManagedReference// Relazione molti-a-uno con Ability
     private Ability ability;
 
     @JsonBackReference
