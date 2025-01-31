@@ -38,10 +38,14 @@ public interface CharacterPGMapper {
                 .map(abilityPg -> {
                     AbilityPgDto dto = new AbilityPgDto();
                     dto.setId(abilityPg.getId());
-                    dto.setAbilityId(abilityPg.getAbility().getId());
+                    if (abilityPg.getAbility() != null) {
+                        dto.setAbilityId(abilityPg.getAbility().getId());
+                    }
                     dto.setCompetence(abilityPg.isCompetence());
                     dto.setPoint(abilityPg.getPoint());
-                    dto.setPgId(abilityPg.getPg().getId()); // Aggiungi questa riga
+                    if (abilityPg.getPg() != null) {
+                        dto.setPgId(abilityPg.getPg().getId());
+                    }
                     return dto;
                 })
                 .collect(Collectors.toList());

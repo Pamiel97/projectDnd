@@ -1,11 +1,14 @@
 package progettino.dnd.projectDnd.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.List;
 
 public class DiaryDto {
     private long id;
     private String name;
     private String description;
+    @JsonBackReference
     private long pgId; // ID del personaggio associato
     private List<MissionDto> missions; // Lista delle missioni associate
 

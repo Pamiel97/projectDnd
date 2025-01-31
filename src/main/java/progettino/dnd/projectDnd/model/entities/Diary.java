@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class Diary {
     private String description;
 
     @OneToOne
+    @JsonBackReference
     @JoinColumn(name = "pg_id")
     private CharacterPg pg;
 

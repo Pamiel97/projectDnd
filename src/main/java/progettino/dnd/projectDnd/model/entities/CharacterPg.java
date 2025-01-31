@@ -3,6 +3,7 @@ package progettino.dnd.projectDnd.model.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -52,15 +53,17 @@ public class CharacterPg {
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Slot> slots;  // Lista di slot associati al PG
 
-    @OneToOne(mappedBy = "pg")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "pg", fetch = FetchType.LAZY)
     private Bag bag;
 
-    @OneToOne(mappedBy = "pg")
+    @JsonManagedReference
+    @OneToOne(mappedBy = "pg", fetch = FetchType.LAZY)
     private Diary diary;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AbilityPg> abilityPgs;
+    private List<AbilityPg> abilityPgs = new ArrayList<>();
 
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Static> staticList;

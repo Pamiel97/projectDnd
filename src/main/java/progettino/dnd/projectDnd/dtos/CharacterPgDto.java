@@ -1,6 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -39,8 +40,10 @@ public class CharacterPgDto {
 
     private long userId;  // prendere id da connesso
 
-    private List<SlotDto> slots;  // Lista di SlotDto
-    private BagDto bag;  // DTO per la borsa
+    private List<SlotDto> slots;
+    @JsonManagedReference// Lista di SlotDto
+    private BagDto bag;
+    @JsonManagedReference// DTO per la borsa
     private DiaryDto diary;  // DTO per il diario
 
     private List<AbilityPgDto> abilityPgs;  // Lista di AbilityPgDto

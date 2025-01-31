@@ -69,15 +69,20 @@ public class CharacterPgJpa implements CharacterPgService {
         }
         characterPg.setCampaign(optionalCampaign.get());  // Associa la campagna
 
+
+
         // 3. Gestione della borsa
         Bag bag = new Bag();
+        bag.setPg(characterPg);
+        bag = bagRepository.save(bag);
         characterPg.setBag(bag);
 
         // 4. Gestione del diario
+
         Diary diary = new Diary();
+        diary.setPg(characterPg);
+        diary = diaryRepository.save(diary);
         characterPg.setDiary(diary);
-
-
 
         if (characterPg.getSlots() == null) {
             characterPg.setSlots(new ArrayList<>());
@@ -93,31 +98,9 @@ public class CharacterPgJpa implements CharacterPgService {
             characterPg.setSlots(slots);
         }
 
-
         for(AbilityPg a: characterPg.getAbilityPgs()){
             System.out.println(a.getId());
         }
-
-
-
-        // 5. Gestione delle abilità
-
-        //characterPg.setAbilityPgs(resolveAbilityPgs(characterPg.getAbilityPgs(), characterPg));
-
-//        for (AbilityPg abilityPg: characterPg.getAbilityPgs()){
-//            System.out.println("id" + abilityPg.getAbility().getId());
-//            Optional<Ability> a =  abilityRepository.findById(abilityPg.getAbility().getId());
-//
-//            if(a.isEmpty()){
-//                throw  new EntityNotFoundException("Ingrediente con id: " + abilityPg.getAbility().getId() + " non è stato trovato");
-//            }
-//            abilityPg.setAbility(a.get());
-//            abilityPg.setPg(characterPg);
-//
-//        }
-
-
-
 
         for (AbilityPg abilityPg : characterPg.getAbilityPgs()) {
             if (abilityPg.getAbility() == null || abilityPg.getAbility().getId() == 0) {
@@ -237,37 +220,6 @@ public class CharacterPgJpa implements CharacterPgService {
         }
         return resolvedTraits;
     }
-
-
-
-
-
-
-
-    @Override
-    public CharacterPgDto toDto(CharacterPg characterPg) {
-        // Usa il mapper per convertire il personaggio
-        CharacterPgDto dto = characterPGMapper.toDTO(characterPg);
-
-        // Mapping delle abilità se presenti
-        if (characterPg.getAbilityPgs() != null && !characterPg.getAbilityPgs().isEmpty()) {
-            List<AbilityPgDto> abilityDtos = characterPg.getAbilityPgs().stream()
-                    .map(abilityPg -> new AbilityPgDto(
-                            abilityPg.getId(),
-                            abilityPg.isCompetence(),
-                            abilityPg.getPoint(),
-                            abilityPg.getAbility() != null ? abilityPg.getAbility().getId() : 0,
-                            characterPg.getId()  // Usa l'ID del personaggio
-                    ))
-                    .toList();
-
-            dto.setAbilityPgs(abilityDtos);
-        }
-
-        return dto;
-    }
-
-
 
 
 
