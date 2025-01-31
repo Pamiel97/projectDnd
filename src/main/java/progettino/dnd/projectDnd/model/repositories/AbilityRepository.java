@@ -6,4 +6,5 @@ import progettino.dnd.projectDnd.model.entities.Ability;
 
 @Repository
 public interface AbilityRepository extends JpaRepository<Ability, Long> {
+
 }

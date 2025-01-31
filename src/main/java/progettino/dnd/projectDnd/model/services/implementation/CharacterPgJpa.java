@@ -324,23 +324,92 @@ public class CharacterPgJpa implements CharacterPgService {
     @Override
     public CharacterPg createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException {
         // 1. Recupero l'utente associato tramite userId
-        User user = userDetailRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Utente con id: " + userId + " non trovato"));
-        characterPg.setUser(user);  // Associa l'utente al CharacterPg
+        Optional<User> optionalUser = userDetailRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new EntityNotFoundException("Utente con id: " + userId + " non trovato");
+       }
+        User user = optionalUser.get();
 
-        // 2. Associazione al campaignId
-        Campaign campaign = campaignRepository.findById(campaignId)
-                .orElseThrow(() -> new EntityNotFoundException("Campagna con id: " + campaignId + " non trovata"));
-        characterPg.setCampaign(campaign);  // Associa la campagna
+        // 2. Associo l'utente al CharacterPg
+        characterPg.setUser(user);
+
+        Optional<Campaign> optionalCampaign = campaignRepository.findById(campaignId);
+        if (optionalCampaign.isEmpty()) {
+            throw new EntityNotFoundException("Campagna con id: " + campaignId + " non trovata");
+        }
+        characterPg.setCampaign(optionalCampaign.get());  // Associa la campagna
 
         // 3. Gestione della borsa
-        characterPg.setBag(resolveBag(characterPg.getBag()));
+        Bag bag = new Bag();
+        characterPg.setBag(bag);
 
         // 4. Gestione del diario
-        characterPg.setDiary(resolveDiary(characterPg.getDiary()));
+        Diary diary = new Diary();
+        characterPg.setDiary(diary);
+
+
+
+        if (characterPg.getSlots() == null) {
+            characterPg.setSlots(new ArrayList<>());
+        } else {
+            List<Slot> slots = new ArrayList<>();
+            for (Slot slot : characterPg.getSlots()) {
+                Optional<Slot> optionalSlot = slotRepository.findById(slot.getId());
+                if (optionalSlot.isEmpty()) {
+                    throw new EntityNotFoundException("Slot con id: " + slot.getId() + " non trovato");
+                }
+                slots.add(optionalSlot.get());
+            }
+            characterPg.setSlots(slots);
+        }
+
+
+        for(AbilityPg a: characterPg.getAbilityPgs()){
+            System.out.println(a.getId());
+        }
+
+
 
         // 5. Gestione delle abilità
-        characterPg.setAbilityPgs(resolveAbilityPgs(characterPg.getAbilityPgs(), characterPg));
+
+        //characterPg.setAbilityPgs(resolveAbilityPgs(characterPg.getAbilityPgs(), characterPg));
+
+//        for (AbilityPg abilityPg: characterPg.getAbilityPgs()){
+//            System.out.println("id" + abilityPg.getAbility().getId());
+//            Optional<Ability> a =  abilityRepository.findById(abilityPg.getAbility().getId());
+//
+//            if(a.isEmpty()){
+//                throw  new EntityNotFoundException("Ingrediente con id: " + abilityPg.getAbility().getId() + " non è stato trovato");
+//            }
+//            abilityPg.setAbility(a.get());
+//            abilityPg.setPg(characterPg);
+//
+//        }
+
+
+
+
+        for (AbilityPg abilityPg : characterPg.getAbilityPgs()) {
+            if (abilityPg.getAbility() == null || abilityPg.getAbility().getId() == 0) {
+                throw new EntityNotFoundException("Ability non presente nel JSON o senza ID." + abilityPg.getAbility() + abilityPg);
+            }
+            System.out.println("Ability ID ricevuto: " + abilityPg.getAbility().getId());
+            Optional<Ability> optionalAbility = abilityRepository.findById(abilityPg.getAbility().getId());
+
+            if (optionalAbility.isEmpty()) {
+                throw new EntityNotFoundException("Ability con id: " + abilityPg.getAbility().getId() + " non trovata nel database");
+            }
+
+            abilityPg.setAbility(optionalAbility.get());
+            abilityPg.setPg(characterPg);
+        }
+
+
+
+
+
+
+
 
         // 6. Gestione dei tiri salvezza
         characterPg.setTiriSalvezza(resolveTiriSalvezza(characterPg.getTiriSalvezza()));
@@ -354,6 +423,9 @@ public class CharacterPgJpa implements CharacterPgService {
         // 9. Salvo il CharacterPg nel database
         return characterPgRepository.save(characterPg);  // Salva il personaggio
     }
+
+
+
 
     // Metodo per risolvere la borsa
     private Bag resolveBag(Bag bag) throws EntityNotFoundException {

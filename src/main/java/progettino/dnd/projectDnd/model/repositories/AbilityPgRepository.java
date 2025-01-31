@@ -6,4 +6,5 @@ import progettino.dnd.projectDnd.model.entities.AbilityPg;
 
 @Repository
 public interface AbilityPgRepository extends JpaRepository<AbilityPg, Long> {
+    AbilityPg findById(long id);
 }

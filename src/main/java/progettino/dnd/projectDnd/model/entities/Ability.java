@@ -1,6 +1,9 @@
 package progettino.dnd.projectDnd.model.entities;
 
 import jakarta.persistence.*;
+
+import java.util.List;
+
 //COMMENTONO//PARTE2
 @Entity
 @Table(name = "abilities")
@@ -15,15 +18,21 @@ public class Ability {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @OneToMany(mappedBy = "ability", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AbilityPg> abilityPgs;
+
+
     public Ability() {
     }
 
-    public Ability(long id, String name, String description, Type type) {
+    public Ability(long id, String name, String description, Type type, List<AbilityPg> abilityPgs) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
+        this.abilityPgs = abilityPgs;
     }
+
 
     public long getId() {
         return id;
@@ -55,5 +64,13 @@ public class Ability {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public List<AbilityPg> getAbilityPgs() {
+        return abilityPgs;
+    }
+
+    public void setAbilityPgs(List<AbilityPg> abilityPgs) {
+        this.abilityPgs = abilityPgs;
     }
 }

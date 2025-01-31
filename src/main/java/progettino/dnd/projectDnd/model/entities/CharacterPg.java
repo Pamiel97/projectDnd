@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -57,6 +58,7 @@ public class CharacterPg {
     @OneToOne(mappedBy = "pg")
     private Diary diary;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AbilityPg> abilityPgs;
 

@@ -31,9 +31,9 @@ public class CharacterPgController {
 
     @PostMapping("/campaign/{campaignId}")
     public ResponseEntity<CharacterPgDto> createCharacter(
-            @RequestBody CharacterPgDto characterPgDto,   // DTO del personaggio
-            @PathVariable long campaignId,                // ID della campagna dal path
-            @AuthenticationPrincipal User user            // Dati utente (autenticazione)
+            @RequestBody CharacterPgDto characterPgDto,
+            @PathVariable long campaignId,
+            @AuthenticationPrincipal User user
     ) {
         try {
             // Usa il mapper per convertire il DTO in entità
@@ -45,8 +45,13 @@ public class CharacterPgController {
             // Restituisci una risposta con il personaggio creato, mappato di nuovo nel DTO
             return new ResponseEntity<>(characterPgMapper.toDTO(createdCharacter), HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
-            // Se un'entità non è trovata, restituisci un errore 400 BAD REQUEST
+            // Log dell'errore per capire meglio la causa
+            System.err.println("Entity not found exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (Exception e) {
+            // Gestione generale delle eccezioni
+            System.err.println("Unexpected error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
