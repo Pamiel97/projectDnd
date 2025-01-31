@@ -33,14 +33,14 @@ public class AbilityPgController {
 
     @GetMapping("/all2")
     public ResponseEntity<?> getAllCharacter2() {
-        List<AbilityPg> c = abilityPgService.getAll();
+        List<AbilityPg> abilityPgs = abilityPgService.getAll();
 
-        // Usa l'istanza di AbilityPgMapper per chiamare toDto
-        List<AbilityPgDto> cDto = c.stream()
-                .map(abilityPg -> abilityPgMapper.toDto(abilityPg))
+        // Mappa ogni entità AbilityPg in DTO
+        List<AbilityPgDto> abilityPgDtos = abilityPgs.stream()
+                .map(abilityPg -> abilityPgMapper.toDto(abilityPg))  // Mappatura dal DTO
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(cDto);
+        return ResponseEntity.ok(abilityPgDtos);
     }
 
 
