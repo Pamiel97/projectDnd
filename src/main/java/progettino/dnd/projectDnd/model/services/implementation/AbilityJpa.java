@@ -11,8 +11,7 @@ import java.util.Optional;
 @Service
 public class AbilityJpa implements AbilityService {
 
-    private AbilityRepository abilityRepository;
-
+    private final AbilityRepository abilityRepository;
 
     @Autowired
     public AbilityJpa(AbilityRepository abilityRepository) {
@@ -21,7 +20,6 @@ public class AbilityJpa implements AbilityService {
 
     @Override
     public Optional<Ability> findById(long id) {
-        Optional<Ability> ability = abilityRepository.findById(id);
-        return ability;
+        return abilityRepository.findById(id);
     }
 }
