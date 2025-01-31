@@ -5,11 +5,12 @@ import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CharacterPgService {
 
    CharacterPg createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException;
-//    List<CharacterPgDto> getAllCharacterPgs();
+   List<CharacterPg> getAllCharacterPgs();
 //    CharacterPgDto getCharacterPgById(Long id);
 //    CharacterPgDto updateCharacterPg(Long id, CharacterPgDto characterPgDto);
 //    void deleteCharacterPg(Long id);

@@ -4,17 +4,20 @@ public class AbilityPgDto {
     private long id;
     private boolean competence;
     private int point;
-    private AbilityDto abilityDto;  // ID dell'abilità associata
+    private long abilityId;  // ID dell'abilità associata
     private CharacterPgDto characterPgDto;       // ID del personaggio associato
 
     public AbilityPgDto() {
     }
 
-    public AbilityPgDto(long id, boolean competence, int point, AbilityDto abilityDto, CharacterPgDto characterPgDto) {
+
+
+
+    public AbilityPgDto(long id, boolean competence, int point, long abilityId, CharacterPgDto characterPgDto) {
         this.id = id;
         this.competence = competence;
         this.point = point;
-        this.abilityDto = abilityDto;
+        this.abilityId = abilityId;
         this.characterPgDto = characterPgDto;
     }
 
@@ -42,12 +45,12 @@ public class AbilityPgDto {
         this.point = point;
     }
 
-    public AbilityDto getAbilityDto() {
-        return abilityDto;
+    public long getAbilityId() {
+        return abilityId;
     }
 
-    public void setAbilityDto(AbilityDto abilityDto) {
-        this.abilityDto = abilityDto;
+    public void setAbilityId(long abilityId) {
+        this.abilityId = abilityId;
     }
 
     public CharacterPgDto getCharacterPgDto() {
