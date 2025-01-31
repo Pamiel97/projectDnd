@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import progettino.dnd.projectDnd.dtos.CampaignDto;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
+import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.User;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -15,6 +17,7 @@ import progettino.dnd.projectDnd.model.mapper.CharacterPGMapper;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/characters")
@@ -53,6 +56,18 @@ public class CharacterPgController {
             System.err.println("Unexpected error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllCharacter() {
+            List<CharacterPg> c = characterPgService.getAllCharacterPgs();
+
+            List<CharacterPgDto> cDto = c.stream()
+                    .map(characterPgMapper::toDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(cDto);
     }
 
 
