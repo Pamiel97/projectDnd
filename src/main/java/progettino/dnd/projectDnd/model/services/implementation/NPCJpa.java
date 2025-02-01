@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.NPC;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
-import progettino.dnd.projectDnd.model.mapper.NPCMapper;
+
 import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
 import progettino.dnd.projectDnd.model.repositories.NPCRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.NPCService;
@@ -17,11 +17,11 @@ import java.util.Optional;
 public class NPCJpa implements NPCService {
     private NPCRepository npcRepository;
     private CampaignRepository campaignRepository;
-    private NPCMapper npcMapper;
+
 
     @Autowired
-    public NPCJpa(NPCMapper npcMapper, NPCRepository npcRepository, CampaignRepository campaignRepository ) {
-        this.npcMapper = npcMapper;
+    public NPCJpa(NPCRepository npcRepository, CampaignRepository campaignRepository ) {
+
         this.npcRepository=npcRepository;
         this.campaignRepository=campaignRepository;
     }

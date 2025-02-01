@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class Ability {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ability", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AbilityPg> abilityPgs;
 

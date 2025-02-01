@@ -1,17 +1,25 @@
 package progettino.dnd.projectDnd.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
 
 public class BagDto {
     private long id;
-    @JsonBackReference
+
+    @JsonIgnore
+    @JsonManagedReference
     private CharacterPgDto pg;  // DTO per il personaggio associato alla borsa
 
-    private List<PotionDto> potions;  // Lista di pozioni nella borsa
-    private List<EquipDto> equips;    // Lista di equipaggiamento nella borsa
-    private List<WeaponDto> weapons;  // Lista di armi nella borsa
+    @JsonIgnore
+    private List<PotionDto> potions;
+    @JsonIgnore// Lista di pozioni nella borsa
+    private List<EquipDto> equips;
+    @JsonIgnore// Lista di equipaggiamento nella borsa
+    private List<WeaponDto> weapons;
+    @JsonIgnore// Lista di armi nella borsa
     private List<ObjectDto> objects;  // Lista di oggetti nella borsa
 
 

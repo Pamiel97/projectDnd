@@ -7,7 +7,7 @@ import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
-import progettino.dnd.projectDnd.model.mapper.AbilityPgMapper;
+
 import progettino.dnd.projectDnd.model.repositories.AbilityPgRepository;
 import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
@@ -18,14 +18,14 @@ import java.util.List;
 
 @Service
 public class AbilityPgJpa implements AbilityPgService {
-    private AbilityPgMapper abilityPgMapper;
+
     private AbilityService abilityService;
     private AbilityPgRepository abilityPgRepository;
 
 
     @Autowired
-    public AbilityPgJpa(AbilityPgMapper abilityPgMapper, AbilityService abilityService, AbilityPgRepository abilityPgRepository) {
-        this.abilityPgMapper = abilityPgMapper;
+    public AbilityPgJpa( AbilityService abilityService, AbilityPgRepository abilityPgRepository) {
+
         this.abilityService = abilityService;
         this.abilityPgRepository = abilityPgRepository;
     }
@@ -94,7 +94,8 @@ public class AbilityPgJpa implements AbilityPgService {
     @Override
     public AbilityPgDto toDto(AbilityPg abilityPg) {
         // Mappa l'entità AbilityPg al DTO
-        return abilityPgMapper.toDto(abilityPg);
+//        return abilityPgMapper.toDto(abilityPg);
+        return null;
     }
 
 
