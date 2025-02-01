@@ -12,7 +12,7 @@ public class SlotDto {
     private int levelSlot;
     private int remainingUse;
 
-    private CharacterPgDto pg;  // DTO per il PG associato a questo slot
+    private long characterId;  // DTO per il PG associato a questo slot
 
     private List<CharmDto> charms;
 
@@ -20,12 +20,12 @@ public class SlotDto {
     public SlotDto() {
     }
 
-    public SlotDto(long id, int levelSlot, int remainingUse, CharacterPgDto pg, List<CharmDto> charms) {
-        this.id = id;
-        this.levelSlot = levelSlot;
-        this.remainingUse = remainingUse;
-        this.pg = pg;
+    public SlotDto(List<CharmDto> charms, long characterId, int remainingUse, int levelSlot, long id) {
         this.charms = charms;
+        this.characterId = characterId;
+        this.remainingUse = remainingUse;
+        this.levelSlot = levelSlot;
+        this.id = id;
     }
 
     public long getId() {
@@ -52,12 +52,12 @@ public class SlotDto {
         this.remainingUse = remainingUse;
     }
 
-    public CharacterPgDto getPg() {
-        return pg;
+    public long getCharacterId() {
+        return characterId;
     }
 
-    public void setPg(CharacterPgDto pg) {
-        this.pg = pg;
+    public void setCharacterId(long characterId) {
+        this.characterId = characterId;
     }
 
     public List<CharmDto> getCharms() {
@@ -68,7 +68,7 @@ public class SlotDto {
         this.charms = charms;
     }
 
-    public static Slot toEntity(SlotDto slotDto, CharacterPg pg) {
+    public static Slot toEntity(SlotDto slotDto) {
         if (slotDto == null) {
             return null;
         }
@@ -77,9 +77,6 @@ public class SlotDto {
         slot.setId(slotDto.getId());
         slot.setLevelSlot(slotDto.getLevelSlot());
         slot.setRemainingUse(slotDto.getRemainingUse());
-
-        // Impostiamo la relazione con il PG usando l'oggetto CharacterPg passato
-        slot.setPg(pg);
 
         // Convertiamo i CharmDto in Charm (relazione Many-to-Many)
         if (slotDto.getCharms() != null) {
@@ -102,11 +99,7 @@ public class SlotDto {
         slotDto.setLevelSlot(slot.getLevelSlot());
         slotDto.setRemainingUse(slot.getRemainingUse());
 
-        // Impostiamo il CharacterPgDto (associato all'oggetto Slot)
-        if (slot.getPg() != null) {
-            CharacterPgDto pgDto = CharacterPgDto.fromEntity(slot.getPg());  // Converte CharacterPg in CharacterPgDto
-            slotDto.setPg(pgDto);  // Impostiamo CharacterPgDto nel DTO dello slot
-        }
+        slotDto.setCharacterId(slot.getPg().getId());
 
         // Impostiamo la lista di CharmDto (relazione Many-to-Many)
         if (slot.getCharms() != null) {
