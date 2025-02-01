@@ -85,7 +85,7 @@ public class MissionDto {
         this.npcIds = npcIds;
     }
 
-    public static Mission toEntity(MissionDto missionDto, Diary diary) {
+    public static Mission toEntity(MissionDto missionDto) {
         if (missionDto == null) {
             return null;
         }
@@ -96,9 +96,6 @@ public class MissionDto {
         mission.setDescription(missionDto.getDescription());
         mission.setComplete(missionDto.isComplete());
         mission.setDifficulty(missionDto.getDifficulty());
-
-        // Impostiamo il diario, usando l'oggetto Diary passato
-        mission.setDiary(diary);
 
         // Gestiamo la relazione Many-to-Many con NPC (lista di NPC)
         if (missionDto.getNpcIds() != null) {
