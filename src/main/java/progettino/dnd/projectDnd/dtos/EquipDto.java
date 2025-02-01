@@ -103,18 +103,16 @@ public class EquipDto {
     }
 
     // Metodi di Conversione da DTO a Entity //TODO
-    public static Equip toEntity(EquipDto equipDto) {
-        if (equipDto == null) {
-            return null;
-        }
+    public  Equip toEntity() {
+
 
         Equip equip = new Equip();
-        equip.setId(equipDto.getId());
-        equip.setName(equipDto.getName());
-        equip.setDescription(equipDto.getDescription());
-        equip.setProtect(equipDto.getProtect());
-        equip.setCost(equipDto.getCost());
-        equip.setNote(equipDto.getNote());
+        equip.setId(this.id);
+        equip.setName(this.name);
+        equip.setDescription(this.description);
+        equip.setProtect(this.protect);
+        equip.setCost(this.cost);
+        equip.setNote(this.note);
 
        //PER BORSA FIND BY ID
 

@@ -40,7 +40,15 @@ public class CharacterPgController {
 //        try {
 //            // Usa il mapper per convertire il DTO in entità
 //            CharacterPg characterPg = characterPgMapper.toEntity(characterPgDto);
+
+    //CHA
+      //-- //-- //-- NULLA (NULLO)
 //
+    //cha.setBag(NEW BAG())
+    //new diary()
+
+
+
 //            // Passa gli ID specifici come parametri nel metodo del servizio
 //            CharacterPg createdCharacter = characterPgService.createCharacterPg(characterPg, user.getId(), campaignId);
 //

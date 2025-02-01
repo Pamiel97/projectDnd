@@ -13,6 +13,7 @@ import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -403,117 +404,90 @@ public class CharacterPgDto {
         this.traits = traits;
     }
 
-    public static CharacterPgDto fromEntity(CharacterPg characterPg) {
-        if (characterPg == null) {
-            return null;
-        }
-
+    public static CharacterPgDto fromEntity(CharacterPg character) {
         CharacterPgDto dto = new CharacterPgDto();
-        dto.setId(characterPg.getId());
-        dto.setName(characterPg.getName());
-        dto.setSurname(characterPg.getSurname());
-        dto.setClasse(characterPg.getClasse());
-        dto.setRace(characterPg.getRace());
-        dto.setLevel(characterPg.getLevel());
-        dto.setBackground(characterPg.getBackground());
-        dto.setAllignment(characterPg.getAllignment());
-        dto.setExp(characterPg.getExp());
-        dto.setPhysicalTrait(characterPg.getPhysicalTrait());
-        dto.setIspiration(characterPg.getIspiration());
-        dto.setBonusCompetence(characterPg.getBonusCompetence());
-        dto.setPerception(characterPg.getPerception());
-        dto.setCa(characterPg.getCa());
-        dto.setIniziative(characterPg.getIniziative());
-        dto.setSpeed(characterPg.getSpeed());
-        dto.setTotalHp(characterPg.getTotalHp());
-        dto.setActualHp(characterPg.getActualHp());
-        dto.setTemporanyHp(characterPg.getTemporanyHp());
-        dto.setDice(characterPg.getDice());
-        dto.setDiceHealth(characterPg.getDiceHealth());
-        dto.setCaratterial(characterPg.getCaratterial());
-        dto.setIdeals(characterPg.getIdeals());
-        dto.setNote(characterPg.getNote());
-        dto.setMoney(characterPg.getMoney());
-        dto.setImg(characterPg.getImg());
-
-        dto.setUserId(characterPg.getUser() != null ? characterPg.getUser().getId() : 0);
-        dto.setCampaignId(characterPg.getCampaign() != null ? characterPg.getCampaign().getId() : 0);
-
-        dto.setSlots(characterPg.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()));
-        dto.setAbilityPgs(characterPg.getAbilityPgs().stream().map(AbilityPgDto::fromEntity).collect(Collectors.toList()));
-        dto.setStaticList(characterPg.getStaticList().stream().map(StaticDto::fromEntity).collect(Collectors.toList()));
-        dto.setTiriSalvezza(characterPg.getTiriSalvezza().stream().map(TiriSalvezzaDto::fromEntity).collect(Collectors.toList()));
-        dto.setTalents(characterPg.getTalents().stream().map(TalentDto::fromEntity).collect(Collectors.toList()));
-        dto.setTraits(characterPg.getTraits().stream().map(TraitDto::fromEntity).collect(Collectors.toList()));
-
-        if (characterPg.getBag() != null) {
-            dto.setBag(BagDto.fromEntity(characterPg.getBag()));
-        }
-        if (characterPg.getDiary() != null) {
-            dto.setDiary(DiaryDto.fromEntity(characterPg.getDiary()));
-        }
-
+        dto.setId(character.getId());
+        dto.setName(character.getName());
+        dto.setSurname(character.getSurname());
+        dto.setClasse(character.getClasse());
+        dto.setRace(character.getRace());
+        dto.setLevel(character.getLevel());
+        dto.setBackground(character.getBackground());
+        dto.setAllignment(character.getAllignment());
+        dto.setExp(character.getExp());
+        dto.setPhysicalTrait(character.getPhysicalTrait());
+        dto.setIspiration(character.getIspiration());
+        dto.setBonusCompetence(character.getBonusCompetence());
+        dto.setPerception(character.getPerception());
+        dto.setCa(character.getCa());
+        dto.setIniziative(character.getIniziative());
+        dto.setSpeed(character.getSpeed());
+        dto.setTotalHp(character.getTotalHp());
+        dto.setActualHp(character.getActualHp());
+        dto.setTemporanyHp(character.getTemporanyHp());
+        dto.setDice(character.getDice());
+        dto.setDiceHealth(character.getDiceHealth());
+        dto.setCaratterial(character.getCaratterial());
+        dto.setIdeals(character.getIdeals());
+        dto.setNote(character.getNote());
+        dto.setMoney(character.getMoney());
+        dto.setImg(character.getImg());
+        dto.setUserId(character.getUser().getId());
+        dto.setCampaignId(character.getCampaign().getId());
+        dto.setSlots(character.getSlots() != null ? character.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        dto.setBag(character.getBag() != null ? BagDto.fromEntity(character.getBag()) : null);
+        dto.setDiary(character.getDiary() != null ? DiaryDto.fromEntity(character.getDiary()) : null);
+        dto.setAbilityPgs(character.getAbilityPgs() != null ? character.getAbilityPgs().stream().map(AbilityPgDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        dto.setStaticList(character.getStaticList() != null ? character.getStaticList().stream().map(StaticDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        dto.setTiriSalvezza(character.getTiriSalvezza() != null ? character.getTiriSalvezza().stream().map(TiriSalvezzaDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        dto.setTalents(character.getTalents() != null ? character.getTalents().stream().map(TalentDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        dto.setTraits(character.getTraits() != null ? character.getTraits().stream().map(TraitDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
         return dto;
     }
 
-    public CharacterPg toEntity(User user, Campaign campaign) {
-        CharacterPg characterPg = new CharacterPg();
-        characterPg.setId(this.id);
-        characterPg.setName(this.name);
-        characterPg.setSurname(this.surname);
-        characterPg.setClasse(this.classe);
-        characterPg.setRace(this.race);
-        characterPg.setLevel(this.level);
-        characterPg.setBackground(this.background);
-        characterPg.setAllignment(this.allignment);
-        characterPg.setExp(this.exp);
-        characterPg.setPhysicalTrait(this.physicalTrait);
-        characterPg.setIspiration(this.ispiration);
-        characterPg.setBonusCompetence(this.bonusCompetence);
-        characterPg.setPerception(this.perception);
-        characterPg.setCa(this.ca);
-        characterPg.setIniziative(this.iniziative);
-        characterPg.setSpeed(this.speed);
-        characterPg.setTotalHp(this.totalHp);
-        characterPg.setActualHp(this.actualHp);
-        characterPg.setTemporanyHp(this.temporanyHp);
-        characterPg.setDice(this.dice);
-        characterPg.setDiceHealth(this.diceHealth);
-        characterPg.setCaratterial(this.caratterial);
-        characterPg.setIdeals(this.ideals);
-        characterPg.setNote(this.note);
-        characterPg.setMoney(this.money);
-        characterPg.setImg(this.img);
+    public CharacterPg toEntity() {
+        CharacterPg character = new CharacterPg();
+        character.setId(this.id);
+        character.setName(this.name);
+        character.setSurname(this.surname);
+        character.setClasse(this.classe);
+        character.setRace(this.race);
+        character.setLevel(this.level);
+        character.setBackground(this.background);
+        character.setAllignment(this.allignment);
+        character.setExp(this.exp);
+        character.setPhysicalTrait(this.physicalTrait);
+        character.setIspiration(this.ispiration);
+        character.setBonusCompetence(this.bonusCompetence);
+        character.setPerception(this.perception);
+        character.setCa(this.ca);
+        character.setIniziative(this.iniziative);
+        character.setSpeed(this.speed);
+        character.setTotalHp(this.totalHp);
+        character.setActualHp(this.actualHp);
+        character.setTemporanyHp(this.temporanyHp);
+        character.setDice(this.dice);
+        character.setDiceHealth(this.diceHealth);
+        character.setCaratterial(this.caratterial);
+        character.setIdeals(this.ideals);
+        character.setNote(this.note);
+        character.setMoney(this.money);
+        character.setImg(this.img);
 
-        characterPg.setUser(user);
-        characterPg.setCampaign(campaign);
-
-        return characterPg;
+        character.setSlots(this.slots != null ? this.slots.stream().map(SlotDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+//        character.setBag(this.bag != null ? this.bag.toEntity() : null);
+//        character.setDiary(this.diary != null ? this.diary.toEntity() : null);
+        character.setAbilityPgs(this.abilityPgs != null ? this.abilityPgs.stream().map(AbilityPgDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        character.setStaticList(this.staticList != null ? this.staticList.stream().map(StaticDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        character.setTiriSalvezza(this.tiriSalvezza != null ? this.tiriSalvezza.stream().map(TiriSalvezzaDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        character.setTalents(this.talents != null ? this.talents.stream().map(TalentDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        character.setTraits(this.traits != null ? this.traits.stream().map(TraitDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        return character;
     }
 
-    public static BagDto fromEntity(Bag bag) {
-        if (bag == null) {
-            return null;
-        }
 
-        BagDto dto = new BagDto();
-        dto.setId(bag.getId());
-        dto.setPg(CharacterPgDto.fromEntity(bag.getPg()));
-        dto.setPotions(bag.getPotions().stream().map(PotionDto::fromEntity).collect(Collectors.toList()));
-        dto.setEquips(bag.getEquips().stream().map(EquipDto::fromEntity).collect(Collectors.toList()));
-        dto.setWeapons(bag.getWeapons().stream().map(WeaponDto::fromEntity).collect(Collectors.toList()));
-        dto.setObjects(bag.getObjects().stream().map(ObjectDto::fromEntity).collect(Collectors.toList()));
 
-        return dto;
-    }
 
-    // Convert from DTO to Entity
-    public Bag toEntity(CharacterPg characterPg) {
-        Bag bag = new Bag();
-        bag.setId(this.id);
-        bag.setPg(characterPg);
-        return bag;
-    }
 }
 
 

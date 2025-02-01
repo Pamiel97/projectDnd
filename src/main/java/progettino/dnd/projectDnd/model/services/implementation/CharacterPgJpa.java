@@ -70,20 +70,6 @@ public class CharacterPgJpa implements CharacterPgService {
         characterPg.setCampaign(optionalCampaign.get());  // Associa la campagna
 
 
-
-        // 3. Gestione della borsa
-        Bag bag = new Bag();
-        bag.setPg(characterPg);
-        bag = bagRepository.save(bag);
-        characterPg.setBag(bag);
-
-        // 4. Gestione del diario
-
-        Diary diary = new Diary();
-        diary.setPg(characterPg);
-        diary = diaryRepository.save(diary);
-        characterPg.setDiary(diary);
-
         if (characterPg.getSlots() == null) {
             characterPg.setSlots(new ArrayList<>());
         } else {
@@ -116,7 +102,6 @@ public class CharacterPgJpa implements CharacterPgService {
             abilityPg.setAbility(optionalAbility.get());
             abilityPg.setPg(characterPg);
         }
-
 
 
         // 6. Gestione dei tiri salvezza
