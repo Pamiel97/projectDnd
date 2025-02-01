@@ -84,12 +84,13 @@ public class CampaignDto {
         return dto;
     }
 
-    // Convert from DTO to Entity
+    // Convert from DTO to Entity //TODO
     public Campaign toEntity() {
         Campaign campaign = new Campaign();
         campaign.setId(this.id);
         campaign.setName(this.name);
         campaign.setDescription(this.description);
+        //Pensare a PG E NPC
 
         return campaign;
     }

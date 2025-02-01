@@ -23,23 +23,23 @@ public class Slot {
 
     @ManyToMany
     @JoinTable(
-            name = "slot_charms",
+            name = "slot_spells",
             joinColumns = @JoinColumn(name = "slot_id"),
-            inverseJoinColumns = @JoinColumn(name = "charm_id")
+            inverseJoinColumns = @JoinColumn(name = "spell_id")
     )
-    private List<Charm> charms;  // Lista di incantesimi nello slot
+    private List<Spell> spells;  // Lista di incantesimi nello slot
     //tabella con id slot 1 ha incantesimo 2/3/4 ecc
 
 
     public Slot() {
     }
 
-    public Slot(long id, int levelSlot, int remainingUse, CharacterPg pg, List<Charm> charms) {
+    public Slot(long id, int levelSlot, int remainingUse, CharacterPg pg, List<Spell> spells) {
         this.id = id;
         this.levelSlot = levelSlot;
         this.remainingUse = remainingUse;
         this.pg = pg;
-        this.charms = charms;
+        this.spells = spells;
     }
 
     public long getId() {
@@ -74,11 +74,11 @@ public class Slot {
         this.pg = pg;
     }
 
-    public List<Charm> getCharms() {
-        return charms;
+    public List<Spell> getSpells() {
+        return spells;
     }
 
-    public void setCharms(List<Charm> charms) {
-        this.charms = charms;
+    public void setSpells(List<Spell> spells) {
+        this.spells = spells;
     }
 }

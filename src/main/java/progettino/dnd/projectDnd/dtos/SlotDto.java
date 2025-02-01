@@ -1,9 +1,9 @@
 package progettino.dnd.projectDnd.dtos;
 
-import progettino.dnd.projectDnd.model.entities.CharacterPg;
-import progettino.dnd.projectDnd.model.entities.Charm;
+import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.entities.Slot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,21 +11,19 @@ public class SlotDto {
     private long id;
     private int levelSlot;
     private int remainingUse;
-
     private long characterId;  // DTO per il PG associato a questo slot
-
-    private List<CharmDto> charms;
+    private List<SpellDto> spells;
 
 
     public SlotDto() {
     }
 
-    public SlotDto(List<CharmDto> charms, long characterId, int remainingUse, int levelSlot, long id) {
-        this.charms = charms;
-        this.characterId = characterId;
-        this.remainingUse = remainingUse;
-        this.levelSlot = levelSlot;
+    public SlotDto(long id, int levelSlot, int remainingUse, long characterId, List<SpellDto> spells) {
         this.id = id;
+        this.levelSlot = levelSlot;
+        this.remainingUse = remainingUse;
+        this.characterId = characterId;
+        this.spells = spells;
     }
 
     public long getId() {
@@ -60,57 +58,80 @@ public class SlotDto {
         this.characterId = characterId;
     }
 
-    public List<CharmDto> getCharms() {
-        return charms;
+    public List<SpellDto> getSpells() {
+        return spells;
     }
 
-    public void setCharms(List<CharmDto> charms) {
-        this.charms = charms;
-    }
-
-    public static Slot toEntity(SlotDto slotDto) {
-        if (slotDto == null) {
-            return null;
-        }
-
-        Slot slot = new Slot();
-        slot.setId(slotDto.getId());
-        slot.setLevelSlot(slotDto.getLevelSlot());
-        slot.setRemainingUse(slotDto.getRemainingUse());
-
-        // Convertiamo i CharmDto in Charm (relazione Many-to-Many)
-        if (slotDto.getCharms() != null) {
-            List<Charm> charms = slotDto.getCharms().stream()
-                    .map(CharmDto::toEntity)  // Converte ogni CharmDto in Charm
-                    .collect(Collectors.toList());
-            slot.setCharms(charms);  // Impostiamo la lista di Charm
-        }
-
-        return slot;
+    public void setSpells(List<SpellDto> spells) {
+        this.spells = spells;
     }
 
     public static SlotDto fromEntity(Slot slot) {
-        if (slot == null) {
-            return null;
-        }
-
-        SlotDto slotDto = new SlotDto();
-        slotDto.setId(slot.getId());
-        slotDto.setLevelSlot(slot.getLevelSlot());
-        slotDto.setRemainingUse(slot.getRemainingUse());
-
-        slotDto.setCharacterId(slot.getPg().getId());
-
-        // Impostiamo la lista di CharmDto (relazione Many-to-Many)
-        if (slot.getCharms() != null) {
-            List<CharmDto> charmDtos = slot.getCharms().stream()
-                    .map(CharmDto::fromEntity)  // Converte ogni Charm in CharmDto
-                    .collect(Collectors.toList());
-            slotDto.setCharms(charmDtos);  // Impostiamo la lista di CharmDto
-        }
-
-        return slotDto;
+        SlotDto dto = new SlotDto();
+        dto.setId(slot.getId());
+        dto.setLevelSlot(slot.getLevelSlot());
+        dto.setRemainingUse(slot.getRemainingUse());
+        dto.setCharacterId(slot.getPg() != null ? slot.getPg().getId() : 0);
+        dto.setSpells(slot.getSpells() != null ? slot.getSpells().stream().map(SpellDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        return dto;
     }
+
+
+    public Slot toEntity() {
+        Slot slot = new Slot();
+        slot.setId(this.id);
+        slot.setLevelSlot(this.levelSlot);
+        slot.setRemainingUse(this.remainingUse);
+        slot.setSpells(this.spells != null ? this.spells.stream().map(SpellDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        return slot;
+    }
+
+
+
+
+//    public static Slot toEntity(SlotDto slotDto) {
+//        if (slotDto == null) {
+//            return null;
+//        }
+//
+//        Slot slot = new Slot();
+//        slot.setId(slotDto.getId());
+//        slot.setLevelSlot(slotDto.getLevelSlot());
+//        slot.setRemainingUse(slotDto.getRemainingUse());
+//
+//        // Convertiamo i CharmDto in Charm (relazione Many-to-Many)
+//        if (slotDto.getCharms() != null) {
+//            List<Spell> spells = slotDto.getCharms().stream()
+//                    .map(SpellDto::toEntity)  // Converte ogni CharmDto in Charm
+//                    .collect(Collectors.toList());
+//            slot.setCharms(spells);  // Impostiamo la lista di Charm
+//        }
+//
+//        return slot;
+//    }
+//
+//    public static SlotDto fromEntity() {
+//        if (slot == null) {
+//            return null;
+//        }
+//
+//        SlotDto slotDto = new SlotDto();
+//        slotDto.setId(slot.getId());
+//        slotDto.setLevelSlot(slot.getLevelSlot());
+//        slotDto.setRemainingUse(slot.getRemainingUse());
+//
+//        slotDto.setCharacterId(slot.getPg().getId());
+//
+//        // Impostiamo la lista di CharmDto (relazione Many-to-Many)
+//        if (slot.getCharms() != null) {
+//            List<SpellDto> spellDtos = slot.getCharms().stream()
+//                    .map(SpellDto::fromEntity)  // Converte ogni Charm in CharmDto
+//                    .collect(Collectors.toList());
+//            slotDto.setCharms(spellDtos);  // Impostiamo la lista di CharmDto
+//        }
+//
+//        return slotDto;
+//    }
 
 
 }

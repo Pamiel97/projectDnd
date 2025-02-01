@@ -11,6 +11,7 @@ public class StaticDto {
     private int modificatore;
     private long pgId; // ID del Personaggio (CharacterPg) associato
 
+
     public StaticDto() {
     }
 

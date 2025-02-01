@@ -91,33 +91,37 @@ public class DiaryDto {
         return diaryDto;
     }
 
+
+
+
+
     // Metodi di Conversione da DTO a Entity
-    public static Diary toEntity(DiaryDto diaryDto) {
-        if (diaryDto == null) {
-            return null;
-        }
-
-        Diary diary = new Diary();
-        diary.setId(diaryDto.getId());
-        diary.setName(diaryDto.getName());
-        diary.setDescription(diaryDto.getDescription());
-
-        // Imposta il pg, se necessario (dovrai fare una ricerca o passare un'istanza di CharacterPg)
-        CharacterPg characterPg = new CharacterPg();
-        characterPg.setId(diaryDto.getPgId());
-        diary.setPg(characterPg);
-
-        // Converti la lista di MissionDto in Mission
-        if (diaryDto.getMissions() != null) {
-            List<Mission> missions = new ArrayList<>();
-            for (MissionDto missionDto : diaryDto.getMissions()) {
-                Mission mission = MissionDto.toEntity(missionDto); // Usa la conversione anche per Mission
-                mission.setDiary(diary);  // Associa il diario alla missione
-                missions.add(mission);
-            }
-            diary.setMissions(missions);
-        }
-
-        return diary;
-    }
+//    public static Diary toEntity(DiaryDto diaryDto) {
+//        if (diaryDto == null) {
+//            return null;
+//        }
+//
+//        Diary diary = new Diary();
+//        diary.setId(diaryDto.getId());
+//        diary.setName(diaryDto.getName());
+//        diary.setDescription(diaryDto.getDescription());
+//
+//        // Imposta il pg, se necessario (dovrai fare una ricerca o passare un'istanza di CharacterPg)
+//        CharacterPg characterPg = new CharacterPg();
+//        characterPg.setId(diaryDto.getPgId());
+//        diary.setPg(characterPg);
+//
+//        // Converti la lista di MissionDto in Mission
+//        if (diaryDto.getMissions() != null) {
+//            List<Mission> missions = new ArrayList<>();
+//            for (MissionDto missionDto : diaryDto.getMissions()) {
+//                Mission mission = MissionDto.toEntity(missionDto); // Usa la conversione anche per Mission
+//                mission.setDiary(diary);  // Associa il diario alla missione
+//                missions.add(mission);
+//            }
+//            diary.setMissions(missions);
+//        }
+//
+//        return diary;
+//    }
 }

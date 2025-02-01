@@ -13,22 +13,22 @@ public class PotionDto {
     private String note;  // Eventuali note aggiuntive
     private int cost;  // Costo dell'oggetto
 
-    private BagDto bag;  // DTO per la borsa a cui appartiene l'oggetto
+    private long bagId;  // DTO per la borsa a cui appartiene l'oggetto
 
 
     public PotionDto() {
     }
 
-    public PotionDto(long id, String name, String description, int dice, int diceHealth, int diceAttack, String note, int cost, BagDto bag) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.dice = dice;
-        this.diceHealth = diceHealth;
-        this.diceAttack = diceAttack;
-        this.note = note;
+    public PotionDto(long bagId, int cost, String note, int diceAttack, int diceHealth, int dice, String description, String name, long id) {
+        this.bagId = bagId;
         this.cost = cost;
-        this.bag = bag;
+        this.note = note;
+        this.diceAttack = diceAttack;
+        this.diceHealth = diceHealth;
+        this.dice = dice;
+        this.description = description;
+        this.name = name;
+        this.id = id;
     }
 
     public long getId() {
@@ -95,33 +95,12 @@ public class PotionDto {
         this.cost = cost;
     }
 
-    public BagDto getBag() {
-        return bag;
+    public long getBagId() {
+        return bagId;
     }
 
-    public void setBag(BagDto bag) {
-        this.bag = bag;
-    }
-
-    public static Potion toEntity(PotionDto potionDto, Bag bag) {
-        if (potionDto == null) {
-            return null;
-        }
-
-        Potion potion = new Potion();
-        potion.setId(potionDto.getId());
-        potion.setName(potionDto.getName());
-        potion.setDescription(potionDto.getDescription());
-        potion.setDice(potionDto.getDice());
-        potion.setDiceHealt(potionDto.getDiceHealth());
-        potion.setDiceAttack(potionDto.getDiceAttack());
-        potion.setNote(potionDto.getNote());
-        potion.setCost(potionDto.getCost());
-
-        // Impostiamo la relazione con Bag usando l'oggetto Bag passato
-        potion.setBag(bag);
-
-        return potion;
+    public void setBagId(long bagId) {
+        this.bagId = bagId;
     }
 
     public static PotionDto fromEntity(Potion potion) {
@@ -138,15 +117,33 @@ public class PotionDto {
         potionDto.setDiceAttack(potion.getDiceAttack());
         potionDto.setNote(potion.getNote());
         potionDto.setCost(potion.getCost());
-
-        // Impostiamo il BagDto (associato all'oggetto Potion)
-        if (potion.getBag() != null) {
-            BagDto bagDto = BagDto.fromEntity(potion.getBag()); // Convertiamo Bag in BagDto
-            potionDto.setBag(bagDto);  // Impostiamo BagDto nel DTO della potion
-        }
+        potionDto.setBagId(potion.getBag().getId());
 
         return potionDto;
     }
+
+
+
+  //TODO
+    public  Potion toEntity() {
+
+
+        Potion potion = new Potion();
+        potion.setId(this.id);
+        potion.setName(this.name);
+        potion.setDescription(this.description);
+        potion.setDice(this.dice);
+        potion.setDiceHealt(this.diceHealth);
+        potion.setDiceAttack(this.diceAttack);
+        potion.setNote(this.note);
+        potion.setCost(this.cost);
+
+       //NEL CONTROLLER METTERGLI LA BORSA
+
+        return potion;
+    }
+
+
 
 
 }
