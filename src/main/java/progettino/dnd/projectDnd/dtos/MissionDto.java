@@ -6,6 +6,7 @@ import progettino.dnd.projectDnd.model.entities.NPC;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MissionDto {
     private long id;
@@ -14,19 +15,20 @@ public class MissionDto {
     private boolean complete;
     private String difficulty;
     private long diaryId;  // ID del diario associato
-    private List<Long> npcIds;  // Lista degli ID degli NPC associati
+    private List<NPCDto> npcs;  // Lista degli ID degli NPC associati
 
     public MissionDto() {
     }
 
-    public MissionDto(long id, String name, String description, boolean complete, String difficulty, long diaryId, List<Long> npcIds) {
+
+    public MissionDto(long id, String name, String description, boolean complete, String difficulty, long diaryId, List<NPCDto> npcs) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.complete = complete;
         this.difficulty = difficulty;
         this.diaryId = diaryId;
-        this.npcIds = npcIds;
+        this.npcs = npcs;
     }
 
     public long getId() {
@@ -77,39 +79,15 @@ public class MissionDto {
         this.diaryId = diaryId;
     }
 
-    public List<Long> getNpcIds() {
-        return npcIds;
+    public List<NPCDto> getNpcs() {
+        return npcs;
     }
 
-    public void setNpcIds(List<Long> npcIds) {
-        this.npcIds = npcIds;
+    public void setNpcs(List<NPCDto> npcs) {
+        this.npcs = npcs;
     }
 
-    public static Mission toEntity(MissionDto missionDto) {
-        if (missionDto == null) {
-            return null;
-        }
 
-        Mission mission = new Mission();
-        mission.setId(missionDto.getId());
-        mission.setName(missionDto.getName());
-        mission.setDescription(missionDto.getDescription());
-        mission.setComplete(missionDto.isComplete());
-        mission.setDifficulty(missionDto.getDifficulty());
-
-        // Gestiamo la relazione Many-to-Many con NPC (lista di NPC)
-        if (missionDto.getNpcIds() != null) {
-            List<NPC> npcs = new ArrayList<>();
-            for (Long npcId : missionDto.getNpcIds()) {
-                NPC npc = new NPC(); // Assumiamo che tu abbia un modo per ottenere gli NPC tramite il loro ID
-                npc.setId(npcId); // Impostiamo solo l'ID dell'NPC
-                npcs.add(npc);
-            }
-            mission.setNpc(npcs);  // Impostiamo la lista di NPC nella missione
-        }
-
-        return mission;
-    }
 
     public static MissionDto fromEntity(Mission mission) {
         if (mission == null) {
@@ -127,17 +105,24 @@ public class MissionDto {
         if (mission.getDiary() != null) {
             missionDto.setDiaryId(mission.getDiary().getId());
         }
-
-        // Gestiamo la relazione Many-to-Many con NPC (lista di NPC)
-        if (mission.getNpc() != null) {
-            List<Long> npcIds = new ArrayList<>();
-            for (NPC npc : mission.getNpc()) {
-                npcIds.add(npc.getId());  // Aggiungiamo gli ID degli NPC alla lista
-            }
-            missionDto.setNpcIds(npcIds);  // Impostiamo la lista di ID degli NPC nel DTO
-        }
+        missionDto.setNpcs(mission.getNpc() != null ? mission.getNpc().stream().map(NPCDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
 
         return missionDto;
+    }
+
+
+
+
+
+    public Mission toEntity() {
+        Mission mission = new Mission();
+        mission.setId(this.id);
+        mission.setName(this.name);
+        mission.setDescription(this.description);
+        mission.setComplete(this.complete);
+        mission.setDifficulty(this.difficulty);
+        mission.setNpc(this.npcs != null ? this.npcs.stream().map(npcDto -> npcDto.toEntity()).collect(Collectors.toList()) : new ArrayList<>());
+        return mission;
     }
 
 

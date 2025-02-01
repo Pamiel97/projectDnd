@@ -14,13 +14,13 @@ public class ObjectDto {
     private int attack;         // Valore di attacco associato all'oggetto
     private int health;         // Valore di salute o cura associato all'oggetto
 
-    private BagDto bag;
+    private long bagId;
 
 
     public ObjectDto() {
     }
 
-    public ObjectDto(long id, String name, String description, String note, String effect, String rarity, String cost, int dice, int attack, int health, BagDto bag) {
+    public ObjectDto(long id, String name, String description, String note, String effect, String rarity, String cost, int dice, int attack, int health, long bagId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,7 +31,7 @@ public class ObjectDto {
         this.dice = dice;
         this.attack = attack;
         this.health = health;
-        this.bag = bag;
+        this.bagId = bagId;
     }
 
     public long getId() {
@@ -114,36 +114,14 @@ public class ObjectDto {
         this.health = health;
     }
 
-    public BagDto getBag() {
-        return bag;
+    public long getBagId() {
+        return bagId;
     }
 
-    public void setBag(BagDto bag) {
-        this.bag = bag;
+    public void setBagId(long bagId) {
+        this.bagId = bagId;
     }
 
-    public static Object toEntity(ObjectDto objectDto, Bag bag) {
-        if (objectDto == null) {
-            return null;
-        }
-
-        progettino.dnd.projectDnd.model.entities.Object object = new progettino.dnd.projectDnd.model.entities.Object();
-        object.setId(objectDto.getId());
-        object.setName(objectDto.getName());
-        object.setDescription(objectDto.getDescription());
-        object.setNote(objectDto.getNote());
-        object.setEffect(objectDto.getEffect());
-        object.setRarity(objectDto.getRarity());
-        object.setCost(objectDto.getCost());
-        object.setDice(objectDto.getDice());
-        object.setAttack(objectDto.getAttack());
-        object.setHealth(objectDto.getHealth());
-
-        // Impostiamo la relazione con Bag usando l'oggetto Bag passato
-        object.setBag(bag);
-
-        return object;
-    }
 
     public static ObjectDto fromEntity(progettino.dnd.projectDnd.model.entities.Object object) {
         if (object == null) {
@@ -161,15 +139,38 @@ public class ObjectDto {
         objectDto.setDice(object.getDice());
         objectDto.setAttack(object.getAttack());
         objectDto.setHealth(object.getHealth());
-
-        // Impostiamo il BagDto (associato all'oggetto Object)
-        if (object.getBag() != null) {
-            BagDto bagDto = BagDto.fromEntity(object.getBag()); // Convertiamo Bag in BagDto
-            objectDto.setBag(bagDto);  // Impostiamo BagDto nel DTO dell'oggetto
-        }
+        objectDto.setBagId(object.getBag().getId());
 
         return objectDto;
     }
+
+
+
+
+
+
+
+  //TODO
+    public Object toEntity() {
+
+        progettino.dnd.projectDnd.model.entities.Object object = new progettino.dnd.projectDnd.model.entities.Object();
+        object.setId(this.id);
+        object.setName(this.name);
+        object.setDescription(this.description);
+        object.setNote(this.note);
+        object.setEffect(this.effect);
+        object.setRarity(this.rarity);
+        object.setCost(this.cost);
+        object.setDice(this.dice);
+        object.setAttack(this.attack);
+        object.setHealth(this.health);
+
+        //trovare la bag con id nel controller hehe
+
+        return object;
+    }
+
+
 
 
 }

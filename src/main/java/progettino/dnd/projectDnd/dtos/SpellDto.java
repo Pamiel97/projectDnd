@@ -1,13 +1,14 @@
 package progettino.dnd.projectDnd.dtos;
 
-import progettino.dnd.projectDnd.model.entities.Charm;
+import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Type;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CharmDto {
+public class SpellDto {
     private long id;
     private String name;
     private String description;
@@ -26,11 +27,11 @@ public class CharmDto {
 
 
 
-    public CharmDto(){
+    public SpellDto(){
 
     }
 
-    public CharmDto(long id, String name, String description, String actionTime, int gittate, int duration, int dice, int hitDice, int healthDice, String component, boolean preparate, int minLevel, Type type, List<SlotDto> slots) {
+    public SpellDto(long id, String name, String description, String actionTime, int gittate, int duration, int dice, int hitDice, int healthDice, String component, boolean preparate, int minLevel, Type type, List<SlotDto> slots) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -159,70 +160,49 @@ public class CharmDto {
         this.name = name;
     }
 
-    public static CharmDto fromEntity(Charm charm) {
-        if (charm == null) {
+    public static SpellDto fromEntity(Spell spell) {
+        if (spell == null) {
             return null;
         }
 
-        CharmDto charmDto = new CharmDto();
-        charmDto.setId(charm.getId());
-        charmDto.setName(charm.getName());
-        charmDto.setDescription(charm.getDescription());
-        charmDto.setActionTime(charm.getActionTime());
-        charmDto.setGittate(charm.getGittate());
-        charmDto.setDuration(charm.getDuration());
-        charmDto.setDice(charm.getDice());
-        charmDto.setHitDice(charm.getHitDice());
-        charmDto.setHealthDice(charm.getHealthDice());
-        charmDto.setComponent(charm.getComponent());
-        charmDto.setPreparate(charm.isPreparate());
-        charmDto.setMinLevel(charm.getMinLevel());
-        charmDto.setType(charm.getType());
+        SpellDto spellDto = new SpellDto();
+        spellDto.setId(spell.getId());
+        spellDto.setName(spell.getName());
+        spellDto.setDescription(spell.getDescription());
+        spellDto.setActionTime(spell.getActionTime());
+        spellDto.setGittate(spell.getGittate());
+        spellDto.setDuration(spell.getDuration());
+        spellDto.setDice(spell.getDice());
+        spellDto.setHitDice(spell.getHitDice());
+        spellDto.setHealthDice(spell.getHealthDice());
+        spellDto.setComponent(spell.getComponent());
+        spellDto.setPreparate(spell.isPreparate());
+        spellDto.setMinLevel(spell.getMinLevel());
+        spellDto.setType(spell.getType());
+        spellDto.setSlots(spell.getSlots() != null ? spell.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
 
-        // Converti la lista di Slot in SlotDto
-        if (charm.getSlots() != null) {
-            List<SlotDto> slotDtos = new ArrayList<>();
-            for (Slot slot : charm.getSlots()) {
-                SlotDto slotDto = SlotDto.fromEntity(slot); // Usa la conversione anche per Slot
-                slotDtos.add(slotDto);
-            }
-            charmDto.setSlots(slotDtos);
-        }
 
-        return charmDto;
+        return spellDto;
     }
 
-    // Metodi di Conversione da DTO a Entity
-    public static Charm toEntity(CharmDto charmDto) {
-        if (charmDto == null) {
-            return null;
-        }
 
-        Charm charm = new Charm();
-        charm.setId(charmDto.getId());
-        charm.setName(charmDto.getName());
-        charm.setDescription(charmDto.getDescription());
-        charm.setActionTime(charmDto.getActionTime());
-        charm.setGittate(charmDto.getGittate());
-        charm.setDuration(charmDto.getDuration());
-        charm.setDice(charmDto.getDice());
-        charm.setHitDice(charmDto.getHitDice());
-        charm.setHealthDice(charmDto.getHealthDice());
-        charm.setComponent(charmDto.getComponent());
-        charm.setPreparate(charmDto.isPreparate());
-        charm.setMinLevel(charmDto.getMinLevel());
-        charm.setType(charmDto.getType());
-
-        // Converti la lista di SlotDto in Slot
-        if (charmDto.getSlots() != null) {
-            List<Slot> slots = new ArrayList<>();
-            for (SlotDto slotDto : charmDto.getSlots()) {
-                Slot slot = SlotDto.toEntity(slotDto); // Usa la conversione anche per Slot
-                slots.add(slot);
-            }
-            charm.setSlots(slots);
-        }
-
-        return charm;
+    public Spell toEntity() {
+        Spell spell = new Spell();
+        spell.setId(this.id);
+        spell.setName(this.name);
+        spell.setDescription(this.description);
+        spell.setActionTime(this.actionTime);
+        spell.setGittate(this.gittate);
+        spell.setDuration(this.duration);
+        spell.setDice(this.dice);
+        spell.setHitDice(this.hitDice);
+        spell.setHealthDice(this.healthDice);
+        spell.setComponent(this.component);
+        spell.setPreparate(this.preparate);
+        spell.setMinLevel(this.minLevel);
+        spell.setType(this.type);
+        spell.setSlots(this.slots != null ? this.slots.stream().map(SlotDto::toEntity).collect(Collectors.toList()) : new ArrayList<>());
+        return spell;
     }
+
 }

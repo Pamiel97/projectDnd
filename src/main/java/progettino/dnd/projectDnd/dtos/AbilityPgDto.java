@@ -77,14 +77,15 @@ public class AbilityPgDto {
         return dto;
     }
 
-    // Convert from DTO to Entity
-    public AbilityPg toEntity(Ability ability, CharacterPg characterPg) {
+    // Convert from DTO to Entity //TODO
+
+    public AbilityPg toEntity() {
         AbilityPg abilityPg = new AbilityPg();
         abilityPg.setId(this.id);
         abilityPg.setCompetence(this.competence);
         abilityPg.setPoint(this.point);
-        abilityPg.setAbility(ability);
-        abilityPg.setPg(characterPg);
+        //FOUND BY ID NEL CONTROLLER PER ABILITY
+        //FOUND BY ID NEL CONTROLLER PER PG
 
         return abilityPg;
     }

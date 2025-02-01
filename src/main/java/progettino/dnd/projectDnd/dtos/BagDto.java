@@ -14,7 +14,7 @@ public class BagDto {
 
     @JsonIgnore
     @JsonManagedReference
-    private CharacterPgDto pg;  // DTO per il personaggio associato alla borsa
+    private long pgId;
 
     @JsonIgnore
     private List<PotionDto> potions;
@@ -29,9 +29,9 @@ public class BagDto {
     public BagDto() {
     }
 
-    public BagDto(long id, CharacterPgDto pg, List<PotionDto> potions, List<EquipDto> equips, List<WeaponDto> weapons, List<ObjectDto> objects) {
+    public BagDto(long id, long pgId, List<PotionDto> potions, List<EquipDto> equips, List<WeaponDto> weapons, List<ObjectDto> objects) {
         this.id = id;
-        this.pg = pg;
+        this.pgId = pgId;
         this.potions = potions;
         this.equips = equips;
         this.weapons = weapons;
@@ -46,12 +46,12 @@ public class BagDto {
         this.id = id;
     }
 
-    public CharacterPgDto getPg() {
-        return pg;
+    public long getPgId() {
+        return pgId;
     }
 
-    public void setPg(CharacterPgDto pg) {
-        this.pg = pg;
+    public void setPgId(long pgId) {
+        this.pgId = pgId;
     }
 
     public List<PotionDto> getPotions() {
@@ -93,7 +93,7 @@ public class BagDto {
 
         BagDto dto = new BagDto();
         dto.setId(bag.getId());
-        dto.setPg(CharacterPgDto.fromEntity(bag.getPg()));
+        dto.setPgId(bag.getPg().getId());
         dto.setPotions(bag.getPotions().stream().map(PotionDto::fromEntity).collect(Collectors.toList()));
         dto.setEquips(bag.getEquips().stream().map(EquipDto::fromEntity).collect(Collectors.toList()));
         dto.setWeapons(bag.getWeapons().stream().map(WeaponDto::fromEntity).collect(Collectors.toList()));
@@ -102,11 +102,13 @@ public class BagDto {
         return dto;
     }
 
-    // Convert from DTO to Entity
-    public Bag toEntity(CharacterPg characterPg) {
+    //TODO
+    public Bag toEntity() {
         Bag bag = new Bag();
         bag.setId(this.id);
-        bag.setPg(characterPg);
+        //CONTROLLER PER PG
+        //PENSARE ALLE POZIONI ECC
+
         return bag;
     }
 }

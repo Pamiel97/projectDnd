@@ -17,37 +17,6 @@ public class NPCDto {
 
 
 
-
-    public static NPCDto fromCharacter(NPC character) {
-        return new NPCDto(
-                character.getId(),
-                character.getName(),
-                character.getSurname(),
-                character.getDescription(),
-                character.isDeath(),
-                character.getRace(),
-                character.getClasse(),
-                character.getCampaign().getId()
-        );
-    }
-
-
-
-    public NPC toCharacter() {
-        NPC character = new NPC();
-        character.setId(this.id);
-        character.setName(this.name);
-        character.setSurname(this.surname);
-        character.setDescription(this.description);
-        character.setDeath(this.death);
-        character.setRace(this.race);
-        character.setClasse(this.classe);
-        //nel controller inserire id campagna nella post
-        return character;
-    }
-
-
-
     public NPCDto(){
 
     }
@@ -126,25 +95,6 @@ public class NPCDto {
         this.campaignId = campaignId;
     }
 
-    public static NPC toEntity(NPCDto npcDto, Campaign campaign) {
-        if (npcDto == null) {
-            return null;
-        }
-
-        NPC npc = new NPC();
-        npc.setId(npcDto.getId());
-        npc.setName(npcDto.getName());
-        npc.setSurname(npcDto.getSurname());
-        npc.setDescription(npcDto.getDescription());
-        npc.setDeath(npcDto.isDeath());
-        npc.setRace(npcDto.getRace());
-        npc.setClasse(npcDto.getClasse());
-
-        // Impostiamo la relazione con Campaign usando l'oggetto Campaign passato
-        npc.setCampaign(campaign);
-
-        return npc;
-    }
 
     public static NPCDto fromEntity(NPC npc) {
         if (npc == null) {
@@ -166,6 +116,26 @@ public class NPCDto {
         }
 
         return npcDto;
+    }
+
+
+
+
+    //TODO
+    public NPC toEntity() {
+
+        NPC npc = new NPC();
+        npc.setId(this.id);
+        npc.setName(this.name);
+        npc.setSurname(this.surname);
+        npc.setDescription(this.description);
+        npc.setDeath(this.death);
+        npc.setRace(this.race);
+        npc.setClasse(this.classe);
+
+        //CAMPAGNA DA SETTARE con id hehe
+
+        return npc;
     }
 
 

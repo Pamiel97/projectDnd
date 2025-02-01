@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "charms")
-public class Charm {
+@Table(name = "spells")
+public class Spell {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,14 +27,14 @@ public class Charm {
     private Type type;
 
 
-    @ManyToMany(mappedBy = "charms")
+    @ManyToMany(mappedBy = "spells")
     private List<Slot> slots;  // Lista di slot che contengono questo incantesimo
 
 
-    public Charm() {
+    public Spell() {
     }
 
-    public Charm(long id, String name, String description, String actionTime, int gittate, int duration, int dice, int hitDice, int healthDice, String component, boolean preparate, int minLevel, Type type, List<Slot> slots) {
+    public Spell(long id, String name, String description, String actionTime, int gittate, int duration, int dice, int hitDice, int healthDice, String component, boolean preparate, int minLevel, Type type, List<Slot> slots) {
         this.id = id;
         this.name = name;
         this.description = description;

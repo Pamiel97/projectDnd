@@ -12,21 +12,21 @@ public class EquipDto {
     private int cost;     // Costo dell'equipaggiamento
     private String note;  // Eventuali note aggiuntive
 
-    private BagDto bag;
+    private long bagId;
 
 
     public EquipDto() {
 
     }
 
-    public EquipDto(long id, String name, String description, int protect, int cost, String note, BagDto bag) {
+    public EquipDto(long id, String name, String description, int protect, int cost, String note, long bagId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.protect = protect;
         this.cost = cost;
         this.note = note;
-        this.bag = bag;
+        this.bagId = bagId;
     }
 
     public long getId() {
@@ -77,12 +77,12 @@ public class EquipDto {
         this.note = note;
     }
 
-    public BagDto getBag() {
-        return bag;
+    public long getBagId() {
+        return bagId;
     }
 
-    public void setBag(BagDto bag) {
-        this.bag = bag;
+    public void setBagId(long bagId) {
+        this.bagId = bagId;
     }
 
     public static EquipDto fromEntity(Equip equip) {
@@ -97,18 +97,13 @@ public class EquipDto {
         equipDto.setProtect(equip.getProtect());
         equipDto.setCost(equip.getCost());
         equipDto.setNote(equip.getNote());
-
-        // Converti Bag in BagDto
-        if (equip.getBag() != null) {
-            BagDto bagDto = BagDto.fromEntity(equip.getBag()); // Conversione da Bag a BagDto
-            equipDto.setBag(bagDto);
-        }
+        equipDto.setBagId(equip.getBag().getId());
 
         return equipDto;
     }
 
-    // Metodi di Conversione da DTO a Entity
-    public static Equip toEntity(EquipDto equipDto, CharacterPg characterPg) {
+    // Metodi di Conversione da DTO a Entity //TODO
+    public static Equip toEntity(EquipDto equipDto) {
         if (equipDto == null) {
             return null;
         }
@@ -121,12 +116,7 @@ public class EquipDto {
         equip.setCost(equipDto.getCost());
         equip.setNote(equipDto.getNote());
 
-        // Converti BagDto in Bag (associato all'oggetto Equip)
-        if (equipDto.getBag() != null) {
-            // Passa CharacterPg come parametro al metodo toEntity di BagDto
-            Bag bag = equipDto.getBag().toEntity(characterPg); // Ora passiamo characterPg
-            equip.setBag(bag);
-        }
+       //PER BORSA FIND BY ID
 
         return equip;
     }
