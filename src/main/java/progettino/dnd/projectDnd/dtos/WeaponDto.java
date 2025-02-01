@@ -1,5 +1,9 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Bag;
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.Weapon;
+
 public class WeaponDto {
     private long id;
     private String name;
@@ -99,4 +103,53 @@ public class WeaponDto {
     public void setBag(BagDto bag) {
         this.bag = bag;
     }
+
+    public Weapon toEntity(WeaponDto weaponDto, CharacterPg characterPg) {
+        if (weaponDto == null) {
+            return null;
+        }
+
+        Weapon weapon = new Weapon();
+        weapon.setId(weaponDto.getId());
+        weapon.setName(weaponDto.getName());
+        weapon.setDescription(weaponDto.getDescription());
+        weapon.setMagicEffect(weaponDto.getMagicEffect());
+        weapon.setDice(weaponDto.getDice());
+        weapon.setDiceAttack(weaponDto.getDiceAttack());
+        weapon.setNote(weaponDto.getNote());
+        weapon.setCost(weaponDto.getCost());
+
+        // Converti BagDto in Bag (associato all'oggetto Weapon)
+        if (weaponDto.getBag() != null) {
+            Bag bag = weaponDto.getBag().toEntity(characterPg); // Utilizza il metodo toEntity di Bag
+            weapon.setBag(bag);
+        }
+
+        return weapon;
+    }
+
+    public static WeaponDto fromEntity(Weapon weapon) {
+        if (weapon == null) {
+            return null;
+        }
+
+        WeaponDto weaponDto = new WeaponDto();
+        weaponDto.setId(weapon.getId());
+        weaponDto.setName(weapon.getName());
+        weaponDto.setDescription(weapon.getDescription());
+        weaponDto.setMagicEffect(weapon.getMagicEffect());
+        weaponDto.setDice(weapon.getDice());
+        weaponDto.setDiceAttack(weapon.getDiceAttack());
+        weaponDto.setNote(weapon.getNote());
+        weaponDto.setCost(weapon.getCost());
+
+        // Converti Bag in BagDto
+        if (weapon.getBag() != null) {
+            BagDto bagDto = BagDto.fromEntity(weapon.getBag()); // Conversione da Bag a BagDto
+            weaponDto.setBag(bagDto);
+        }
+
+        return weaponDto;
+    }
 }
+

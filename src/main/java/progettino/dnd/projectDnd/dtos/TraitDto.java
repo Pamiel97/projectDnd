@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Trait;
+
 public class TraitDto {
     private long id;
     private String name;
@@ -37,4 +39,32 @@ public class TraitDto {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public static Trait toEntity(TraitDto traitDto) {
+        if (traitDto == null) {
+            return null;
+        }
+
+        Trait trait = new Trait();
+        trait.setId(traitDto.getId());
+        trait.setName(traitDto.getName());
+        trait.setDescription(traitDto.getDescription());
+
+        return trait;
+    }
+
+    public static TraitDto fromEntity(Trait trait) {
+        if (trait == null) {
+            return null;
+        }
+
+        TraitDto traitDto = new TraitDto();
+        traitDto.setId(trait.getId());
+        traitDto.setName(trait.getName());
+        traitDto.setDescription(trait.getDescription());
+
+        return traitDto;
+    }
+
+
 }

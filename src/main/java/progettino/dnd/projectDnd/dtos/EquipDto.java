@@ -1,5 +1,9 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Bag;
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.Equip;
+
 public class EquipDto {
     private long id;
     private String name;
@@ -79,5 +83,51 @@ public class EquipDto {
 
     public void setBag(BagDto bag) {
         this.bag = bag;
+    }
+
+    public static EquipDto fromEntity(Equip equip) {
+        if (equip == null) {
+            return null;
+        }
+
+        EquipDto equipDto = new EquipDto();
+        equipDto.setId(equip.getId());
+        equipDto.setName(equip.getName());
+        equipDto.setDescription(equip.getDescription());
+        equipDto.setProtect(equip.getProtect());
+        equipDto.setCost(equip.getCost());
+        equipDto.setNote(equip.getNote());
+
+        // Converti Bag in BagDto
+        if (equip.getBag() != null) {
+            BagDto bagDto = BagDto.fromEntity(equip.getBag()); // Conversione da Bag a BagDto
+            equipDto.setBag(bagDto);
+        }
+
+        return equipDto;
+    }
+
+    // Metodi di Conversione da DTO a Entity
+    public static Equip toEntity(EquipDto equipDto, CharacterPg characterPg) {
+        if (equipDto == null) {
+            return null;
+        }
+
+        Equip equip = new Equip();
+        equip.setId(equipDto.getId());
+        equip.setName(equipDto.getName());
+        equip.setDescription(equipDto.getDescription());
+        equip.setProtect(equipDto.getProtect());
+        equip.setCost(equipDto.getCost());
+        equip.setNote(equipDto.getNote());
+
+        // Converti BagDto in Bag (associato all'oggetto Equip)
+        if (equipDto.getBag() != null) {
+            // Passa CharacterPg come parametro al metodo toEntity di BagDto
+            Bag bag = equipDto.getBag().toEntity(characterPg); // Ora passiamo characterPg
+            equip.setBag(bag);
+        }
+
+        return equip;
     }
 }

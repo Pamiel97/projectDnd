@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import progettino.dnd.projectDnd.model.entities.Campaign;
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.User;
 
 import java.util.List;
 
@@ -389,4 +392,94 @@ public class CharacterPgDto {
     public void setTraits(List<TraitDto> traits) {
         this.traits = traits;
     }
+
+    public static CharacterPgDto fromEntity(CharacterPg characterPg) {
+        if (characterPg == null) {
+            return null;
+        }
+
+        CharacterPgDto dto = new CharacterPgDto();
+        dto.setId(characterPg.getId());
+        dto.setName(characterPg.getName());
+        dto.setSurname(characterPg.getSurname());
+        dto.setClasse(characterPg.getClasse());
+        dto.setRace(characterPg.getRace());
+        dto.setLevel(characterPg.getLevel());
+        dto.setBackground(characterPg.getBackground());
+        dto.setAllignment(characterPg.getAllignment());
+        dto.setExp(characterPg.getExp());
+        dto.setPhysicalTrait(characterPg.getPhysicalTrait());
+        dto.setIspiration(characterPg.getIspiration());
+        dto.setBonusCompetence(characterPg.getBonusCompetence());
+        dto.setPerception(characterPg.getPerception());
+        dto.setCa(characterPg.getCa());
+        dto.setIniziative(characterPg.getIniziative());
+        dto.setSpeed(characterPg.getSpeed());
+        dto.setTotalHp(characterPg.getTotalHp());
+        dto.setActualHp(characterPg.getActualHp());
+        dto.setTemporanyHp(characterPg.getTemporanyHp());
+        dto.setDice(characterPg.getDice());
+        dto.setDiceHealth(characterPg.getDiceHealth());
+        dto.setCaratterial(characterPg.getCaratterial());
+        dto.setIdeals(characterPg.getIdeals());
+        dto.setNote(characterPg.getNote());
+        dto.setMoney(characterPg.getMoney());
+        dto.setImg(characterPg.getImg());
+
+        dto.setUserId(characterPg.getUser() != null ? characterPg.getUser().getId() : 0);
+        dto.setCampaignId(characterPg.getCampaign() != null ? characterPg.getCampaign().getId() : 0);
+
+        dto.setSlots(characterPg.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()));
+        dto.setAbilityPgs(characterPg.getAbilityPgs().stream().map(AbilityPgDto::fromEntity).collect(Collectors.toList()));
+        dto.setStaticList(characterPg.getStaticList().stream().map(StaticDto::fromEntity).collect(Collectors.toList()));
+        dto.setTiriSalvezza(characterPg.getTiriSalvezza().stream().map(TiriSalvezzaDto::fromEntity).collect(Collectors.toList()));
+        dto.setTalents(characterPg.getTalents().stream().map(TalentDto::fromEntity).collect(Collectors.toList()));
+        dto.setTraits(characterPg.getTraits().stream().map(TraitDto::fromEntity).collect(Collectors.toList()));
+
+        if (characterPg.getBag() != null) {
+            dto.setBag(BagDto.fromEntity(characterPg.getBag()));
+        }
+        if (characterPg.getDiary() != null) {
+            dto.setDiary(DiaryDto.fromEntity(characterPg.getDiary()));
+        }
+
+        return dto;
+    }
+
+    public CharacterPg toEntity(User user, Campaign campaign) {
+        CharacterPg characterPg = new CharacterPg();
+        characterPg.setId(this.id);
+        characterPg.setName(this.name);
+        characterPg.setSurname(this.surname);
+        characterPg.setClasse(this.classe);
+        characterPg.setRace(this.race);
+        characterPg.setLevel(this.level);
+        characterPg.setBackground(this.background);
+        characterPg.setAllignment(this.allignment);
+        characterPg.setExp(this.exp);
+        characterPg.setPhysicalTrait(this.physicalTrait);
+        characterPg.setIspiration(this.ispiration);
+        characterPg.setBonusCompetence(this.bonusCompetence);
+        characterPg.setPerception(this.perception);
+        characterPg.setCa(this.ca);
+        characterPg.setIniziative(this.iniziative);
+        characterPg.setSpeed(this.speed);
+        characterPg.setTotalHp(this.totalHp);
+        characterPg.setActualHp(this.actualHp);
+        characterPg.setTemporanyHp(this.temporanyHp);
+        characterPg.setDice(this.dice);
+        characterPg.setDiceHealth(this.diceHealth);
+        characterPg.setCaratterial(this.caratterial);
+        characterPg.setIdeals(this.ideals);
+        characterPg.setNote(this.note);
+        characterPg.setMoney(this.money);
+        characterPg.setImg(this.img);
+
+        characterPg.setUser(user);
+        characterPg.setCampaign(campaign);
+
+        return characterPg;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.TiriSalvezza;
 import progettino.dnd.projectDnd.model.entities.Type;
 
 public class TiriSalvezzaDto {
@@ -59,4 +61,42 @@ public class TiriSalvezzaDto {
     public void setPgId(long pgId) {
         this.pgId = pgId;
     }
+
+    public static TiriSalvezza toEntity(TiriSalvezzaDto tiriSalvezzaDto, CharacterPg pg) {
+        if (tiriSalvezzaDto == null) {
+            return null;
+        }
+
+        TiriSalvezza tiriSalvezza = new TiriSalvezza();
+        tiriSalvezza.setId(tiriSalvezzaDto.getId());
+        tiriSalvezza.setType(tiriSalvezzaDto.getType());
+        tiriSalvezza.setPoint(tiriSalvezzaDto.getPoint());
+        tiriSalvezza.setModificatore(tiriSalvezzaDto.getModificatore());
+
+        // Impostiamo la relazione con il PG usando l'oggetto CharacterPg passato
+        tiriSalvezza.setPg(pg);
+
+        return tiriSalvezza;
+    }
+
+    public static TiriSalvezzaDto fromEntity(TiriSalvezza tiriSalvezza) {
+        if (tiriSalvezza == null) {
+            return null;
+        }
+
+        TiriSalvezzaDto tiriSalvezzaDto = new TiriSalvezzaDto();
+        tiriSalvezzaDto.setId(tiriSalvezza.getId());
+        tiriSalvezzaDto.setType(tiriSalvezza.getType());
+        tiriSalvezzaDto.setPoint(tiriSalvezza.getPoint());
+        tiriSalvezzaDto.setModificatore(tiriSalvezza.getModificatore());
+
+        // Impostiamo l'ID del PG associato a questa entità TiriSalvezza
+        if (tiriSalvezza.getPg() != null) {
+            tiriSalvezzaDto.setPgId(tiriSalvezza.getPg().getId());
+        }
+
+        return tiriSalvezzaDto;
+    }
+
+
 }

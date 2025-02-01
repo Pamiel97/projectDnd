@@ -125,4 +125,48 @@ public class NPCDto {
     public void setCampaignId(long campaignId) {
         this.campaignId = campaignId;
     }
+
+    public static NPC toEntity(NPCDto npcDto, Campaign campaign) {
+        if (npcDto == null) {
+            return null;
+        }
+
+        NPC npc = new NPC();
+        npc.setId(npcDto.getId());
+        npc.setName(npcDto.getName());
+        npc.setSurname(npcDto.getSurname());
+        npc.setDescription(npcDto.getDescription());
+        npc.setDeath(npcDto.isDeath());
+        npc.setRace(npcDto.getRace());
+        npc.setClasse(npcDto.getClasse());
+
+        // Impostiamo la relazione con Campaign usando l'oggetto Campaign passato
+        npc.setCampaign(campaign);
+
+        return npc;
+    }
+
+    public static NPCDto fromEntity(NPC npc) {
+        if (npc == null) {
+            return null;
+        }
+
+        NPCDto npcDto = new NPCDto();
+        npcDto.setId(npc.getId());
+        npcDto.setName(npc.getName());
+        npcDto.setSurname(npc.getSurname());
+        npcDto.setDescription(npc.getDescription());
+        npcDto.setDeath(npc.isDeath());
+        npcDto.setRace(npc.getRace());
+        npcDto.setClasse(npc.getClasse());
+
+        // Impostiamo l'ID della campagna
+        if (npc.getCampaign() != null) {
+            npcDto.setCampaignId(npc.getCampaign().getId());
+        }
+
+        return npcDto;
+    }
+
+
 }

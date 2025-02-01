@@ -1,6 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
 import jakarta.persistence.*;
+import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.NPC;
 
@@ -65,5 +66,30 @@ public class CampaignDto {
 
     public void setNpcs(List<NPCDto> npcs) {
         this.npcs = npcs;
+    }
+
+    public static CampaignDto fromEntity(Campaign campaign) {
+        if (campaign == null) {
+            return null;
+        }
+
+        CampaignDto dto = new CampaignDto();
+        dto.setId(campaign.getId());
+        dto.setName(campaign.getName());
+        dto.setDescription(campaign.getDescription());
+        dto.setCharacterPgs(campaign.getCharacterPgs().stream().map(CharacterPgDto::fromEntity).collect(Collectors.toList()));
+        dto.setNpcs(campaign.getNpcs().stream().map(NPCDto::fromEntity).collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    // Convert from DTO to Entity
+    public Campaign toEntity() {
+        Campaign campaign = new Campaign();
+        campaign.setId(this.id);
+        campaign.setName(this.name);
+        campaign.setDescription(this.description);
+
+        return campaign;
     }
 }

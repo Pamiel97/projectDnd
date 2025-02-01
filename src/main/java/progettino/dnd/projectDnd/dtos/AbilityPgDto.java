@@ -1,5 +1,9 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Ability;
+import progettino.dnd.projectDnd.model.entities.AbilityPg;
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+
 public class AbilityPgDto {
     private long id;
     private boolean competence;
@@ -57,4 +61,33 @@ public class AbilityPgDto {
     public void setPgId(long pgId) {
         this.pgId = pgId;
     }
+
+    public static AbilityPgDto fromEntity(AbilityPg abilityPg) {
+        if (abilityPg == null) {
+            return null;
+        }
+
+        AbilityPgDto dto = new AbilityPgDto();
+        dto.setId(abilityPg.getId());
+        dto.setCompetence(abilityPg.isCompetence());
+        dto.setPoint(abilityPg.getPoint());
+        dto.setAbilityId(abilityPg.getAbility().getId());
+        dto.setPgId(abilityPg.getPg().getId());
+
+        return dto;
+    }
+
+    // Convert from DTO to Entity
+    public AbilityPg toEntity(Ability ability, CharacterPg characterPg) {
+        AbilityPg abilityPg = new AbilityPg();
+        abilityPg.setId(this.id);
+        abilityPg.setCompetence(this.competence);
+        abilityPg.setPoint(this.point);
+        abilityPg.setAbility(ability);
+        abilityPg.setPg(characterPg);
+
+        return abilityPg;
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.Static;
 import progettino.dnd.projectDnd.model.entities.Type;
 
 public class StaticDto {
@@ -59,4 +61,42 @@ public class StaticDto {
     public void setPgId(long pgId) {
         this.pgId = pgId;
     }
+
+    public static Static toEntity(StaticDto staticDto, CharacterPg pg) {
+        if (staticDto == null) {
+            return null;
+        }
+
+        Static staticEntity = new Static();
+        staticEntity.setId(staticDto.getId());
+        staticEntity.setType(staticDto.getType());
+        staticEntity.setPoint(staticDto.getPoint());
+        staticEntity.setModificatore(staticDto.getModificatore());
+
+        // Impostiamo la relazione con il PG usando l'oggetto CharacterPg passato
+        staticEntity.setPg(pg);
+
+        return staticEntity;
+    }
+
+    public static StaticDto fromEntity(Static staticEntity) {
+        if (staticEntity == null) {
+            return null;
+        }
+
+        StaticDto staticDto = new StaticDto();
+        staticDto.setId(staticEntity.getId());
+        staticDto.setType(staticEntity.getType());
+        staticDto.setPoint(staticEntity.getPoint());
+        staticDto.setModificatore(staticEntity.getModificatore());
+
+        // Impostiamo l'ID del PG associato a questa entità Static
+        if (staticEntity.getPg() != null) {
+            staticDto.setPgId(staticEntity.getPg().getId());
+        }
+
+        return staticDto;
+    }
+
+
 }

@@ -1,7 +1,10 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Charm;
+import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CharmDto {
@@ -154,5 +157,72 @@ public class CharmDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static CharmDto fromEntity(Charm charm) {
+        if (charm == null) {
+            return null;
+        }
+
+        CharmDto charmDto = new CharmDto();
+        charmDto.setId(charm.getId());
+        charmDto.setName(charm.getName());
+        charmDto.setDescription(charm.getDescription());
+        charmDto.setActionTime(charm.getActionTime());
+        charmDto.setGittate(charm.getGittate());
+        charmDto.setDuration(charm.getDuration());
+        charmDto.setDice(charm.getDice());
+        charmDto.setHitDice(charm.getHitDice());
+        charmDto.setHealthDice(charm.getHealthDice());
+        charmDto.setComponent(charm.getComponent());
+        charmDto.setPreparate(charm.isPreparate());
+        charmDto.setMinLevel(charm.getMinLevel());
+        charmDto.setType(charm.getType());
+
+        // Converti la lista di Slot in SlotDto
+        if (charm.getSlots() != null) {
+            List<SlotDto> slotDtos = new ArrayList<>();
+            for (Slot slot : charm.getSlots()) {
+                SlotDto slotDto = SlotDto.fromEntity(slot); // Usa la conversione anche per Slot
+                slotDtos.add(slotDto);
+            }
+            charmDto.setSlots(slotDtos);
+        }
+
+        return charmDto;
+    }
+
+    // Metodi di Conversione da DTO a Entity
+    public static Charm toEntity(CharmDto charmDto) {
+        if (charmDto == null) {
+            return null;
+        }
+
+        Charm charm = new Charm();
+        charm.setId(charmDto.getId());
+        charm.setName(charmDto.getName());
+        charm.setDescription(charmDto.getDescription());
+        charm.setActionTime(charmDto.getActionTime());
+        charm.setGittate(charmDto.getGittate());
+        charm.setDuration(charmDto.getDuration());
+        charm.setDice(charmDto.getDice());
+        charm.setHitDice(charmDto.getHitDice());
+        charm.setHealthDice(charmDto.getHealthDice());
+        charm.setComponent(charmDto.getComponent());
+        charm.setPreparate(charmDto.isPreparate());
+        charm.setMinLevel(charmDto.getMinLevel());
+        charm.setType(charmDto.getType());
+
+        // Converti la lista di SlotDto in Slot
+        if (charmDto.getSlots() != null) {
+            List<Slot> slots = new ArrayList<>();
+            for (SlotDto slotDto : charmDto.getSlots()) {
+                Slot slot = SlotDto.toEntity(slotDto); // Usa la conversione anche per Slot
+                slots.add(slot);
+            }
+            charm.setSlots(slots);
+        }
+
+        return charm;
     }
 }

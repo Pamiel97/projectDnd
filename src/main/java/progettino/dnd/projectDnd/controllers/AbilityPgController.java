@@ -9,7 +9,7 @@ import progettino.dnd.projectDnd.dtos.CharacterPgDto;
 import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
-import progettino.dnd.projectDnd.model.mapper.AbilityPgMapper;
+
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
 
 import java.util.List;

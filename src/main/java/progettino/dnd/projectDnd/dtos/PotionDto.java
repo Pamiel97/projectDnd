@@ -1,5 +1,8 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Bag;
+import progettino.dnd.projectDnd.model.entities.Potion;
+
 public class PotionDto {
     private long id;
     private String name;
@@ -99,4 +102,51 @@ public class PotionDto {
     public void setBag(BagDto bag) {
         this.bag = bag;
     }
+
+    public static Potion toEntity(PotionDto potionDto, Bag bag) {
+        if (potionDto == null) {
+            return null;
+        }
+
+        Potion potion = new Potion();
+        potion.setId(potionDto.getId());
+        potion.setName(potionDto.getName());
+        potion.setDescription(potionDto.getDescription());
+        potion.setDice(potionDto.getDice());
+        potion.setDiceHealt(potionDto.getDiceHealth());
+        potion.setDiceAttack(potionDto.getDiceAttack());
+        potion.setNote(potionDto.getNote());
+        potion.setCost(potionDto.getCost());
+
+        // Impostiamo la relazione con Bag usando l'oggetto Bag passato
+        potion.setBag(bag);
+
+        return potion;
+    }
+
+    public static PotionDto fromEntity(Potion potion) {
+        if (potion == null) {
+            return null;
+        }
+
+        PotionDto potionDto = new PotionDto();
+        potionDto.setId(potion.getId());
+        potionDto.setName(potion.getName());
+        potionDto.setDescription(potion.getDescription());
+        potionDto.setDice(potion.getDice());
+        potionDto.setDiceHealth(potion.getDiceHealt());
+        potionDto.setDiceAttack(potion.getDiceAttack());
+        potionDto.setNote(potion.getNote());
+        potionDto.setCost(potion.getCost());
+
+        // Impostiamo il BagDto (associato all'oggetto Potion)
+        if (potion.getBag() != null) {
+            BagDto bagDto = BagDto.fromEntity(potion.getBag()); // Convertiamo Bag in BagDto
+            potionDto.setBag(bagDto);  // Impostiamo BagDto nel DTO della potion
+        }
+
+        return potionDto;
+    }
+
+
 }

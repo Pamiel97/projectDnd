@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import progettino.dnd.projectDnd.model.entities.Bag;
+
 public class ObjectDto {
     private long id;
     private String name;       // Nome dell'oggetto (ad esempio, "Dado della Fortuna")
@@ -119,4 +121,55 @@ public class ObjectDto {
     public void setBag(BagDto bag) {
         this.bag = bag;
     }
+
+    public static Object toEntity(ObjectDto objectDto, Bag bag) {
+        if (objectDto == null) {
+            return null;
+        }
+
+        progettino.dnd.projectDnd.model.entities.Object object = new progettino.dnd.projectDnd.model.entities.Object();
+        object.setId(objectDto.getId());
+        object.setName(objectDto.getName());
+        object.setDescription(objectDto.getDescription());
+        object.setNote(objectDto.getNote());
+        object.setEffect(objectDto.getEffect());
+        object.setRarity(objectDto.getRarity());
+        object.setCost(objectDto.getCost());
+        object.setDice(objectDto.getDice());
+        object.setAttack(objectDto.getAttack());
+        object.setHealth(objectDto.getHealth());
+
+        // Impostiamo la relazione con Bag usando l'oggetto Bag passato
+        object.setBag(bag);
+
+        return object;
+    }
+
+    public static ObjectDto fromEntity(progettino.dnd.projectDnd.model.entities.Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        ObjectDto objectDto = new ObjectDto();
+        objectDto.setId(object.getId());
+        objectDto.setName(object.getName());
+        objectDto.setDescription(object.getDescription());
+        objectDto.setNote(object.getNote());
+        objectDto.setEffect(object.getEffect());
+        objectDto.setRarity(object.getRarity());
+        objectDto.setCost(object.getCost());
+        objectDto.setDice(object.getDice());
+        objectDto.setAttack(object.getAttack());
+        objectDto.setHealth(object.getHealth());
+
+        // Impostiamo il BagDto (associato all'oggetto Object)
+        if (object.getBag() != null) {
+            BagDto bagDto = BagDto.fromEntity(object.getBag()); // Convertiamo Bag in BagDto
+            objectDto.setBag(bagDto);  // Impostiamo BagDto nel DTO dell'oggetto
+        }
+
+        return objectDto;
+    }
+
+
 }
