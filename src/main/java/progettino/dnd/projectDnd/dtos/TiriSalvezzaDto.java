@@ -62,22 +62,6 @@ public class TiriSalvezzaDto {
         this.pgId = pgId;
     }
 
-    public static TiriSalvezza toEntity(TiriSalvezzaDto tiriSalvezzaDto, CharacterPg pg) {
-        if (tiriSalvezzaDto == null) {
-            return null;
-        }
-
-        TiriSalvezza tiriSalvezza = new TiriSalvezza();
-        tiriSalvezza.setId(tiriSalvezzaDto.getId());
-        tiriSalvezza.setType(tiriSalvezzaDto.getType());
-        tiriSalvezza.setPoint(tiriSalvezzaDto.getPoint());
-        tiriSalvezza.setModificatore(tiriSalvezzaDto.getModificatore());
-
-        // Impostiamo la relazione con il PG usando l'oggetto CharacterPg passato
-        tiriSalvezza.setPg(pg);
-
-        return tiriSalvezza;
-    }
 
     public static TiriSalvezzaDto fromEntity(TiriSalvezza tiriSalvezza) {
         if (tiriSalvezza == null) {
@@ -98,5 +82,18 @@ public class TiriSalvezzaDto {
         return tiriSalvezzaDto;
     }
 
+    //TODO
+    public TiriSalvezza toEntity() {
+
+        TiriSalvezza tiriSalvezza = new TiriSalvezza();
+        tiriSalvezza.setId(this.id);
+        tiriSalvezza.setType(this.type);
+        tiriSalvezza.setPoint(this.point);
+        tiriSalvezza.setModificatore(this.modificatore);
+
+        //
+
+        return tiriSalvezza;
+    }
 
 }

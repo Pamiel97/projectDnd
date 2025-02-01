@@ -40,18 +40,6 @@ public class TalentDto {
         this.description = description;
     }
 
-    public static Talent toEntity(TalentDto talentDto) {
-        if (talentDto == null) {
-            return null;
-        }
-
-        Talent talent = new Talent();
-        talent.setId(talentDto.getId());
-        talent.setName(talentDto.getName());
-        talent.setDescription(talentDto.getDescription());
-
-        return talent;
-    }
 
     public static TalentDto fromEntity(Talent talent) {
         if (talent == null) {
@@ -66,5 +54,14 @@ public class TalentDto {
         return talentDto;
     }
 
+    public Talent toEntity() {
+
+        Talent talent = new Talent();
+        talent.setId(this.id);
+        talent.setName(this.name);
+        talent.setDescription(this.description);
+
+        return talent;
+    }
 
 }

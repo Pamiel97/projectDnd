@@ -104,29 +104,6 @@ public class WeaponDto {
         this.bag = bag;
     }
 
-    public Weapon toEntity(WeaponDto weaponDto, CharacterPg characterPg) {
-        if (weaponDto == null) {
-            return null;
-        }
-
-        Weapon weapon = new Weapon();
-        weapon.setId(weaponDto.getId());
-        weapon.setName(weaponDto.getName());
-        weapon.setDescription(weaponDto.getDescription());
-        weapon.setMagicEffect(weaponDto.getMagicEffect());
-        weapon.setDice(weaponDto.getDice());
-        weapon.setDiceAttack(weaponDto.getDiceAttack());
-        weapon.setNote(weaponDto.getNote());
-        weapon.setCost(weaponDto.getCost());
-
-        // Converti BagDto in Bag (associato all'oggetto Weapon)
-        if (weaponDto.getBag() != null) {
-            Bag bag = weaponDto.getBag().toEntity(characterPg); // Utilizza il metodo toEntity di Bag
-            weapon.setBag(bag);
-        }
-
-        return weapon;
-    }
 
     public static WeaponDto fromEntity(Weapon weapon) {
         if (weapon == null) {
@@ -150,6 +127,24 @@ public class WeaponDto {
         }
 
         return weaponDto;
+    }
+    //TODO
+    public Weapon toEntity() {
+
+        Weapon weapon = new Weapon();
+        weapon.setId(this.id);
+        weapon.setName(this.name);
+        weapon.setDescription(this.description);
+        weapon.setMagicEffect(this.magicEffect);
+        weapon.setDice(this.dice);
+        weapon.setDiceAttack(this.diceAttack);
+        weapon.setNote(this.note);
+        weapon.setCost(this.cost);
+
+        //
+
+
+        return weapon;
     }
 }
 
