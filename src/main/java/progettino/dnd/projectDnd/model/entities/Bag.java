@@ -2,6 +2,7 @@ package progettino.dnd.projectDnd.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,21 +14,27 @@ public class Bag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+    @JsonIgnore
     @OneToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "pg_id")
     private CharacterPg pg;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Potion> potions;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Equip> equips;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Weapon> weapons;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Object> objects;
 

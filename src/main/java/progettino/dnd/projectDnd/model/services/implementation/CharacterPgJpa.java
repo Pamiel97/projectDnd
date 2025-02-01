@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.*;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
-import progettino.dnd.projectDnd.model.mapper.CharacterPGMapper;
+
 import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.repositories.security.UserRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
@@ -30,10 +30,10 @@ public class CharacterPgJpa implements CharacterPgService {
     private TalentRepository talentRepository;
     private TraitRepository traitRepository;
     private AbilityRepository abilityRepository;
-    private CharacterPGMapper characterPGMapper;
+
 
     @Autowired
-    public CharacterPgJpa(CharacterPgRepository characterPgRepository, UserDetailRepository userDetailRepository, SlotRepository slotRepository, BagRepository bagRepository, DiaryRepository diaryRepository, AbilityPgRepository abilityPgRepository, StaticRepository staticRepository, TiriSalvezzaRepository tiriSalvezzaRepository, CampaignRepository campaignRepository, TalentRepository talentRepository, TraitRepository traitRepository, AbilityRepository abilityRepository, CharacterPGMapper characterPGMapper) {
+    public CharacterPgJpa(CharacterPgRepository characterPgRepository, UserDetailRepository userDetailRepository, SlotRepository slotRepository, BagRepository bagRepository, DiaryRepository diaryRepository, AbilityPgRepository abilityPgRepository, StaticRepository staticRepository, TiriSalvezzaRepository tiriSalvezzaRepository, CampaignRepository campaignRepository, TalentRepository talentRepository, TraitRepository traitRepository, AbilityRepository abilityRepository) {
         this.characterPgRepository = characterPgRepository;
         this.userDetailRepository = userDetailRepository;
         this.slotRepository = slotRepository;
@@ -46,7 +46,7 @@ public class CharacterPgJpa implements CharacterPgService {
         this.talentRepository = talentRepository;
         this.traitRepository = traitRepository;
         this.abilityRepository = abilityRepository;
-        this.characterPGMapper = characterPGMapper;
+
     }
 
 

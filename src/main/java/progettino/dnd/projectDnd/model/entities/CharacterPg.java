@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -46,31 +48,39 @@ public class CharacterPg {
 
 
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id") // Questo specifica che nome avrà nella colonna nella tabella
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Slot> slots;  // Lista di slot associati al PG
 
-    @JsonManagedReference
+    @JsonIgnore
+    @JsonBackReference
     @OneToOne(mappedBy = "pg", fetch = FetchType.LAZY)
     private Bag bag;
 
-    @JsonManagedReference
+    @JsonIgnore
+    @JsonBackReference
     @OneToOne(mappedBy = "pg", fetch = FetchType.LAZY)
     private Diary diary;
 
+    @JsonIgnore
     @JsonManagedReference
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AbilityPg> abilityPgs = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Static> staticList;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TiriSalvezza> tiriSalvezza;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "campaign_id") // Questo specifica che nome avrà nella colonna nella tabella
     private Campaign campaign;

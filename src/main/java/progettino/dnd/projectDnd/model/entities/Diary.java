@@ -2,6 +2,7 @@ package progettino.dnd.projectDnd.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public class Diary {
     private String name;
     private String description;
 
+    @JsonIgnore
     @OneToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "pg_id")
     private CharacterPg pg;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mission> missions;
 

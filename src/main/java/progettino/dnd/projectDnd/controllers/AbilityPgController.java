@@ -19,35 +19,35 @@ import java.util.stream.Collectors;
 @RestController
 public class AbilityPgController {
 
-    private AbilityPgService abilityPgService;
-
-    private  AbilityPgMapper abilityPgMapper;
-
-
-    @Autowired
-    public AbilityPgController(AbilityPgMapper abilityPgMapper, AbilityPgService abilityPgService) {
-        this.abilityPgMapper = abilityPgMapper;
-        this.abilityPgService = abilityPgService;
-    }
-
-
-    @GetMapping("/all2")
-    public ResponseEntity<?> getAllCharacter2() {
-        List<AbilityPg> abilityPgs = abilityPgService.getAll();
-
-        // Mappa ogni entità AbilityPg in DTO
-        List<AbilityPgDto> abilityPgDtos = abilityPgs.stream()
-                .map(abilityPg -> abilityPgMapper.toDto(abilityPg))  // Mappatura dal DTO
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(abilityPgDtos);
-    }
-
-
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllCharacter() {
-        List<AbilityPg> c = abilityPgService.getAll();
-        return ResponseEntity.ok(c);
-    }
+//    private AbilityPgService abilityPgService;
+//
+//    private  AbilityPgMapper abilityPgMapper;
+//
+//
+//    @Autowired
+//    public AbilityPgController(AbilityPgMapper abilityPgMapper, AbilityPgService abilityPgService) {
+//        this.abilityPgMapper = abilityPgMapper;
+//        this.abilityPgService = abilityPgService;
+//    }
+//
+//
+//    @GetMapping("/all2")
+//    public ResponseEntity<?> getAllCharacter2() {
+//        List<AbilityPg> abilityPgs = abilityPgService.getAll();
+//
+//        // Mappa ogni entità AbilityPg in DTO
+//        List<AbilityPgDto> abilityPgDtos = abilityPgs.stream()
+//                .map(abilityPg -> abilityPgMapper.toDto(abilityPg))  // Mappatura dal DTO
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(abilityPgDtos);
+//    }
+//
+//
+//    @GetMapping("/all")
+//    public ResponseEntity<?> getAllCharacter() {
+//        List<AbilityPg> c = abilityPgService.getAll();
+//        return ResponseEntity.ok(c);
+//    }
 
 }
