@@ -40,18 +40,6 @@ public class TraitDto {
         this.description = description;
     }
 
-    public static Trait toEntity(TraitDto traitDto) {
-        if (traitDto == null) {
-            return null;
-        }
-
-        Trait trait = new Trait();
-        trait.setId(traitDto.getId());
-        trait.setName(traitDto.getName());
-        trait.setDescription(traitDto.getDescription());
-
-        return trait;
-    }
 
     public static TraitDto fromEntity(Trait trait) {
         if (trait == null) {
@@ -66,5 +54,15 @@ public class TraitDto {
         return traitDto;
     }
 
+    public  Trait toEntity() {
+
+
+        Trait trait = new Trait();
+        trait.setId(this.id);
+        trait.setName(this.name);
+        trait.setDescription(this.description);
+
+        return trait;
+    }
 
 }

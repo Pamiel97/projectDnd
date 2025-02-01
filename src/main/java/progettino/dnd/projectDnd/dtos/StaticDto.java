@@ -62,22 +62,6 @@ public class StaticDto {
         this.pgId = pgId;
     }
 
-    public static Static toEntity(StaticDto staticDto, CharacterPg pg) {
-        if (staticDto == null) {
-            return null;
-        }
-
-        Static staticEntity = new Static();
-        staticEntity.setId(staticDto.getId());
-        staticEntity.setType(staticDto.getType());
-        staticEntity.setPoint(staticDto.getPoint());
-        staticEntity.setModificatore(staticDto.getModificatore());
-
-        // Impostiamo la relazione con il PG usando l'oggetto CharacterPg passato
-        staticEntity.setPg(pg);
-
-        return staticEntity;
-    }
 
     public static StaticDto fromEntity(Static staticEntity) {
         if (staticEntity == null) {
@@ -98,5 +82,18 @@ public class StaticDto {
         return staticDto;
     }
 
+    //TODO
+    public Static toEntity() {
+
+        Static staticEntity = new Static();
+        staticEntity.setId(this.id);
+        staticEntity.setType(this.type);
+        staticEntity.setPoint(this.point);
+        staticEntity.setModificatore(this.modificatore);
+
+        //
+
+        return staticEntity;
+    }
 
 }
