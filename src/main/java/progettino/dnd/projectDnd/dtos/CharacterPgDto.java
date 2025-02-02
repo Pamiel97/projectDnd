@@ -48,25 +48,23 @@ public class CharacterPgDto {
 
     private long userId;  // prendere id da connesso
 
-    @JsonIgnore
+
     private List<SlotDto> slots;
-    @JsonIgnore
-    @JsonBackReference// Lista di SlotDto
+
     private BagDto bag;
-    @JsonIgnore
-    @JsonManagedReference// DTO per la borsa
+
     private DiaryDto diary;  // DTO per il diario
-    @JsonIgnore
+
     private List<AbilityPgDto> abilityPgs;
-    @JsonIgnore// Lista di AbilityPgDto
+
     private List<StaticDto> staticList;
-    @JsonIgnore// Lista di StaticDto
+
     private List<TiriSalvezzaDto> tiriSalvezza;  // Lista di TiriSalvezzaDto
 
     private long campaignId;
-    @JsonIgnore
+
     private List<TalentDto> talents;
-    @JsonIgnore// Lista di TalentDto
+
     private List<TraitDto> traits;  // Lista di TraitDto
 
 
