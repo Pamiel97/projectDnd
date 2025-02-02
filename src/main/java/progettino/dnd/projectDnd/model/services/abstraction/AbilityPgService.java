@@ -7,7 +7,7 @@ import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import java.util.List;
 
 public interface AbilityPgService {
-   List<AbilityPg> getAll();
+    List<AbilityPg> getAll();
     AbilityPg toEntity(AbilityPgDto abilityPgDto);
     AbilityPgDto toDto(AbilityPg abilityPg);
 }
