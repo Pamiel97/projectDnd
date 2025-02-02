@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private static final String[] WHITE_LIST_URL = {"/api/auth/**", "/api/hello/**", "/api/characters/**", "/api/npc/**" , "/api/campaign/**", "/api/abilityPg/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/auth/**", "/api/hello/**", "/api/characters/**", "/api/npc/**" , "/api/campaign/**", "/api/abilityPg/**", "/api/slots/**", "/api/spells/**"};
 
     public SecurityConfiguration(AuthenticationProvider authenticationProvider, JwtAuthenticationFilter jwtAuthFilter) {
         this.authenticationProvider = authenticationProvider;
