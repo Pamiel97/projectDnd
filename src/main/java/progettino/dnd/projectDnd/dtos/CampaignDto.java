@@ -78,8 +78,8 @@ public class CampaignDto {
         dto.setId(campaign.getId());
         dto.setName(campaign.getName());
         dto.setDescription(campaign.getDescription());
-        dto.setCharacterPgs(campaign.getCharacterPgs().stream().map(CharacterPgDto::fromEntity).collect(Collectors.toList()));
-        dto.setNpcs(campaign.getNpcs().stream().map(NPCDto::fromEntity).collect(Collectors.toList()));
+        //dto.setCharacterPgs(campaign.getCharacterPgs().stream().map(CharacterPgDto::fromEntity).collect(Collectors.toList()));
+        //dto.setNpcs(campaign.getNpcs().stream().map(NPCDto::fromEntity).collect(Collectors.toList()));
 
         return dto;
     }

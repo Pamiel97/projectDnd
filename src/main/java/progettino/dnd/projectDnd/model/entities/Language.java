@@ -18,7 +18,7 @@ public class Language {
             joinColumns = @JoinColumn(name = "lenguage_id"),
             inverseJoinColumns = @JoinColumn(name = "pg_id")
     )
-    private List<CharacterPg> pgs;  // Lista di incantesimi nello slot
+    private List<CharacterPg> pgs;
 
 
     public Language() {

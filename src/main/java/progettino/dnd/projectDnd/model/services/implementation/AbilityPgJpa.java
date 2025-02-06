@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.AbilityPgDto;
@@ -9,6 +10,7 @@ import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 
 import progettino.dnd.projectDnd.model.repositories.AbilityPgRepository;
+import progettino.dnd.projectDnd.model.repositories.AbilityRepository;
 import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityService;
@@ -19,90 +21,54 @@ import java.util.List;
 @Service
 public class AbilityPgJpa implements AbilityPgService {
 
-    private AbilityService abilityService;
+    private AbilityRepository abilityRepository;
     private AbilityPgRepository abilityPgRepository;
+    private CharacterPgRepository characterPgRepository;
 
 
     @Autowired
-    public AbilityPgJpa( AbilityService abilityService, AbilityPgRepository abilityPgRepository) {
+    public AbilityPgJpa( AbilityRepository abilityRepository, AbilityPgRepository abilityPgRepository, CharacterPgRepository characterPgRepository) {
 
-        this.abilityService = abilityService;
+        this.abilityRepository = abilityRepository;
         this.abilityPgRepository = abilityPgRepository;
+        this.characterPgRepository = characterPgRepository;
     }
 
 
+    //Questo va ma dobbiamo capire come farne più insieme in una sola volta
+    @Override
+    @Transactional
+    public AbilityPg createAbilityPg(AbilityPg abilityPg, long abilityId, long characterId) {
+        Ability ability = abilityRepository.findById(abilityId)
+                .orElseThrow(() -> new IllegalArgumentException("Ability not found for ID: " + abilityId));
+
+        CharacterPg characterPg = characterPgRepository.findById(characterId)
+                .orElseThrow(() -> new IllegalArgumentException("CharacterPg not found for ID: " + characterId));
+
+        abilityPg.setAbility(ability);
+        abilityPg.setPg(characterPg);
+
+        return abilityPgRepository.save(abilityPg);
+    }
 
 
+    //QUESTO NON FUNGE
+    @Override
+    @Transactional
+    public List<AbilityPg> createMultipleAbilityPgs(List<AbilityPg> abilityPgs, long characterId) {
+        CharacterPg characterPg = characterPgRepository.findById(characterId)
+                .orElseThrow(() -> new IllegalArgumentException("CharacterPg not found for ID: " + characterId));
 
-
-    @Autowired
-    private CharacterPgRepository characterPgService;  // Servizio per recuperare CharacterPg
-
-    // Recupera tutte le AbilityPg e carica le relazioni
-    public List<AbilityPg> getAll() {
-        List<AbilityPg> abilityPgs = abilityPgRepository.findAll();
-
-        // Carica manualmente la relazione "ability" e "pg"
         for (AbilityPg abilityPg : abilityPgs) {
-            // Assicurati che l'abilità e il personaggio siano caricati se non sono già presenti
-            if (abilityPg.getAbility() == null) {
-                abilityPg.setAbility(abilityService.findById(abilityPg.getAbility().getId()).orElse(null));
-            }
-            if (abilityPg.getPg() == null) {
-                abilityPg.setPg(characterPgService.findById(abilityPg.getPg().getId()).orElse(null));
-            }
-        }
-        return abilityPgs;
-    }
+            Ability ability = abilityRepository.findById(abilityPg.getAbility().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Ability not found for ID: " + abilityPg.getAbility().getId()));
 
-
-
-
-
-
-    @Override
-    public AbilityPg toEntity(AbilityPgDto abilityPgDto) {
-        if (abilityPgDto.getAbilityId() <= 0) {
-            throw new IllegalArgumentException("Invalid Ability ID");
-        }
-        if (abilityPgDto.getPgId() <= 0) {
-            throw new IllegalArgumentException("Invalid CharacterPg ID");
-        }
-
-        try {
-            Ability ability = abilityService.findById(abilityPgDto.getAbilityId())
-                    .orElseThrow(() -> new EntityNotFoundException("Ability not found for ID: " + abilityPgDto.getAbilityId()));
-
-            CharacterPg pg = characterPgService.findById(abilityPgDto.getPgId())
-                    .orElseThrow(() -> new EntityNotFoundException("CharacterPg not found for ID: " + abilityPgDto.getPgId()));
-
-            AbilityPg abilityPg = new AbilityPg();
-            abilityPg.setId(abilityPgDto.getId());
-            abilityPg.setCompetence(abilityPgDto.isCompetence());
-            abilityPg.setPoint(abilityPgDto.getPoint());
             abilityPg.setAbility(ability);
-            abilityPg.setPg(pg);
-
-            return abilityPg;
-
-        } catch (EntityNotFoundException e) {
-            // Log dell'errore e rilancio come IllegalArgumentException
-            throw new IllegalArgumentException("Invalid data: " + e.getMessage(), e);
+            abilityPg.setPg(characterPg);
         }
-    }
 
-    @Override
-    public AbilityPgDto toDto(AbilityPg abilityPg) {
-        // Mappa l'entità AbilityPg al DTO
-//        return abilityPgMapper.toDto(abilityPg);
-        return null;
+        return abilityPgRepository.saveAll(abilityPgs);
     }
 
 
-
-
-//    @Override
-//    public List<AbilityPg> getAll() {
-//        return abilityPgRepository.findAll();
-//    }
 }

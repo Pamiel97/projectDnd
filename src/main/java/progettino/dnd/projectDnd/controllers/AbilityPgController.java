@@ -19,35 +19,35 @@ import java.util.stream.Collectors;
 @RestController
 public class AbilityPgController {
 
-//    private AbilityPgService abilityPgService;
-//
-//    private  AbilityPgMapper abilityPgMapper;
-//
-//
-//    @Autowired
-//    public AbilityPgController(AbilityPgMapper abilityPgMapper, AbilityPgService abilityPgService) {
-//        this.abilityPgMapper = abilityPgMapper;
-//        this.abilityPgService = abilityPgService;
-//    }
-//
-//
-//    @GetMapping("/all2")
-//    public ResponseEntity<?> getAllCharacter2() {
-//        List<AbilityPg> abilityPgs = abilityPgService.getAll();
-//
-//        // Mappa ogni entità AbilityPg in DTO
-//        List<AbilityPgDto> abilityPgDtos = abilityPgs.stream()
-//                .map(abilityPg -> abilityPgMapper.toDto(abilityPg))  // Mappatura dal DTO
-//                .collect(Collectors.toList());
-//
-//        return ResponseEntity.ok(abilityPgDtos);
-//    }
-//
-//
-//    @GetMapping("/all")
-//    public ResponseEntity<?> getAllCharacter() {
-//        List<AbilityPg> c = abilityPgService.getAll();
-//        return ResponseEntity.ok(c);
-//    }
+    private AbilityPgService abilityPgService;
+
+    public AbilityPgController(AbilityPgService abilityPgService){
+        this.abilityPgService = abilityPgService;
+    }
+
+
+    @PostMapping("/all/ability/{characterId}")
+    public ResponseEntity<?> createMultipleAbilityPgs(
+            @RequestBody List<AbilityPgDto> abilityPgs,
+            @PathVariable long characterId) {
+        List<AbilityPg> listina = abilityPgs.stream().map(abilityPg -> abilityPg.toEntity()).toList();
+        List<AbilityPg> createdAbilityPgs = abilityPgService.createMultipleAbilityPgs(listina, characterId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(abilityPgs);
+    }
+
+
+    @PostMapping("/single/{abilityId}/character/{characterId}")
+    public ResponseEntity<AbilityPg> createAbilityPg(
+            @RequestBody AbilityPgDto abilityPgDto,
+            @PathVariable long abilityId,
+            @PathVariable long characterId) {
+
+        // Chiamata al service per creare AbilityPg
+        AbilityPg abilityPg = abilityPgDto.toEntity();
+        AbilityPg createdAbilityPg = abilityPgService.createAbilityPg(abilityPg, abilityId, characterId);
+
+        // Restituisce una risposta con stato CREATED (201) e l'oggetto AbilityPg creato
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAbilityPg);
+    }
 
 }

@@ -2,6 +2,7 @@ package progettino.dnd.projectDnd.model.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import progettino.dnd.projectDnd.dtos.SpellDto;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -39,5 +40,30 @@ public class SpellJpa implements SpellService {
 
         return savedSpell;
     }
+
+
+    @Override
+    public Spell createSpellAndAssignToSlot(Long slotId, SpellDto spellDto) throws EntityNotFoundException {
+        Optional<Slot> slotOptional = slotRepository.findById(slotId);
+        if (slotOptional.isEmpty()) {
+            throw new EntityNotFoundException("Slot not found with ID: " + slotId);
+        }
+
+        Slot slot = slotOptional.get();
+        Spell spell = spellDto.toEntity();
+
+        // Salviamo prima lo spell per ottenere l'ID
+        spell = spellRepository.save(spell);
+
+        // Creiamo la relazione ManyToMany
+        slot.getSpells().add(spell);
+        spell.getSlots().add(slot);
+
+        // Salviamo nuovamente lo slot per aggiornare la relazione
+        slotRepository.save(slot);
+
+        return spell;
+    }
+
 
 }

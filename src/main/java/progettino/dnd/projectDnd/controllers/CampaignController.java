@@ -17,48 +17,43 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/campaign")
 @RestController
 public class CampaignController {
-//    private CampaignService campaignService;
-//    private CampaignMapper campaignMapper;
-//
-//    public CampaignController(CampaignService campaignService, CampaignMapper campaignMapper){
-//        this.campaignService = campaignService;
-//        this.campaignMapper = campaignMapper;
-//    }
-//
-//
-//    @PostMapping("/create")
-//    public ResponseEntity<CampaignDto> createCampaign(@RequestBody CampaignDto campaignDto,
-//                                                      @AuthenticationPrincipal User user) {
-//        try {
-//            // Mappa il CampaignDto in un'entità Campaign
-//            Campaign campaign = campaignMapper.toEntity(campaignDto);
-//
-//            // Chiamata al servizio per creare la campagna e associare l'utente autenticato
-//            Campaign createdCampaign = campaignService.createCampaign(campaign, user.getId());
-//
-//            // Converte la campagna creata in un CampaignDto per restituirla al client
-//            CampaignDto createdCampaignDto = campaignMapper.toDto(createdCampaign);
-//
-//            return ResponseEntity.status(HttpStatus.CREATED).body(createdCampaignDto);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }
-//    }
-//
-//    @GetMapping("/my-campaigns")
-//    public ResponseEntity<List<CampaignDto>> getUserCampaigns(@AuthenticationPrincipal User user) {
-//        try {
-//
-//            List<Campaign> campaigns = campaignService.getCampaignsByUserId(user.getId());
-//
-//            List<CampaignDto> campaignDtos = campaigns.stream()
-//                    .map(campaignMapper::toDto)
-//                    .collect(Collectors.toList());
-//
-//            return ResponseEntity.ok(campaignDtos);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }
-//    }
+    private CampaignService campaignService;
+
+
+    public CampaignController(CampaignService campaignService){
+        this.campaignService = campaignService;
+    }
+
+
+    @PostMapping("/create")
+    public ResponseEntity<CampaignDto> createCampaign(@RequestBody CampaignDto campaignDto,
+                                                      @AuthenticationPrincipal User user) {
+        try {
+
+            Campaign campaign = campaignDto.toEntity();
+            Campaign createdCampaign = campaignService.createCampaign(campaign, user.getId());
+            CampaignDto createdCampaignDto = CampaignDto.fromEntity(createdCampaign);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCampaignDto);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/my-campaigns")
+    public ResponseEntity<List<CampaignDto>> getUserCampaigns(@AuthenticationPrincipal User user) {
+        try {
+
+            List<Campaign> campaigns = campaignService.getCampaignsByUserId(user.getId());
+
+            List<CampaignDto> campaignDtos = campaigns.stream()
+                    .map(CampaignDto::fromEntity)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(campaignDtos);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
 
 }
