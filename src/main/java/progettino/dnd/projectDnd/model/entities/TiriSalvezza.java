@@ -11,7 +11,7 @@ public class TiriSalvezza {
     @Enumerated(EnumType.STRING)
     private Type type;
     private int point;
-    private int modificatore;
+    private boolean competenza;
 
     @ManyToOne
     @JoinColumn(name = "pg_id")
@@ -21,11 +21,11 @@ public class TiriSalvezza {
     public TiriSalvezza() {
     }
 
-    public TiriSalvezza(long id, Type type, int point, int modificatore, CharacterPg pg) {
+    public TiriSalvezza(long id, Type type, int point, boolean competenza, CharacterPg pg) {
         this.id = id;
         this.type = type;
         this.point = point;
-        this.modificatore = modificatore;
+        this.competenza = competenza;
         this.pg = pg;
     }
 
@@ -53,12 +53,12 @@ public class TiriSalvezza {
         this.point = point;
     }
 
-    public int getModificatore() {
-        return modificatore;
+    public boolean getCompetenza() {
+        return competenza;
     }
 
-    public void setModificatore(int modificatore) {
-        this.modificatore = modificatore;
+    public void setCompetenza(boolean competenza) {
+        this.competenza = competenza;
     }
 
     public CharacterPg getPg() {

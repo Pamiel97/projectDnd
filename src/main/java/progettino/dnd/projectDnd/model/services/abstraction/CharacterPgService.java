@@ -11,9 +11,9 @@ public interface CharacterPgService {
 
    CharacterPg createCharacterPg(CharacterPg characterPg, long userId, long campaignId) throws EntityNotFoundException;
    List<CharacterPg> getAllCharacterPgs();
-//    CharacterPgDto getCharacterPgById(Long id);
-//    CharacterPgDto updateCharacterPg(Long id, CharacterPgDto characterPgDto);
-//    void deleteCharacterPg(Long id);
+
+   CharacterPg addTalentToPg(Long pgId, Long talentId) throws  EntityNotFoundException;
+   CharacterPg addTraitToPg(Long pgId, Long traitId) throws  EntityNotFoundException;
 
 
 

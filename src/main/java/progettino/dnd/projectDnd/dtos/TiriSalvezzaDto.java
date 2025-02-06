@@ -8,17 +8,18 @@ public class TiriSalvezzaDto {
     private long id;
     private Type type;
     private int point;
-    private int modificatore;
+
+    private boolean competenza;
     private long pgId; // ID del Personaggio (CharacterPg) associato
 
     public TiriSalvezzaDto() {
     }
 
-    public TiriSalvezzaDto(long id, Type type, int point, int modificatore, long pgId) {
+    public TiriSalvezzaDto(long id, Type type, int point, boolean competenza, long pgId) {
         this.id = id;
         this.type = type;
         this.point = point;
-        this.modificatore = modificatore;
+        this.competenza = competenza;
         this.pgId = pgId;
     }
 
@@ -46,12 +47,12 @@ public class TiriSalvezzaDto {
         this.point = point;
     }
 
-    public int getModificatore() {
-        return modificatore;
+    public boolean getCompetenza() {
+        return competenza;
     }
 
-    public void setModificatore(int modificatore) {
-        this.modificatore = modificatore;
+    public void setCompetenza(boolean competenza) {
+        this.competenza = competenza;
     }
 
     public long getPgId() {
@@ -72,7 +73,7 @@ public class TiriSalvezzaDto {
         tiriSalvezzaDto.setId(tiriSalvezza.getId());
         tiriSalvezzaDto.setType(tiriSalvezza.getType());
         tiriSalvezzaDto.setPoint(tiriSalvezza.getPoint());
-        tiriSalvezzaDto.setModificatore(tiriSalvezza.getModificatore());
+        tiriSalvezzaDto.setCompetenza(tiriSalvezza.getCompetenza());
 
         // Impostiamo l'ID del PG associato a questa entità TiriSalvezza
         if (tiriSalvezza.getPg() != null) {
@@ -89,7 +90,7 @@ public class TiriSalvezzaDto {
         tiriSalvezza.setId(this.id);
         tiriSalvezza.setType(this.type);
         tiriSalvezza.setPoint(this.point);
-        tiriSalvezza.setModificatore(this.modificatore);
+        tiriSalvezza.setCompetenza(this.competenza);
 
         //
 

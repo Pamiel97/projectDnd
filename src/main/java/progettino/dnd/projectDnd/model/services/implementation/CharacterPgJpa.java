@@ -122,6 +122,41 @@ public class CharacterPgJpa implements CharacterPgService {
         return characterPgRepository.findAll();
     }
 
+    @Override
+    public CharacterPg addTalentToPg(Long pgId, Long talentId) throws  EntityNotFoundException{
+        CharacterPg pg = characterPgRepository.findById(pgId)
+                .orElseThrow(() -> new EntityNotFoundException("PG non trovato con id: " + pgId));
+
+        Talent talent = talentRepository.findById(talentId)
+                .orElseThrow(() -> new EntityNotFoundException("Talento non trovato con id: " + talentId));
+
+        pg.getTalents().add(talent);
+
+        return characterPgRepository.save(pg);
+    }
+
+
+    @Override
+    public CharacterPg addTraitToPg(Long pgId, Long traitId) throws  EntityNotFoundException{
+        CharacterPg pg = characterPgRepository.findById(pgId)
+                .orElseThrow(() -> new EntityNotFoundException("PG non trovato con id: " + pgId));
+
+        Trait trait = traitRepository.findById(traitId)
+                .orElseThrow(() -> new EntityNotFoundException("Talento non trovato con id: " + traitId));
+
+        pg.getTraits().add(trait);
+
+        return characterPgRepository.save(pg);
+    }
+
+
+
+
+
+
+
+
+
 
     // Metodo per risolvere la borsa
     private Bag resolveBag(Bag bag) throws EntityNotFoundException {

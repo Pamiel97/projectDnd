@@ -86,4 +86,28 @@ public class CharacterPgController {
     }
 
 
+    @PostMapping("/addTalent")
+    public ResponseEntity<?> addTalentToPg(@RequestParam Long pgId, @RequestParam Long talentId) {
+        CharacterPg updatedPg = null;
+        try {
+            updatedPg = characterPgService.addTalentToPg(pgId, talentId);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok("Save!");
+    }
+
+
+    @PostMapping("/addTrait")
+    public ResponseEntity<?> addTraitToPg(@RequestParam Long pgId, @RequestParam Long traitId) {
+        CharacterPg updatedPg = null;
+        try {
+            updatedPg = characterPgService.addTraitToPg(pgId, traitId);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok("Save!");
+    }
+
+
 }
