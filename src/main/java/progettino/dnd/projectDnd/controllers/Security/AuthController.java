@@ -56,13 +56,13 @@ public class AuthController {
                 registerRequest.getLastname(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword()), // Codifica la password
-                Set.of(role)  // Converte il ruolo in un Set per essere compatibile con il costruttore
+                Set.of(role)
         );
 
-        // Salva l'utente nel repository
+
         userRepository.save(user);
 
-        // Restituisce una risposta positiva
+
         return ResponseEntity.ok("User registered successfully");
     }
 
@@ -73,3 +73,4 @@ public class AuthController {
         return ResponseEntity.ok(service.login(request));
     }
 }
+

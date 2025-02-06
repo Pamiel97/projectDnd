@@ -40,7 +40,7 @@ public class StaticJpa implements StaticService {
     }
 
 
-    //TODO
+
     @Override
     @Transactional
     public Static updateStatic(long id, Static statics) throws EntityNotFoundException {

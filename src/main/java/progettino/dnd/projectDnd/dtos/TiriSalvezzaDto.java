@@ -83,7 +83,7 @@ public class TiriSalvezzaDto {
         return tiriSalvezzaDto;
     }
 
-    //TODO
+
     public TiriSalvezza toEntity() {
 
         TiriSalvezza tiriSalvezza = new TiriSalvezza();

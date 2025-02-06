@@ -29,21 +29,6 @@ public class NPCController {
 
 
 
-//    @GetMapping("/campaign/{campaignId}")
-//    public ResponseEntity<List<NPCDto>> getNPCsByCampaign(@PathVariable long campaignId) {
-//        try {
-//            List<NPC> npcs = npcService.getNPCsByCampaignId(campaignId);
-//
-//            List<NPCDto> npcDtos = npcs.stream()
-//                    .map(npcMapper::toDto)
-//                    .collect(Collectors.toList());
-//
-//            return ResponseEntity.ok(npcDtos);
-//        } catch (EntityNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        }
-//    }
-
     @PostMapping
     public ResponseEntity<NPCDto> createNPC(@RequestBody NPCDto npcDto, @RequestParam long campaignId) {
         NPC npc = npcDto.toEntity();

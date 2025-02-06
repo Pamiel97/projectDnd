@@ -1,8 +1,10 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.Static;
 import progettino.dnd.projectDnd.model.entities.TiriSalvezza;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
@@ -30,4 +32,20 @@ public class TiriSalvezzaJpa implements TiriSalvezzaPgService{
         TiriSalvezza newTiri = tiriSalvezzaRepository.save(ts);
         return ts;
     }
+
+    @Override
+    @Transactional
+    public TiriSalvezza updatetiri(long id, TiriSalvezza ts) throws EntityNotFoundException {
+
+        TiriSalvezza existingTiri = tiriSalvezzaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Static not found for ID: " + id));
+        existingTiri.setPoint(ts.getPoint());
+        existingTiri.setCompetenza(ts.getCompetenza());
+
+        return tiriSalvezzaRepository.save(existingTiri);
+    }
+
+
+
+
 }

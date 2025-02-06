@@ -34,4 +34,18 @@ public class TiriSalvezzaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<TiriSalvezza> updateStatic(@RequestParam long id, @RequestBody TiriSalvezzaDto tsDto) {
+        TiriSalvezza updated = null;
+        try {
+            TiriSalvezza converted = tsDto.toEntity();
+            updated = tiriSalvezzaPgService.updatetiri(id, converted);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok(updated);
+    }
+
+
 }
