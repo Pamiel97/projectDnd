@@ -50,4 +50,10 @@ public class AbilityPgController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAbilityPg);
     }
 
+    @GetMapping("/character/{pgId}")
+    public ResponseEntity<List<AbilityPgDto>> getAbilitiesPgByCharacter(@PathVariable Long pgId) {
+        List<AbilityPgDto> abilityPgDtos = abilityPgService.getAbilitiesPgByCharacter(pgId);
+        return new ResponseEntity<>(abilityPgDtos, HttpStatus.OK);
+    }
+
 }

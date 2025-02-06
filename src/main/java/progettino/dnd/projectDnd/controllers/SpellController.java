@@ -8,6 +8,8 @@ import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.SpellService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/spells")
 public class SpellController {
@@ -41,6 +43,12 @@ public class SpellController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSpell);
+    }
+
+    @GetMapping("/character/{characterId}")
+    public ResponseEntity<List<SpellDto>> getSpellsByCharacter(@PathVariable Long characterId) {
+        List<SpellDto> spellDtos = spellService.getSpellsByCharacter(characterId);
+        return new ResponseEntity<>(spellDtos, HttpStatus.OK);
     }
 
 

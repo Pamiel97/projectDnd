@@ -1,6 +1,9 @@
 package progettino.dnd.projectDnd.model.services.abstraction;
 
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
+import progettino.dnd.projectDnd.dtos.DiaryDto;
+import progettino.dnd.projectDnd.dtos.TalentDto;
+import progettino.dnd.projectDnd.dtos.TraitDto;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 
@@ -14,6 +17,10 @@ public interface CharacterPgService {
 
    CharacterPg addTalentToPg(Long pgId, Long talentId) throws  EntityNotFoundException;
    CharacterPg addTraitToPg(Long pgId, Long traitId) throws  EntityNotFoundException;
+
+   List<TalentDto> getAllTalents();
+   List<TraitDto> getAllTraits();
+   DiaryDto getDiaryByCharacter(Long pgId);
 
 
 

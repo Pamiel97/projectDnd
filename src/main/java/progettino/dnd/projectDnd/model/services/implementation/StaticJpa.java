@@ -3,6 +3,7 @@ package progettino.dnd.projectDnd.model.services.implementation;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import progettino.dnd.projectDnd.dtos.StaticDto;
 import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
@@ -12,7 +13,9 @@ import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
 import progettino.dnd.projectDnd.model.repositories.StaticRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.StaticService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StaticJpa implements StaticService {
@@ -57,5 +60,13 @@ public class StaticJpa implements StaticService {
         existingStatic.setModificatore((statics.getModificatore()));
 
         return staticRepository.save(existingStatic);
+    }
+
+    @Override
+    public List<StaticDto> getStaticsByCharacter(Long characterId) {
+        List<Static> statics = staticRepository.findByPgId(characterId);
+        return statics.stream()
+                .map(StaticDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

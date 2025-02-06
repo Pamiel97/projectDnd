@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.NPCDto;
+import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.NPC;
 import progettino.dnd.projectDnd.model.entities.User;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
+import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.NPCService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -28,6 +31,12 @@ public class NPCController {
     }
 
 
+
+    @GetMapping("/campaign/{campaignId}")
+    public ResponseEntity<List<NPCDto>> getNPCsByCampaign(@PathVariable Long campaignId) {
+        List<NPCDto> npcDtos = npcService.getNPCsByCampaign(campaignId);
+        return new ResponseEntity<>(npcDtos, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<NPCDto> createNPC(@RequestBody NPCDto npcDto, @RequestParam long campaignId) {

@@ -10,6 +10,8 @@ import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.SlotService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/slots")
 @Validated
@@ -35,5 +37,11 @@ public class SlotController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/character/{characterId}")
+    public ResponseEntity<List<SlotDto>> getSlotsByCharacter(@PathVariable Long characterId) {
+        List<SlotDto> slotDtos = slotService.getSlotsByCharacter(characterId);
+        return new ResponseEntity<>(slotDtos, HttpStatus.OK);
     }
 }

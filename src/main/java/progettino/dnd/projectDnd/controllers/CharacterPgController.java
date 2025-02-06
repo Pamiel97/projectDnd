@@ -7,14 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import progettino.dnd.projectDnd.dtos.CampaignDto;
-import progettino.dnd.projectDnd.dtos.CharacterPgDto;
+import progettino.dnd.projectDnd.dtos.*;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
-import progettino.dnd.projectDnd.model.repositories.BagRepository;
-import progettino.dnd.projectDnd.model.repositories.CampaignRepository;
-import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
-import progettino.dnd.projectDnd.model.repositories.DiaryRepository;
+import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
 import java.util.List;
@@ -107,6 +103,27 @@ public class CharacterPgController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok("Save!");
+    }
+
+    @GetMapping("/talents")
+    public ResponseEntity<List<TalentDto>> getAllTalents() {
+        List<TalentDto> talentDtos = characterPgService.getAllTalents();
+        return new ResponseEntity<>(talentDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/traits")
+    public ResponseEntity<List<TraitDto>> getAllTraits() {
+        List<TraitDto> traitDtos = characterPgService.getAllTraits();
+        return new ResponseEntity<>(traitDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/diary/{pgId}")
+    public ResponseEntity<DiaryDto> getDiaryByCharacter(@PathVariable Long pgId) {
+        DiaryDto diaryDto = characterPgService.getDiaryByCharacter(pgId);
+        if (diaryDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(diaryDto, HttpStatus.OK);
     }
 
 

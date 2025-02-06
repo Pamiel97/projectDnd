@@ -1,6 +1,7 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
 import org.springframework.stereotype.Service;
+import progettino.dnd.projectDnd.dtos.SlotDto;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Spell;
@@ -11,6 +12,7 @@ import progettino.dnd.projectDnd.model.repositories.SpellRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.SlotService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SlotJpa implements SlotService {
@@ -41,5 +43,13 @@ public class SlotJpa implements SlotService {
             slot.setSpells(spells);
         }
         return slotRepository.save(slot);
+    }
+
+    @Override
+    public List<SlotDto> getSlotsByCharacter(Long characterId) {
+        List<Slot> slots = slotRepository.findByPgId(characterId);
+        return slots.stream()
+                .map(SlotDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

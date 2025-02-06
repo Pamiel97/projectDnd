@@ -10,6 +10,8 @@ import progettino.dnd.projectDnd.model.entities.Static;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.StaticService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/static")
 public class StaticController {
@@ -44,5 +46,11 @@ public class StaticController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(updatedStatic);
+    }
+
+    @GetMapping("/character/{characterId}")
+    public ResponseEntity<List<StaticDto>> getStaticsByCharacter(@PathVariable Long characterId) {
+        List<StaticDto> staticDtos = staticService.getStaticsByCharacter(characterId);
+        return new ResponseEntity<>(staticDtos, HttpStatus.OK);
     }
 }

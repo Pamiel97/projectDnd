@@ -10,7 +10,9 @@ import progettino.dnd.projectDnd.model.repositories.SlotRepository;
 import progettino.dnd.projectDnd.model.repositories.SpellRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.SpellService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SpellJpa implements SpellService {
@@ -65,5 +67,11 @@ public class SpellJpa implements SpellService {
         return spell;
     }
 
-
+    @Override
+    public List<SpellDto> getSpellsByCharacter(Long characterId) {
+        List<Spell> spells = spellRepository.findDistinctBySlotsPgId(characterId);
+        return spells.stream()
+                .map(SpellDto::fromEntity)
+                .collect(Collectors.toList());
+    }
 }
