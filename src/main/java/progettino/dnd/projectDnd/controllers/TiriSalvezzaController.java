@@ -11,6 +11,8 @@ import progettino.dnd.projectDnd.model.entities.TiriSalvezza;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.TiriSalvezzaPgService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tiriSalvezza")
 public class TiriSalvezzaController {
@@ -33,5 +35,11 @@ public class TiriSalvezzaController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/character/{characterId}")
+    public ResponseEntity<List<TiriSalvezzaDto>> getTiriSalvezzaByCharacter(@PathVariable Long characterId) {
+        List<TiriSalvezzaDto> dtoList = tiriSalvezzaPgService.getTiriSalvezzaByCharacter(characterId);
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 }

@@ -10,5 +10,6 @@ public interface AbilityPgService {
 
      AbilityPg createAbilityPg(AbilityPg abilityPg, long abilityId, long characterId);
     List<AbilityPg> createMultipleAbilityPgs(List<AbilityPg> abilityPgs, long characterId);
+    List<AbilityPgDto> getAbilitiesPgByCharacter(Long pgId);
 
 }

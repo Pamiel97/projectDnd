@@ -17,6 +17,7 @@ import progettino.dnd.projectDnd.model.services.abstraction.AbilityService;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AbilityPgJpa implements AbilityPgService {
@@ -68,6 +69,13 @@ public class AbilityPgJpa implements AbilityPgService {
         }
 
         return abilityPgRepository.saveAll(abilityPgs);
+    }
+
+    public List<AbilityPgDto> getAbilitiesPgByCharacter(Long pgId) {
+        List<AbilityPg> abilityPgs = abilityPgRepository.findByPgId(pgId);
+        return abilityPgs.stream()
+                .map(AbilityPgDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 

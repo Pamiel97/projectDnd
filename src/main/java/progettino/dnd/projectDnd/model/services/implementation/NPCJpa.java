@@ -2,6 +2,7 @@ package progettino.dnd.projectDnd.model.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import progettino.dnd.projectDnd.dtos.NPCDto;
 import progettino.dnd.projectDnd.model.entities.Campaign;
 import progettino.dnd.projectDnd.model.entities.NPC;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -12,6 +13,7 @@ import progettino.dnd.projectDnd.model.services.abstraction.NPCService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NPCJpa implements NPCService {
@@ -40,12 +42,11 @@ public class NPCJpa implements NPCService {
     }
 
     @Override
-    public List<NPC> getNPCsByCampaignId(long campaignId)throws EntityNotFoundException {
-        Optional<Campaign> campaign = campaignRepository.findById(campaignId);
-        if (campaign.isEmpty()) {
-            throw new EntityNotFoundException("Campagna con id: " + campaignId + " non trovata");
-        }
-        return campaign.get().getNpcs();
+    public List<NPCDto> getNPCsByCampaign(Long campaignId) {
+        List<NPC> npcs = npcRepository.findByCampaignId(campaignId);
+        return npcs.stream()
+                .map(NPCDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
 

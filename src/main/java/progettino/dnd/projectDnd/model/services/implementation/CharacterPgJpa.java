@@ -14,6 +14,7 @@ import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -242,5 +243,23 @@ public class CharacterPgJpa implements CharacterPgService {
     }
 
 
+    public List<TalentDto> getAllTalents() {
+        List<Talent> talents = talentRepository.findAll();
+        return talents.stream()
+                .map(TalentDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<TraitDto> getAllTraits() {
+        List<Trait> traits = traitRepository.findAll();
+        return traits.stream()
+                .map(TraitDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public DiaryDto getDiaryByCharacter(Long pgId) {
+        Optional<Diary> diaryOptional = diaryRepository.findByPgId(pgId);
+        return diaryOptional.map(DiaryDto::fromEntity).orElse(null);
+    }
 
 }
