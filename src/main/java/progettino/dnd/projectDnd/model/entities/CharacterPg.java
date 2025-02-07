@@ -54,7 +54,7 @@ public class CharacterPg {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
     private List<Slot> slots;  // Lista di slot associati al PG
 
     @JsonIgnore
@@ -69,15 +69,15 @@ public class CharacterPg {
 
     @JsonIgnore
     @JsonManagedReference
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
     private List<AbilityPg> abilityPgs = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
     private List<Static> staticList;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
     private List<TiriSalvezza> tiriSalvezza;
 
     @JsonIgnore

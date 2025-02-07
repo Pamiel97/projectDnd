@@ -13,9 +13,12 @@ import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 @RestController
 @RequestMapping("/api/characters")
@@ -26,17 +29,27 @@ public class CharacterPgController {
     private DiaryRepository diaryRepository;
     private CampaignRepository campaignRepository;
     private CharacterPgRepository characterPgRepository;
+    private SlotRepository slotRepository;
+    private AbilityRepository abilityRepository;
+    private AbilityPgRepository abilityPgRepository;
+    private TiriSalvezzaRepository tiriSalvezzaRepository;
+    private StaticRepository staticRepository;
 //
 //
 
 
     @Autowired
-    public CharacterPgController(CharacterPgService characterPgService, BagRepository bagRepository, DiaryRepository diaryRepository, CampaignRepository campaignRepository, CharacterPgRepository characterPgRepository) {
+    public CharacterPgController(CharacterPgService characterPgService, BagRepository bagRepository, DiaryRepository diaryRepository, CampaignRepository campaignRepository, CharacterPgRepository characterPgRepository, SlotRepository slotRepository, AbilityRepository abilityRepository, AbilityPgRepository abilityPgRepository, TiriSalvezzaRepository tiriSalvezzaRepository, StaticRepository staticRepository) {
         this.characterPgService = characterPgService;
         this.bagRepository = bagRepository;
         this.diaryRepository = diaryRepository;
         this.campaignRepository = campaignRepository;
         this.characterPgRepository = characterPgRepository;
+        this.slotRepository = slotRepository;
+        this.abilityRepository = abilityRepository;
+        this.abilityPgRepository = abilityPgRepository;
+        this.tiriSalvezzaRepository = tiriSalvezzaRepository;
+        this.staticRepository = staticRepository;
     }
 
     @GetMapping("/all")
@@ -49,13 +62,15 @@ public class CharacterPgController {
 
     @PostMapping
     public ResponseEntity<CharacterPg> createCharacterPg(
-            @RequestBody CharacterPg characterPg,
+            @RequestBody CharacterPgDto characterPgDto,
             @AuthenticationPrincipal User user,  // Ottieni l'utente connesso tramite authentication
             @RequestParam long campaignId) {  // ID campagna passato come parametro query
 
 
-            // Salva prima il characterPg per garantire che sia persistito
-            characterPg.setUser(user);  // Associa l'utente
+            CharacterPg characterPg = characterPgDto.toEntity();
+
+
+            characterPg.setUser(user);
             Optional<Campaign> campaign = campaignRepository.findById(campaignId);  // Trova la campagna
             if (campaign.isEmpty()) {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -67,18 +82,63 @@ public class CharacterPgController {
 
             // Ora crea e associa Bag e Diary dopo aver salvato CharacterPg
             Bag bag = new Bag();
-            bag.setPg(characterPg);  // Associa il characterPg al bag
-            bagRepository.save(bag);  // Salva il Bag nel database
-            characterPg.setBag(bag);  // Associa il bag salvato al characterPg
+            bag.setPg(characterPg);
+            bagRepository.save(bag);
+            characterPg.setBag(bag);
 
             Diary diary = new Diary();
-            diary.setPg(characterPg);  // Associa il characterPg al diario
-            diaryRepository.save(diary);  // Salva il Diary nel database
-            characterPg.setDiary(diary);  // Associa il diary salvato al characterPg
+            diary.setPg(characterPg);
+            diaryRepository.save(diary);
+            characterPg.setDiary(diary);
 
-            // Restituisci il personaggio creato
-            return new ResponseEntity<>(characterPg, HttpStatus.CREATED);  // Rispondi con il personaggio creato
+            final CharacterPg savedCharacterPg = characterPg; // Assicura l'immutabilità nella lambda
 
+            List<Slot> listSlot = IntStream.rangeClosed(1, 10)
+                .mapToObj(level -> {
+                    Slot slot = new Slot();
+                    slot.setLevelSlot(level);
+                    slot.setPg(savedCharacterPg);
+                    return slot;
+                })
+                .toList();
+            slotRepository.saveAll(listSlot);  // Salvataggio batch
+            characterPg.setSlots(listSlot);
+
+
+             List<AbilityPg> listAbility = LongStream.rangeClosed(1, 18)
+                .mapToObj(id -> {
+                    AbilityPg ab = new AbilityPg();
+                    ab.setAbility(abilityRepository.findById(id).orElseThrow());
+                    ab.setPg(savedCharacterPg);
+                    return ab;
+                })
+                .toList();
+                abilityPgRepository.saveAll(listAbility);  // Salvataggio batch
+                characterPg.setAbilityPgs(listAbility);
+
+              List<TiriSalvezza> tsList = new ArrayList<>();
+                List<Static> staticList = new ArrayList<>();
+                 List<Type> types = List.of(
+                   Type.FORZA, Type.DESTREZZA, Type.COSTITUZIONE,
+                   Type.INTELLIGENZA, Type.SAGGEZZA, Type.CARISMA
+                 );
+
+        for (Type type : types) {
+            TiriSalvezza ts = new TiriSalvezza();
+            ts.setType(type);
+            ts.setPg(characterPg);
+            tiriSalvezzaRepository.save(ts);
+            tsList.add(ts);
+
+            Static statics = new Static();
+            statics.setType(type);
+            statics.setPg(characterPg);
+            staticRepository.save(statics);
+            staticList.add(statics);
+        }
+        characterPg.setTiriSalvezza(tsList);
+        characterPg.setStaticList(staticList);
+        return new ResponseEntity<>(characterPg, HttpStatus.CREATED);  // Rispondi con il personaggio creato
     }
 
 

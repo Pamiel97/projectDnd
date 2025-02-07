@@ -1,8 +1,20 @@
-INSERT INTO abilities (name, description, type)
-VALUES
-    ('Forza', 'Misura la potenza fisica. Influisce sulle abilità come l''Atletica.', 'FORZA'),
-    ('Destrezza', 'Misura l''agilità, il riflesso e l''equilibrio. Influisce sulle abilità come l''Acrobazia e la Furtività.', 'DESTREZZA'),
-    ('Costituzione', 'Misura la resistenza fisica e la capacità di recupero. Influisce sulle abilità come l''Atletica e la capacità di resistenza.', 'COSTITUZIONE'),
-    ('Intelligenza', 'Misura la capacità analitica e l''istruzione. Influisce sulle abilità come la Conoscenza e l''Investigare.', 'INTELLIGENZA'),
-    ('Saggezza', 'Misura la percezione, l''intuizione e la consapevolezza. Influisce sulle abilità come l''Individuazione e l''Intuizione.', 'SAGGEZZA'),
-    ('Carisma', 'Misura la forza di personalità, il fascino e la leadership. Influisce sulle abilità come la Persuasione e l''Inganno.', 'CARISMA');
+
+    INSERT INTO abilities (name, description, type) VALUES
+    ('Acrobazia', 'Abilità che richiede destrezza per movimenti agili e rapidi', 'DESTREZZA'),
+    ('Addestrare Animali', 'Capacità di addestrare e comprendere il comportamento degli animali', 'SAGGEZZA'),
+    ('Arcano', 'Conoscenze avanzate in magia e fenomeni arcani', 'INTELLIGENZA'),
+    ('Atletica', 'Uso della forza fisica per compiere imprese atletiche', 'FORZA'),
+    ('Furtività', 'Capacità di muoversi senza essere notati', 'DESTREZZA'),
+    ('Indagare', 'Ricerca attenta di dettagli nascosti o informazioni', 'INTELLIGENZA'),
+    ('Inganno', 'Abilità nell\'ingannare o manipolare gli altri', 'CARISMA'),
+    ('Intimidire', 'Capacità di influenzare gli altri attraverso paura o minaccia', 'CARISMA'),
+    ('Intrattenere', 'Abilità nell\'esibirsi per il piacere degli altri', 'CARISMA'),
+    ('Intuizione', 'Capacità di comprendere le intenzioni o sentimenti altrui', 'SAGGEZZA'),
+    ('Medicina', 'Conoscenza delle tecniche di guarigione e trattamento delle ferite', 'SAGGEZZA'),
+    ('Natura', 'Conoscenze relative agli ambienti naturali e creature', 'INTELLIGENZA'),
+    ('Percezione', 'Abilità nel notare dettagli nell\'ambiente circostante', 'SAGGEZZA'),
+    ('Persuasione', 'Capacità di influenzare gli altri con discorsi convincenti', 'CARISMA'),
+    ('Rapidità di Mano', 'Abilità manuali rapide e precise', 'DESTREZZA'),
+    ('Religione', 'Conoscenze relative a culti, divinità e pratiche religiose', 'INTELLIGENZA'),
+    ('Sopravvivenza', 'Capacità di sopravvivere in ambienti ostili', 'SAGGEZZA'),
+    ('Storia', 'Conoscenza degli eventi storici e delle tradizioni', 'INTELLIGENZA');
