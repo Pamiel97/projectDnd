@@ -79,4 +79,36 @@ public class AbilityPgJpa implements AbilityPgService {
     }
 
 
+
+    @Override
+    @Transactional
+    public AbilityPg updateAbilityPg(long id, AbilityPg updatedAbilityPg) throws EntityNotFoundException{
+        // Recupero dell'entità esistente
+
+
+        AbilityPg existingAbilityPg = abilityPgRepository.findById(id);
+
+
+        // Aggiornamento dei campi (controllando che siano valorizzati)
+        if (updatedAbilityPg.getAbility() != null) {
+            Ability ability = abilityRepository.findById(updatedAbilityPg.getAbility().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Ability not found for ID: " + updatedAbilityPg.getAbility().getId()));
+            existingAbilityPg.setAbility(ability);
+        }
+
+        if (updatedAbilityPg.getPg() != null) {
+            CharacterPg characterPg = characterPgRepository.findById(updatedAbilityPg.getPg().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("CharacterPg not found for ID: " + updatedAbilityPg.getPg().getId()));
+            existingAbilityPg.setPg(characterPg);
+        }
+
+        // Aggiorna altri campi primitivi
+        existingAbilityPg.setCompetence(updatedAbilityPg.isCompetence());
+        existingAbilityPg.setPoint(updatedAbilityPg.getPoint());
+
+        // Salvataggio nel repository
+        return abilityPgRepository.save(existingAbilityPg);
+    }
+
+
 }

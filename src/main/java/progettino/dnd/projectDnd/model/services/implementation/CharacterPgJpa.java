@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -261,5 +262,52 @@ public class CharacterPgJpa implements CharacterPgService {
         Optional<Diary> diaryOptional = diaryRepository.findByPgId(pgId);
         return diaryOptional.map(DiaryDto::fromEntity).orElse(null);
     }
+
+
+    @Override
+    @Transactional
+    public CharacterPg updateCharacterPg(long id, CharacterPg characterPg) throws EntityNotFoundException {
+        // Recupero del PG esistente
+        CharacterPg existingCharacterPg = characterPgRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("CharacterPg non trovato con ID: " + id));
+
+        // Aggiornamento dei campi primitivi
+        existingCharacterPg.setName(characterPg.getName());
+        existingCharacterPg.setSurname(characterPg.getSurname());
+        existingCharacterPg.setClasse(characterPg.getClasse());
+        existingCharacterPg.setRace(characterPg.getRace());
+        existingCharacterPg.setLevel(characterPg.getLevel());
+        existingCharacterPg.setBackground(characterPg.getBackground());
+        existingCharacterPg.setAllignment(characterPg.getAllignment());
+        existingCharacterPg.setExp(characterPg.getExp());
+        existingCharacterPg.setPhysicalTrait(characterPg.getPhysicalTrait());
+        existingCharacterPg.setIspiration(characterPg.getIspiration());
+        existingCharacterPg.setBonusCompetence(characterPg.getBonusCompetence());
+        existingCharacterPg.setPerception(characterPg.getPerception());
+        existingCharacterPg.setCa(characterPg.getCa());
+        existingCharacterPg.setIniziative(characterPg.getIniziative());
+        existingCharacterPg.setSpeed(characterPg.getSpeed());
+        existingCharacterPg.setTotalHp(characterPg.getTotalHp());
+        existingCharacterPg.setActualHp(characterPg.getActualHp());
+        existingCharacterPg.setTemporanyHp(characterPg.getTemporanyHp());
+        existingCharacterPg.setDice(characterPg.getDice());
+        existingCharacterPg.setDiceHealth(characterPg.getDiceHealth());
+        existingCharacterPg.setCaratterial(characterPg.getCaratterial());
+        existingCharacterPg.setIdeals(characterPg.getIdeals());
+        existingCharacterPg.setNote(characterPg.getNote());
+        existingCharacterPg.setMoney(characterPg.getMoney());
+        existingCharacterPg.setImg(characterPg.getImg());
+
+        // Aggiornamento delle relazioni complesse
+        existingCharacterPg.setAbilityPgs(resolveAbilityPgs(characterPg.getAbilityPgs(), existingCharacterPg));
+        existingCharacterPg.setTiriSalvezza(resolveTiriSalvezza(characterPg.getTiriSalvezza()));
+        existingCharacterPg.setTalents(resolveTalents(characterPg.getTalents()));
+        existingCharacterPg.setTraits(resolveTraits(characterPg.getTraits()));
+
+        return characterPgRepository.save(existingCharacterPg);
+    }
+
+
+
 
 }

@@ -116,12 +116,12 @@ public class CharacterPgController {
                 abilityPgRepository.saveAll(listAbility);  // Salvataggio batch
                 characterPg.setAbilityPgs(listAbility);
 
-              List<TiriSalvezza> tsList = new ArrayList<>();
+                List<TiriSalvezza> tsList = new ArrayList<>();
                 List<Static> staticList = new ArrayList<>();
-                 List<Type> types = List.of(
+                List<Type> types = List.of(
                    Type.FORZA, Type.DESTREZZA, Type.COSTITUZIONE,
                    Type.INTELLIGENZA, Type.SAGGEZZA, Type.CARISMA
-                 );
+                );
 
         for (Type type : types) {
             TiriSalvezza ts = new TiriSalvezza();

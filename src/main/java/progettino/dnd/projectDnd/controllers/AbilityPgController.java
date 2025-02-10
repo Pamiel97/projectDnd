@@ -10,6 +10,7 @@ import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 
+import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
 
 import java.util.List;
@@ -54,6 +55,24 @@ public class AbilityPgController {
     public ResponseEntity<List<AbilityPgDto>> getAbilitiesPgByCharacter(@PathVariable Long pgId) {
         List<AbilityPgDto> abilityPgDtos = abilityPgService.getAbilitiesPgByCharacter(pgId);
         return new ResponseEntity<>(abilityPgDtos, HttpStatus.OK);
+    }
+
+
+    // Metodo PUT per aggiornare un AbilityPg
+    @PutMapping("/{id}")
+    public ResponseEntity<AbilityPg> updateAbilityPg(
+            @PathVariable long id,
+            @RequestBody AbilityPgDto abilityPgDto) {
+
+        // Convertiamo il DTO in entità e chiamiamo il service
+        AbilityPg updatedEntity = null;
+        try {
+            updatedEntity = abilityPgService.updateAbilityPg(id, abilityPgDto.toEntity());
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.ok(updatedEntity);
     }
 
 }
