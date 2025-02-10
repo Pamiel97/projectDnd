@@ -187,4 +187,23 @@ public class CharacterPgController {
     }
 
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CharacterPg> updateCharacterPg(
+            @PathVariable long id,
+            @RequestBody CharacterPgDto characterPgDto) {
+
+        try {
+            // Converte il DTO nell'entità e chiama il service
+            CharacterPg characterPg = characterPgDto.toEntity();
+            CharacterPg updatedCharacterPg = characterPgService.updateCharacterPg(id, characterPg);
+            return ResponseEntity.ok(updatedCharacterPg);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
 }
