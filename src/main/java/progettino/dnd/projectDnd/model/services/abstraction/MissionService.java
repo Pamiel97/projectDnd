@@ -10,4 +10,5 @@ public interface MissionService {
     Mission linkNPCsToMission(long missionId, List<Long> npcIds);
     List<Mission> getCompletedMissions(Long diaryId);
     List<Mission> getIncompleteMissions(Long diaryId);
+    Mission updateMission(long id, Mission missionData) throws EntityNotFoundException;
 }

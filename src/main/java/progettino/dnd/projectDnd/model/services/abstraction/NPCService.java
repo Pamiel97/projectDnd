@@ -9,5 +9,6 @@ import java.util.List;
 public interface NPCService {
     NPC createNPC(NPC npc, long CampaignId) throws EntityNotFoundException;
     public List<NPCDto> getNPCsByCampaign(Long campaignId);
+    NPC updateNPC(long id, NPC npcData) throws EntityNotFoundException;
 
 }

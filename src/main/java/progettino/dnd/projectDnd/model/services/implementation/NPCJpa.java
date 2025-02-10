@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.NPCDto;
@@ -50,12 +51,23 @@ public class NPCJpa implements NPCService {
     }
 
 
+    @Override
+    @Transactional
+    public NPC updateNPC(long id, NPC npcData) throws EntityNotFoundException {
+        NPC existingNPC = npcRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("NPC con id: " + id + " non trovato."));
 
-//    public NPC createNPC(NPCDto npcDto, long campaignId) throws EntityNotFoundException {
-//        NPC npc = npcMapper.toEntity(npcDto);
-//        // Aggiunta logica aziendale
-//        npc.setCampaign(campaignRepository.findById(campaignId)
-//                .orElseThrow(() -> new EntityNotFoundException("Campagna non trovata")));
-//        return npcRepository.save(npc);
-//    }
+        // Aggiorna solo i campi del NPC senza modificare la campagna associata
+        existingNPC.setName(npcData.getName());
+        existingNPC.setSurname(npcData.getSurname());
+        existingNPC.setDescription(npcData.getDescription());
+        existingNPC.setDeath(npcData.isDeath());
+        existingNPC.setRace(npcData.getRace());
+        existingNPC.setClasse(npcData.getClasse());
+
+        return npcRepository.save(existingNPC);
+    }
+
+
+
 }
