@@ -308,6 +308,22 @@ public class CharacterPgJpa implements CharacterPgService {
     }
 
 
+    @Override
+    public List<CharacterPgDto> getCharacterPgByCampaignId(long campaignId) throws EntityNotFoundException {
+        // Recupera la lista di CharacterPg associata alla campagna tramite l'ID della campagna
+        List<CharacterPg> characterPgs = characterPgRepository.findByCampaignId(campaignId);
+
+        if (characterPgs.isEmpty()) {
+            throw new EntityNotFoundException("Nessun personaggio trovato per la campagna con id: " + campaignId);
+        }
+
+        // Mappa la lista di CharacterPg alla lista di DTO
+        return characterPgs.stream()
+                .map(CharacterPgDto::fromEntity) // Mappa ogni entità a un DTO
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }

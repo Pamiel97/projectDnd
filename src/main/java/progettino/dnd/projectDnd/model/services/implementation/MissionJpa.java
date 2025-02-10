@@ -1,5 +1,6 @@
 package progettino.dnd.projectDnd.model.services.implementation;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -23,6 +24,7 @@ public class MissionJpa implements MissionService {
         this.npcRepository = npcRepository;
     }
 
+    //PRIMA CREA MISSIONI E POI GLI ALLEGHI PG
     @Override
     public Mission createMission(Mission mission, long diaryId) throws EntityNotFoundException {
         Optional<Diary> diaryOptional = diaryRepository.findById(diaryId);
@@ -45,6 +47,20 @@ public class MissionJpa implements MissionService {
         return missionRepository.save(mission);
     }
 
+    @Override
+    @Transactional
+    public Mission updateMission(long id, Mission missionData) throws EntityNotFoundException {
+        Mission existingMission = missionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Mission con id: " + id + " non trovata."));
+
+        // Aggiorna solo i campi della missione senza toccare gli NPC già associati
+        existingMission.setName(missionData.getName());
+        existingMission.setDescription(missionData.getDescription());
+        existingMission.setComplete(missionData.isComplete());
+        existingMission.setDifficulty(missionData.getDifficulty());
+
+        return missionRepository.save(existingMission);
+    }
 
 
 }

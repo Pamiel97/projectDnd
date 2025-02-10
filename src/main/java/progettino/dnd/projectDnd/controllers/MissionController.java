@@ -1,6 +1,7 @@
 package progettino.dnd.projectDnd.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.MissionDto;
@@ -40,5 +41,18 @@ public class MissionController {
         return ResponseEntity.ok(missione);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Mission> updateMission(
+            @PathVariable long id,
+            @RequestBody MissionDto missionDto) {
+
+        try {
+            Mission missionData = missionDto.toEntity();
+            Mission updatedMission = missionService.updateMission(id, missionData);
+            return ResponseEntity.ok(updatedMission);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
 }

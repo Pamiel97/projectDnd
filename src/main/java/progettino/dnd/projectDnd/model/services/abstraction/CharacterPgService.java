@@ -22,6 +22,7 @@ public interface CharacterPgService {
    List<TraitDto> getAllTraits();
    DiaryDto getDiaryByCharacter(Long pgId);
    CharacterPg updateCharacterPg(long id, CharacterPg characterPg) throws EntityNotFoundException;
+   List<CharacterPgDto> getCharacterPgByCampaignId(long campaignId) throws EntityNotFoundException;
 
 
 

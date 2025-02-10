@@ -206,4 +206,18 @@ public class CharacterPgController {
     }
 
 
+    @GetMapping("/campaign/{campaignId}")
+    public ResponseEntity<List<CharacterPgDto>> getCharacterPgByCampaignId(@PathVariable long campaignId) {
+        try {
+            // Chiama il servizio per ottenere la lista di DTO
+            List<CharacterPgDto> characterPgDtos = characterPgService.getCharacterPgByCampaignId(campaignId);
+            return ResponseEntity.ok(characterPgDtos); // Restituisce la lista di DTO con status 200 OK
+        } catch (EntityNotFoundException e) {
+            // Restituisce un errore 404 se non ci sono personaggi per quella campagna
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+
 }

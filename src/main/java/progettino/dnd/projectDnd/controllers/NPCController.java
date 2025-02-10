@@ -50,5 +50,18 @@ public class NPCController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<NPC> updateNPC(
+            @PathVariable long id,
+            @RequestBody NPCDto npcDto) {
+
+        try {
+            NPC npcData = npcDto.toEntity();
+            NPC updatedNPC = npcService.updateNPC(id, npcData);
+            return ResponseEntity.ok(updatedNPC);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
 }
