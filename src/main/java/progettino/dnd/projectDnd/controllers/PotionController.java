@@ -9,6 +9,8 @@ import progettino.dnd.projectDnd.model.entities.Potion;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.PotionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/potions")
 public class PotionController {
@@ -29,5 +31,17 @@ public class PotionController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePotion(@PathVariable Long id) {
+        potionService.deletePotion(id);
+        return ResponseEntity.ok("Potion with ID " + id + " deleted successfully.");
+    }
+
+    @GetMapping("/bag/{bagId}")
+    public ResponseEntity<List<Potion>> getPotionsByBag(@PathVariable Long bagId) {
+        List<Potion> potions = potionService.getPotionsByBag(bagId);
+        return ResponseEntity.ok(potions);
     }
 }

@@ -2,6 +2,7 @@ package progettino.dnd.projectDnd.model.services.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import progettino.dnd.projectDnd.dtos.SpellDto;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Spell;
@@ -73,5 +74,13 @@ public class SpellJpa implements SpellService {
         return spells.stream()
                 .map(SpellDto::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteSpell(Long id) {
+        if (!spellRepository.existsById(id)) {
+            throw new RuntimeException("Spell with ID " + id + " not found.");
+        }
+        spellRepository.deleteById(id);
     }
 }

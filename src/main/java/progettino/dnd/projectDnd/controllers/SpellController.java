@@ -51,5 +51,11 @@ public class SpellController {
         return new ResponseEntity<>(spellDtos, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteSpell(@PathVariable Long id) {
+        spellService.deleteSpell(id);
+        return ResponseEntity.ok("Spell with ID " + id + " deleted successfully.");
+    }
+
 
 }

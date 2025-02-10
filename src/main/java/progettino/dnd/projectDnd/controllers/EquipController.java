@@ -12,6 +12,8 @@ import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.EquipService;
 import progettino.dnd.projectDnd.model.services.abstraction.PotionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/equips")
 public class EquipController {
@@ -31,5 +33,17 @@ public class EquipController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEquip(@PathVariable Long id) {
+        equipService.deleteEquip(id);
+        return ResponseEntity.ok("Equip with ID " + id + " deleted successfully.");
+    }
+
+    @GetMapping("/bag/{bagId}")
+    public ResponseEntity<List<Equip>> getEquipsByBag(@PathVariable Long bagId) {
+        List<Equip> equips = equipService.getEquipsByBag(bagId);
+        return ResponseEntity.ok(equips);
     }
 }

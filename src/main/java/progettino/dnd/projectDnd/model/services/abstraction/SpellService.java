@@ -10,4 +10,5 @@ public interface SpellService {
     Spell createSpell(long id,Spell spell) throws EntityNotFoundException;
     Spell createSpellAndAssignToSlot(Long slotId, SpellDto spellDto) throws EntityNotFoundException;
     List<SpellDto> getSpellsByCharacter(Long characterId);
+    void deleteSpell(Long id);
 }

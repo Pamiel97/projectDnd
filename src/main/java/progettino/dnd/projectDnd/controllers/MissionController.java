@@ -40,5 +40,17 @@ public class MissionController {
         return ResponseEntity.ok(missione);
     }
 
+    @GetMapping("/completed/{diaryId}")
+    public ResponseEntity<List<Mission>> getCompletedMissions(@PathVariable Long diaryId) {
+        List<Mission> missions = missionService.getCompletedMissions(diaryId);
+        return ResponseEntity.ok(missions);
+    }
+
+    @GetMapping("/incomplete/{diaryId}")
+    public ResponseEntity<List<Mission>> getIncompleteMissions(@PathVariable Long diaryId) {
+        List<Mission> missions = missionService.getIncompleteMissions(diaryId);
+        return ResponseEntity.ok(missions);
+    }
+
 
 }

@@ -45,6 +45,14 @@ public class MissionJpa implements MissionService {
         return missionRepository.save(mission);
     }
 
+    public List<Mission> getCompletedMissions(Long diaryId) {
+        return missionRepository.findByDiaryIdAndCompleteTrue(diaryId);
+    }
+
+    public List<Mission> getIncompleteMissions(Long diaryId) {
+        return missionRepository.findByDiaryIdAndCompleteFalse(diaryId);
+    }
+
 
 
 }
