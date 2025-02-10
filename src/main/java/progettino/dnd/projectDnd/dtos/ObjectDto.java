@@ -151,7 +151,7 @@ public class ObjectDto {
 
 
   //TODO
-    public Object toEntity() {
+    public progettino.dnd.projectDnd.model.entities.Object toEntity() {
 
         progettino.dnd.projectDnd.model.entities.Object object = new progettino.dnd.projectDnd.model.entities.Object();
         object.setId(this.id);
