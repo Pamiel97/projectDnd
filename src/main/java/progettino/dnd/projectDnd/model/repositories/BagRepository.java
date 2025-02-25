@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface BagRepository extends JpaRepository<Bag, Long> {
-    Optional<Bag> findByPg_Id(Long pgId);
+    Optional<Bag> findByPg_Id(Long characterId);
 }

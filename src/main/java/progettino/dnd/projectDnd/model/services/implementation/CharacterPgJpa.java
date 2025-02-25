@@ -244,6 +244,7 @@ public class CharacterPgJpa implements CharacterPgService {
     }
 
 
+    @Override
     public List<TalentDto> getAllTalents() {
         List<Talent> talents = talentRepository.findAll();
         return talents.stream()
@@ -258,9 +259,16 @@ public class CharacterPgJpa implements CharacterPgService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public DiaryDto getDiaryByCharacter(Long pgId) {
-        Optional<Diary> diaryOptional = diaryRepository.findByPgId(pgId);
+        Optional<Diary> diaryOptional = diaryRepository.findByPg_Id(pgId);
         return diaryOptional.map(DiaryDto::fromEntity).orElse(null);
+    }
+
+    @Override
+    public BagDto getBagByCharacter(Long pgId) {
+        Optional<Bag> bagOptional = bagRepository.findByPg_Id(pgId);
+        return bagOptional.map(BagDto::fromEntity).orElse((null));
     }
 
 

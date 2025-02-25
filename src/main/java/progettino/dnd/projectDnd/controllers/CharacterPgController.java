@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/characters")
 @Validated
@@ -184,6 +185,16 @@ public class CharacterPgController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(diaryDto, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/bag/{pgId}")
+    public ResponseEntity<BagDto> getBagByCharacter(@PathVariable Long pgId) {
+        BagDto bagDto = characterPgService.getBagByCharacter(pgId);
+        if (bagDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(bagDto, HttpStatus.OK);
     }
 
 

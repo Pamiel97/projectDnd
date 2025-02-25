@@ -3,10 +3,7 @@ package progettino.dnd.projectDnd.controllers.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.security.AuthenticationRequest;
 import progettino.dnd.projectDnd.dtos.security.AuthenticationResponse;
 import progettino.dnd.projectDnd.dtos.security.RegisterRequest;
@@ -17,6 +14,7 @@ import progettino.dnd.projectDnd.model.repositories.security.UserRepository;
 import progettino.dnd.projectDnd.model.services.security.AuthService;
 
 import java.util.Set;
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/auth")
 @RestController
 public class AuthController {
