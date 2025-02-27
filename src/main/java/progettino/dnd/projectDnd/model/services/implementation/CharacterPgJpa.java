@@ -3,7 +3,9 @@ package progettino.dnd.projectDnd.model.services.implementation;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import progettino.dnd.projectDnd.dtos.*;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -12,8 +14,11 @@ import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.repositories.security.UserRepository;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
+import java.lang.Object;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -329,6 +334,44 @@ public class CharacterPgJpa implements CharacterPgService {
         return characterPgs.stream()
                 .map(CharacterPgDto::fromEntity) // Mappa ogni entità a un DTO
                 .collect(Collectors.toList());
+    }
+
+
+
+    @Override
+    public CharacterPg updateCharacterFields(Long id, Map<String, Object> updates) {
+        Optional<CharacterPg> optionalCharacter = characterPgRepository.findById(id);
+        if (optionalCharacter.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found");
+        }
+
+        CharacterPg character = optionalCharacter.get();
+
+        updates.forEach((key, value) -> {
+            try {
+                Field field = CharacterPgDto.class.getDeclaredField(key);
+                field.setAccessible(true); // Permette di accedere a campi privati
+
+                if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
+                    field.set(character, ((Number) value).intValue());
+                } else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
+                    field.set(character, ((Number) value).doubleValue());
+                } else if (field.getType().equals(String.class)) {
+                    field.set(character, value.toString());
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field type: " + key);
+                }
+
+            } catch (NoSuchFieldException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field: " + key);
+            } catch (IllegalAccessException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating field: " + key);
+            } catch (ClassCastException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data type for field: " + key);
+            }
+        });
+
+        return characterPgRepository.save(character);
     }
 
 

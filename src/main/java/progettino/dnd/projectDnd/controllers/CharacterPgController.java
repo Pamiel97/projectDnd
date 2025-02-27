@@ -7,14 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import progettino.dnd.projectDnd.dtos.*;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
+import java.lang.Object;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -35,6 +39,7 @@ public class CharacterPgController {
     private AbilityPgRepository abilityPgRepository;
     private TiriSalvezzaRepository tiriSalvezzaRepository;
     private StaticRepository staticRepository;
+
 //
 //
 
@@ -228,6 +233,19 @@ public class CharacterPgController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CharacterPgDto> updateCharacterField(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+
+        CharacterPg updatedCharacter = characterPgService.updateCharacterFields(id, updates);
+        CharacterPgDto dto = CharacterPgDto.fromEntity(updatedCharacter);
+        return ResponseEntity.ok(dto);
+    }
+
+
 
 
 

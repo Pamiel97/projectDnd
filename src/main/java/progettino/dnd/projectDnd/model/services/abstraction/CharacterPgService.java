@@ -5,6 +5,7 @@ import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface CharacterPgService {
@@ -22,7 +23,7 @@ public interface CharacterPgService {
    CharacterPg updateCharacterPg(long id, CharacterPg characterPg) throws EntityNotFoundException;
    List<CharacterPgDto> getCharacterPgByCampaignId(long campaignId) throws EntityNotFoundException;
 
-
+   CharacterPg updateCharacterFields(Long id, Map<String, Object> updates);
 
 
 
