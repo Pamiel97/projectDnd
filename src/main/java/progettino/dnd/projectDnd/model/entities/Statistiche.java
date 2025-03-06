@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "statics")
-public class Static {
+public class Statistiche {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -18,10 +18,10 @@ public class Static {
     private CharacterPg pg;
 
 
-    public Static() {
+    public Statistiche() {
     }
 
-    public Static(long id, Type type, int point, int modificatore, CharacterPg pg) {
+    public Statistiche(long id, Type type, int point, int modificatore, CharacterPg pg) {
         this.id = id;
         this.type = type;
         this.point = point;

@@ -1,7 +1,6 @@
 package progettino.dnd.projectDnd.dtos;
 
-import progettino.dnd.projectDnd.model.entities.CharacterPg;
-import progettino.dnd.projectDnd.model.entities.Static;
+import progettino.dnd.projectDnd.model.entities.Statistiche;
 import progettino.dnd.projectDnd.model.entities.Type;
 
 public class StaticDto {
@@ -64,7 +63,7 @@ public class StaticDto {
     }
 
 
-    public static StaticDto fromEntity(Static staticEntity) {
+    public static StaticDto fromEntity(Statistiche staticEntity) {
         if (staticEntity == null) {
             return null;
         }
@@ -84,9 +83,9 @@ public class StaticDto {
     }
 
     //TODO
-    public Static toEntity() {
+    public Statistiche toEntity() {
 
-        Static staticEntity = new Static();
+        Statistiche staticEntity = new Statistiche();
         staticEntity.setId(this.id);
         staticEntity.setType(this.type);
         staticEntity.setPoint(this.point);

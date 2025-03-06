@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AbilityPgRepository extends JpaRepository<AbilityPg, Long> {
-    AbilityPg findById(long id);
+   // AbilityPg findById(long id);
     List<AbilityPg> findByPgId(Long pgId);
 }

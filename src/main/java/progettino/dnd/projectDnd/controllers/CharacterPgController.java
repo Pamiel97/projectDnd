@@ -1,13 +1,11 @@
 package progettino.dnd.projectDnd.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import progettino.dnd.projectDnd.dtos.*;
 import progettino.dnd.projectDnd.model.entities.*;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
@@ -15,12 +13,10 @@ import progettino.dnd.projectDnd.model.repositories.*;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
 import java.lang.Object;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -38,14 +34,14 @@ public class CharacterPgController {
     private AbilityRepository abilityRepository;
     private AbilityPgRepository abilityPgRepository;
     private TiriSalvezzaRepository tiriSalvezzaRepository;
-    private StaticRepository staticRepository;
+    private StatisticheRepository staticRepository;
 
 //
 //
 
 
     @Autowired
-    public CharacterPgController(CharacterPgService characterPgService, BagRepository bagRepository, DiaryRepository diaryRepository, CampaignRepository campaignRepository, CharacterPgRepository characterPgRepository, SlotRepository slotRepository, AbilityRepository abilityRepository, AbilityPgRepository abilityPgRepository, TiriSalvezzaRepository tiriSalvezzaRepository, StaticRepository staticRepository) {
+    public CharacterPgController(CharacterPgService characterPgService, BagRepository bagRepository, DiaryRepository diaryRepository, CampaignRepository campaignRepository, CharacterPgRepository characterPgRepository, SlotRepository slotRepository, AbilityRepository abilityRepository, AbilityPgRepository abilityPgRepository, TiriSalvezzaRepository tiriSalvezzaRepository, StatisticheRepository staticRepository) {
         this.characterPgService = characterPgService;
         this.bagRepository = bagRepository;
         this.diaryRepository = diaryRepository;
@@ -123,7 +119,7 @@ public class CharacterPgController {
                 characterPg.setAbilityPgs(listAbility);
 
                 List<TiriSalvezza> tsList = new ArrayList<>();
-                List<Static> staticList = new ArrayList<>();
+                List<Statistiche> staticList = new ArrayList<>();
                 List<Type> types = List.of(
                    Type.FORZA, Type.DESTREZZA, Type.COSTITUZIONE,
                    Type.INTELLIGENZA, Type.SAGGEZZA, Type.CARISMA
@@ -136,7 +132,7 @@ public class CharacterPgController {
             tiriSalvezzaRepository.save(ts);
             tsList.add(ts);
 
-            Static statics = new Static();
+            Statistiche statics = new Statistiche();
             statics.setType(type);
             statics.setPg(characterPg);
             staticRepository.save(statics);

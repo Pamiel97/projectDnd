@@ -12,6 +12,7 @@ import progettino.dnd.projectDnd.model.services.abstraction.SlotService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/slots")
 @Validated

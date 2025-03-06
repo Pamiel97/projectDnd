@@ -6,44 +6,24 @@ import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.SpellDto;
 import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
+import progettino.dnd.projectDnd.model.services.abstraction.SlotService;
 import progettino.dnd.projectDnd.model.services.abstraction.SpellService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/spells")
 public class SpellController {
 
     private SpellService spellService;
+    private SlotService slotService;
 
-    public SpellController(SpellService spellService) {
+    public SpellController(SpellService spellService, SlotService slotService) {
         this.spellService = spellService;
+        this.slotService = slotService;
     }
 
-    @PostMapping("/{slotId}")
-    public ResponseEntity<SpellDto> createSpell(
-            @PathVariable long slotId,
-            @RequestBody SpellDto spellDto) {
-        try {
-            Spell newSpell = spellDto.toEntity();
-            Spell spell = spellService.createSpell(slotId, newSpell);
-
-            return new ResponseEntity<>(spellDto, HttpStatus.CREATED);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping("/add/{slotId}")
-    public ResponseEntity<Spell> addSpellToSlot(@PathVariable Long slotId, @RequestBody SpellDto spellDto) {
-        Spell createdSpell = null;
-        try {
-            createdSpell = spellService.createSpellAndAssignToSlot(slotId, spellDto);
-        } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSpell);
-    }
 
     @GetMapping("/character/{characterId}")
     public ResponseEntity<List<SpellDto>> getSpellsByCharacter(@PathVariable Long characterId) {
@@ -56,6 +36,37 @@ public class SpellController {
         spellService.deleteSpell(id);
         return ResponseEntity.ok("Spell with ID " + id + " deleted successfully.");
     }
+
+    @GetMapping("/{slotId}/spells")
+    public ResponseEntity<List<SpellDto>> getSpellsBySlot(@PathVariable Long slotId) {
+        List<SpellDto> spells = slotService.getSpellsBySlot(slotId);
+        return new ResponseEntity<>(spells, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/create-and-assign/{slotId}")
+    public ResponseEntity<SpellDto> createAndAssignSpell(
+            @PathVariable Long slotId,
+            @RequestBody SpellDto spellDto) {
+        try {
+            Spell createdSpell = spellService.createSpellAndAssignToSlot(slotId, spellDto);
+            return new ResponseEntity<>(spellDto, HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+//    @PatchMapping("/{spellId}")
+//    public ResponseEntity<SpellDto> updateSpell(
+//            @PathVariable Long spellId,
+//            @RequestBody SpellDto spellDto) {
+//        try {
+//            Spell updatedSpell = spellService.updateSpell(spellId, spellDto);
+//            return new ResponseEntity<>(new SpellDto(updatedSpell), HttpStatus.OK);
+//        } catch (EntityNotFoundException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 
 }

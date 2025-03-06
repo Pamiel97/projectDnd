@@ -4,15 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import progettino.dnd.projectDnd.dtos.StaticDto;
 import progettino.dnd.projectDnd.dtos.TiriSalvezzaDto;
-import progettino.dnd.projectDnd.model.entities.Static;
 import progettino.dnd.projectDnd.model.entities.TiriSalvezza;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.TiriSalvezzaPgService;
 
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/tiriSalvezza")
 public class TiriSalvezzaController {
@@ -53,6 +53,22 @@ public class TiriSalvezzaController {
             throw new RuntimeException(e);
         }
         return ResponseEntity.ok(updated);
+    }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<TiriSalvezzaDto> updateTiriSalvezzaField(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+
+
+        TiriSalvezza updatedTiriSalvezza = tiriSalvezzaPgService.updateTiriSalvezzaField(id, updates);
+
+
+        TiriSalvezzaDto dto = TiriSalvezzaDto.fromEntity(updatedTiriSalvezza);
+
+
+        return ResponseEntity.ok(dto);
     }
 
 

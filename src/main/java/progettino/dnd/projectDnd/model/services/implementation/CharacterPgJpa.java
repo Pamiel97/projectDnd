@@ -31,16 +31,17 @@ public class CharacterPgJpa implements CharacterPgService {
     private BagRepository bagRepository;
     private DiaryRepository diaryRepository;
     private AbilityPgRepository abilityPgRepository;
-    private StaticRepository staticRepository;
+    private StatisticheRepository staticRepository;
     private TiriSalvezzaRepository tiriSalvezzaRepository;
     private CampaignRepository campaignRepository;
     private TalentRepository talentRepository;
     private TraitRepository traitRepository;
     private AbilityRepository abilityRepository;
+    private UserRepository userRepository;
 
 
     @Autowired
-    public CharacterPgJpa(CharacterPgRepository characterPgRepository, UserDetailRepository userDetailRepository, SlotRepository slotRepository, BagRepository bagRepository, DiaryRepository diaryRepository, AbilityPgRepository abilityPgRepository, StaticRepository staticRepository, TiriSalvezzaRepository tiriSalvezzaRepository, CampaignRepository campaignRepository, TalentRepository talentRepository, TraitRepository traitRepository, AbilityRepository abilityRepository) {
+    public CharacterPgJpa(CharacterPgRepository characterPgRepository, UserDetailRepository userDetailRepository, SlotRepository slotRepository, BagRepository bagRepository, DiaryRepository diaryRepository, AbilityPgRepository abilityPgRepository, StatisticheRepository staticRepository, TiriSalvezzaRepository tiriSalvezzaRepository, CampaignRepository campaignRepository, TalentRepository talentRepository, TraitRepository traitRepository, AbilityRepository abilityRepository, UserRepository userRepository) {
         this.characterPgRepository = characterPgRepository;
         this.userDetailRepository = userDetailRepository;
         this.slotRepository = slotRepository;
@@ -53,6 +54,7 @@ public class CharacterPgJpa implements CharacterPgService {
         this.talentRepository = talentRepository;
         this.traitRepository = traitRepository;
         this.abilityRepository = abilityRepository;
+        this.userRepository = userRepository;
 
     }
 
@@ -338,6 +340,43 @@ public class CharacterPgJpa implements CharacterPgService {
 
 
 
+//    @Override
+//    public CharacterPg updateCharacterFields(Long id, Map<String, Object> updates) {
+//        Optional<CharacterPg> optionalCharacter = characterPgRepository.findById(id);
+//        if (optionalCharacter.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Character not found");
+//        }
+//
+//        CharacterPg character = optionalCharacter.get();
+//
+//        updates.forEach((key, value) -> {
+//            try {
+//                Field field = CharacterPgDto.class.getDeclaredField(key);
+//                field.setAccessible(true); // Permette di accedere a campi privati
+//
+//                if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
+//                    field.set(character, ((Number) value).intValue());
+//                } else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
+//                    field.set(character, ((Number) value).doubleValue());
+//                } else if (field.getType().equals(String.class)) {
+//                    field.set(character, value.toString());
+//                } else {
+//                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field type: " + key);
+//                }
+//
+//            } catch (NoSuchFieldException e) {
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field: " + key);
+//            } catch (IllegalAccessException e) {
+//                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating field: " + key);
+//            } catch (ClassCastException e) {
+//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data type for field: " + key);
+//            }
+//        });
+//
+//        return characterPgRepository.save(character);
+//    }
+
+
     @Override
     public CharacterPg updateCharacterFields(Long id, Map<String, Object> updates) {
         Optional<CharacterPg> optionalCharacter = characterPgRepository.findById(id);
@@ -349,19 +388,53 @@ public class CharacterPgJpa implements CharacterPgService {
 
         updates.forEach((key, value) -> {
             try {
-                Field field = CharacterPgDto.class.getDeclaredField(key);
+                System.out.println("Updating field: " + key + " with value: " + value);
+                Field field = CharacterPg.class.getDeclaredField(key);  // Usa la classe corretta per riflessione
                 field.setAccessible(true); // Permette di accedere a campi privati
 
+                // Gestione dei tipi primitivi e di base
                 if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
                     field.set(character, ((Number) value).intValue());
                 } else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
                     field.set(character, ((Number) value).doubleValue());
                 } else if (field.getType().equals(String.class)) {
                     field.set(character, value.toString());
+                } else if (field.getType().equals(List.class)) {
+                    // Gestione delle liste (ad esempio Slot, AbilityPg, ecc.)
+                    if (key.equals("slots") && value instanceof List<?>) {
+                        List<Slot> updatedSlots = (List<Slot>) value;
+                        character.setSlots(updatedSlots);
+                    } else if (key.equals("abilityPgs") && value instanceof List<?>) {
+                        List<AbilityPg> updatedAbilities = (List<AbilityPg>) value;
+                        character.setAbilityPgs(updatedAbilities);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data type for field: " + key);
+                    }
+                } else if (field.getType().equals(User.class)) {
+                    // Gestione della relazione con User
+                    if (key.equals("user") && value instanceof Long) {
+                        Long userId = (Long) value;
+                        Optional<User> user = userRepository.findById(userId);
+                        if (user.isPresent()) {
+                            character.setUser(user.get());
+                        } else {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+                        }
+                    }
+                } else if (field.getType().equals(Campaign.class)) {
+                    // Gestione della relazione con Campaign
+                    if (key.equals("campaign") && value instanceof Long) {
+                        Long campaignId = (Long) value;
+                        Optional<Campaign> campaign = campaignRepository.findById(campaignId);
+                        if (campaign.isPresent()) {
+                            character.setCampaign(campaign.get());
+                        } else {
+                            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Campaign not found");
+                        }
+                    }
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field type: " + key);
                 }
-
             } catch (NoSuchFieldException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field: " + key);
             } catch (IllegalAccessException e) {
@@ -371,10 +444,10 @@ public class CharacterPgJpa implements CharacterPgService {
             }
         });
 
+
+
+
         return characterPgRepository.save(character);
     }
-
-
-
 
 }

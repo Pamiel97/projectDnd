@@ -6,16 +6,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import progettino.dnd.projectDnd.dtos.AbilityPgDto;
 import progettino.dnd.projectDnd.dtos.CharacterPgDto;
+import progettino.dnd.projectDnd.dtos.StaticDto;
+import progettino.dnd.projectDnd.dtos.security.RegisterRequest;
 import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 
+import progettino.dnd.projectDnd.model.entities.Statistiche;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/abilityPg")
 @RestController
 public class AbilityPgController {
@@ -74,5 +79,22 @@ public class AbilityPgController {
 
         return ResponseEntity.ok(updatedEntity);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AbilityPgDto> updateAbilityPgField(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> updates) {
+
+        System.out.println("PATCH request received for ID: " + id);
+        System.out.println("Updates: " + updates);
+
+        AbilityPg update = abilityPgService.updateAbilityPgField(id, updates);
+        AbilityPgDto dto = AbilityPgDto.fromEntity(update);
+
+        return ResponseEntity.ok(dto);
+    }
+
+
+
 
 }

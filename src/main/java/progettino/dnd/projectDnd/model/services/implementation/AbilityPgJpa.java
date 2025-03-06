@@ -2,11 +2,14 @@ package progettino.dnd.projectDnd.model.services.implementation;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import progettino.dnd.projectDnd.dtos.AbilityPgDto;
 import progettino.dnd.projectDnd.model.entities.Ability;
 import progettino.dnd.projectDnd.model.entities.AbilityPg;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
+import progettino.dnd.projectDnd.model.entities.Statistiche;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
 
 import progettino.dnd.projectDnd.model.repositories.AbilityPgRepository;
@@ -16,7 +19,10 @@ import progettino.dnd.projectDnd.model.services.abstraction.AbilityPgService;
 import progettino.dnd.projectDnd.model.services.abstraction.AbilityService;
 import progettino.dnd.projectDnd.model.services.abstraction.CharacterPgService;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,8 +92,8 @@ public class AbilityPgJpa implements AbilityPgService {
         // Recupero dell'entità esistente
 
 
-        AbilityPg existingAbilityPg = abilityPgRepository.findById(id);
-
+        Optional<AbilityPg> existing = abilityPgRepository.findById(id);
+        AbilityPg existingAbilityPg = existing.get();
 
         // Aggiornamento dei campi (controllando che siano valorizzati)
         if (updatedAbilityPg.getAbility() != null) {
@@ -109,6 +115,66 @@ public class AbilityPgJpa implements AbilityPgService {
         // Salvataggio nel repository
         return abilityPgRepository.save(existingAbilityPg);
     }
+
+
+
+    @Override
+    public AbilityPg updateAbilityPgField(long id, Map<String, Object> updates) {
+        Optional<AbilityPg> optionalAbility = abilityPgRepository.findById(id);
+        if (optionalAbility.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Static not found");
+        }
+        AbilityPg ab = optionalAbility.get();
+        updates.forEach((key, value) -> {
+            try {
+                Field field = AbilityPg.class.getDeclaredField(key);
+                field.setAccessible(true);
+
+                // Gestione del tipo int o Integer
+                if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
+                    field.set(ab, ((Number) value).intValue());
+                }
+                // Gestione del tipo double o Double
+                else if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
+                    field.set(ab, ((Number) value).doubleValue());
+                }
+                // Gestione del tipo String
+                else if (field.getType().equals(String.class)) {
+                    field.set(ab, value.toString());
+                }
+                // Gestione del tipo boolean o Boolean
+                else if (field.getType().equals(boolean.class) || field.getType().equals(Boolean.class)) {
+                    // Se il valore non è un booleano valido, potrebbe essere una stringa 'true'/'false' o un numero
+                    if (value instanceof String) {
+                        field.set(ab, Boolean.parseBoolean((String) value));
+                    } else if (value instanceof Boolean) {
+                        field.set(ab, value);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid boolean value for field: " + key);
+                    }
+                }
+                // Se il tipo del campo non è supportato
+                else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field type: " + key);
+                }
+            } catch (NoSuchFieldException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid field: " + key);
+            } catch (IllegalAccessException e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error updating field: " + key);
+            } catch (ClassCastException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data type for field: " + key);
+            }
+        });
+
+        System.out.println("Updating AbilityPg: " + ab);
+        AbilityPg updatedAbility = abilityPgRepository.save(ab);
+        System.out.println("Updated AbilityPg: " + updatedAbility);
+        return abilityPgRepository.save(ab);
+
+    }
+
+
+
 
 
 }

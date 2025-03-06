@@ -11,9 +11,10 @@ JSON DI UNA REGISTYER
     "lastname": "Doe",
     "email": "prova@gmail.com",
     "password": "password123",
-    "role": "ROLE_USER"  // Ruolo che l'utente avrà
+    "role": "ROLE_USER"
 }
 
+//token di prova
 
 eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwcm9qZWN0QGdtYWlsLmNvbSIsImlhdCI6MTczODg1MDg1NCwiZXhwIjoxNzcwMzg2ODU0fQ.ibxjnSIqdugeWYBouoTI4RIqnQMYhx7-3jQX8DztOo4
 

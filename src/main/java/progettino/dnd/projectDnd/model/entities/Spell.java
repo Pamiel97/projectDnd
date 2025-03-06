@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class Spell {
     private Type type;
 
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "spells")
     private List<Slot> slots;  // Lista di slot che contengono questo incantesimo
 

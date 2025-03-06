@@ -74,7 +74,7 @@ public class CharacterPg {
 
     @JsonIgnore
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
-    private List<Static> staticList;
+    private List<Statistiche> staticList;
 
     @JsonIgnore
     @OneToMany(mappedBy = "pg", cascade = CascadeType.ALL)
@@ -350,11 +350,11 @@ public class CharacterPg {
         this.abilityPgs = abilityPgs;
     }
 
-    public List<Static> getStaticList() {
+    public List<Statistiche> getStaticList() {
         return staticList;
     }
 
-    public void setStaticList(List<Static> staticList) {
+    public void setStaticList(List<Statistiche> staticList) {
         this.staticList = staticList;
     }
 

@@ -2,10 +2,12 @@ package progettino.dnd.projectDnd.model.services.implementation;
 
 import org.springframework.stereotype.Service;
 import progettino.dnd.projectDnd.dtos.SlotDto;
+import progettino.dnd.projectDnd.dtos.SpellDto;
 import progettino.dnd.projectDnd.model.entities.CharacterPg;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.exception.EntityNotFoundException;
+import progettino.dnd.projectDnd.model.exception.ResourceNotFoundException;
 import progettino.dnd.projectDnd.model.repositories.CharacterPgRepository;
 import progettino.dnd.projectDnd.model.repositories.SlotRepository;
 import progettino.dnd.projectDnd.model.repositories.SpellRepository;
@@ -50,6 +52,18 @@ public class SlotJpa implements SlotService {
         List<Slot> slots = slotRepository.findByPgId(characterId);
         return slots.stream()
                 .map(SlotDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SpellDto> getSpellsBySlot(Long slotId) {
+        // Recupera lo slot dalla repository
+        Slot slot = slotRepository.findById(slotId)
+                .orElseThrow(() -> new ResourceNotFoundException("Slot not found with id " + slotId));
+
+        // Restituisce gli incantesimi associati allo slot
+        return slot.getSpells().stream()
+                .map(SpellDto::fromEntity)
                 .collect(Collectors.toList());
     }
 }

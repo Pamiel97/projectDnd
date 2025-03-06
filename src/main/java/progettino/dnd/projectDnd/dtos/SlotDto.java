@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.entities.Slot;
 
@@ -12,6 +14,8 @@ public class SlotDto {
     private int levelSlot;
     private int remainingUse;
     private long characterId;  // DTO per il PG associato a questo slot
+
+    @JsonIgnore
     private List<SpellDto> spells;
 
 

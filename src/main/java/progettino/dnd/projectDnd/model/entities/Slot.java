@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class Slot {
     @JoinColumn(name = "pg_id", nullable = false)
     private CharacterPg pg;  // Il PG a cui appartiene questo slot
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "slot_spells",

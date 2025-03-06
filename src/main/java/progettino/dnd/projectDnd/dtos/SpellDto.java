@@ -1,5 +1,7 @@
 package progettino.dnd.projectDnd.dtos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import progettino.dnd.projectDnd.model.entities.Spell;
 import progettino.dnd.projectDnd.model.entities.Slot;
 import progettino.dnd.projectDnd.model.entities.Type;
@@ -21,8 +23,9 @@ public class SpellDto {
     private String component;  // componenti richiesti per l'incantesimo (es. verbale, somatico, materiale)
     private boolean preparate;  // se l'incantesimo è preparato
     private int minLevel;  // livello minimo per l'incantesimo
-    private Type type;  
+    private Type type;
 
+    @JsonIgnore
     private List<SlotDto> slots;  // Lista di SlotDto che contengono questo incantesimo
 
 
@@ -179,7 +182,7 @@ public class SpellDto {
         spellDto.setPreparate(spell.isPreparate());
         spellDto.setMinLevel(spell.getMinLevel());
         spellDto.setType(spell.getType());
-        spellDto.setSlots(spell.getSlots() != null ? spell.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
+        //spellDto.setSlots(spell.getSlots() != null ? spell.getSlots().stream().map(SlotDto::fromEntity).collect(Collectors.toList()) : new ArrayList<>());
 
 
         return spellDto;
